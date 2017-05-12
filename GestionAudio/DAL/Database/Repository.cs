@@ -15,11 +15,15 @@ using DTO.Entity;
 
 namespace DAL.Database
 {
+    public static class GetContext
+    {
+        public static DbApplicationContext Context;
+    }
+
     public class Repository<T> where T : BaseEntity
     {
         #region Public Fields
 
-        public static DbApplicationContext Context;
 
         #endregion Public Fields
 
@@ -37,8 +41,8 @@ namespace DAL.Database
         /// </summary>
         public Repository()
         {
-            if (Context == null)
-                Context = new DbApplicationContext();
+            if (GetContext.Context == null)
+                GetContext.Context = new DbApplicationContext();
         }
 
         #endregion Public Constructors
@@ -54,7 +58,7 @@ namespace DAL.Database
         /// <summary>
         /// Get entities from context
         /// </summary>
-        private IDbSet<T> Entities => _entities ?? (_entities = Context.Set<T>());
+        private IDbSet<T> Entities => _entities ?? (_entities = GetContext.Context.Set<T>());
 
         #endregion Private Properties
 
@@ -72,7 +76,7 @@ namespace DAL.Database
                     throw new ArgumentNullException(nameof(entity));
 
                 Entities.Remove(entity);
-                Context.SaveChanges();
+                GetContext.Context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -110,7 +114,7 @@ namespace DAL.Database
                 if (entity == null)
                     throw new ArgumentNullException(nameof(entity));
                 Entities.AddOrUpdate(entity);
-                Context.SaveChanges();
+                GetContext.Context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {

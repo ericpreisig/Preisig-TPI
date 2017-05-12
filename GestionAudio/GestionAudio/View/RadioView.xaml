@@ -4,9 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Presentation.View"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:list="clr-namespace:Presentation.View.List"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="720" d:DesignWidth="1080">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Radios"  Grid.Row="0" Grid.Column="1"  Grid.RowSpan="3">
+            <list:RadioListView Margin="-5" />
+        </GroupBox>
+
+        <GroupBox Header="Favoris"  Grid.Row="0" Grid.Column="3">
+            <list:FavoriteListView Margin="-5"/>
+        </GroupBox>
+        <GroupBox Header="Radios récentes" Grid.Column="3" Grid.Row="2" >
+            <list:RecentListView Margin="-5" />
+        </GroupBox>
     </Grid>
 </UserControl>

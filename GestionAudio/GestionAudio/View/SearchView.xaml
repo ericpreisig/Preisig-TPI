@@ -4,9 +4,65 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Presentation.View"
+             xmlns:list="clr-namespace:Presentation.View.List"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="720" d:DesignWidth="1080">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="1" FontSize="22" Foreground="#3498db" Grid.ColumnSpan="3">
+            <Run Text="Recherche : "/>
+            <Run Text="{Binding Search}"/>
+        </TextBlock>
+        <GroupBox Grid.Column="2" Grid.Row="1" Background="Transparent" FontSize="19" BorderThickness="0">
+            <GroupBox.Header>
+                <Label Foreground="#3498db">Morceaux</Label>
+            </GroupBox.Header>
+            <list:TrackListView Margin="-5"/>
+        </GroupBox>
+
+        <GroupBox Grid.Column="4" Grid.Row="1" Background="Transparent" FontSize="19" BorderThickness="0">
+            <GroupBox.Header>
+                <Label Foreground="#3498db">Artistes</Label>
+            </GroupBox.Header>
+            <list:TrackListView Margin="-5"/>
+        </GroupBox>
+
+        <GroupBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" Background="Transparent" FontSize="19" BorderThickness="0">
+            <GroupBox.Header>
+                <Label Foreground="#3498db">Albums</Label>
+            </GroupBox.Header>
+            <ItemsControl ItemsSource="{Binding Albums}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <Button Style="{StaticResource TransparentButtonStyle}" Margin="0,0,10,10"  Width="150" Height="150" Padding="0">
+                    <StackPanel>
+                        <Image Source="{Binding Picture}" Width="130" Height="130" />
+                        <TextBlock Foreground="#3498db" TextAlignment="Center" Text="{Binding Name}" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+            </ItemsControl>
+        </GroupBox>
+
+        <GroupBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="3" Background="Transparent" FontSize="19" BorderThickness="0">
+            <GroupBox.Header>
+                <Label Foreground="#3498db">Radios</Label>
+            </GroupBox.Header>
+            <list:RadioListView Margin="-5"/>
+        </GroupBox>
     </Grid>
 </UserControl>

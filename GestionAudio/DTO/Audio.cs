@@ -9,19 +9,19 @@ using NAudio.Wave;
 
 namespace DTO
 {
-    public class Audio
+    public class Audio : BaseEntity
     {
         public string Name { get; set; }
 
         [NotMapped]
         private string _path;
 
-        public int? fkGenre { get; set; }
+        public long? fkGenre { get; set; }
 
         [ForeignKey("fkGenre")]
         public Genre Genre { get; set; }
 
-        public bool IsFavortie { get; set; }
+        public bool IsFavorite { get; set; }
 
         public string Path
         {
@@ -34,9 +34,6 @@ namespace DTO
         }
 
         [NotMapped]
-        public WaveOut File { get; set; }
-
-        [NotMapped]
-        public TimeSpan ActualTime { get; set; }
+        public AudioFileReader File { get; set; }
     }
 }

@@ -1,12 +1,112 @@
-﻿<UserControl x:Class="Presentation.View.SmallPlayer"
+﻿<UserControl x:Class="Presentation.View.SmallPlayerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Presentation.View"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="65" d:DesignWidth="200">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="55"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource TransparentButtonStyle}" Command="{Binding OnClickPicture}">
+            <Border Width="45" Height="45" BorderBrush="LightGray" BorderThickness="1">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding Track.Album.Picture}" Stretch="UniformToFill"/>
+                </Border.Background>
+            </Border>
+        </Button>
+        
+
+        <Grid Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="13"/>
+                <RowDefinition Height="5"/>
+
+            </Grid.RowDefinitions>
+            <TextBlock Margin="2,0,0,0" Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0"   FontSize="12"  Text="" Foreground="#3498db" TextTrimming="WordEllipsis">
+                <Run Text="{Binding Track.Name}"/>
+                <Run Text=" - "/>
+                <Run Text="{Binding Track.Album.Artist.Name}"/>
+                </TextBlock>
             
+            <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource TransparentButtonStyle}" Padding="0">
+
+                <Rectangle Width="20" Height="20" Fill="#d3dcde">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDown" >
+                            <command:EventToCommand Command="{Binding OnMousedownRewind}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Rectangle.OpacityMask>
+                       
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_rewind}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource TransparentButtonStyle}" Padding="0" Command="{Binding OnClickPlay}">
+                <Rectangle Width="20" Height="20" Fill="#d3dcde">
+                    <Rectangle.Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Style.Setters>
+                                <Setter Property="OpacityMask">
+                                    <Setter.Value>
+                                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_play}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style.Setters>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=PlaylerStatus}" Value="False">
+                                    <Setter Property="OpacityMask">
+                                        <Setter.Value>
+                                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_pause}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+            </Button>
+            <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource TransparentButtonStyle}" Padding="0">
+                <Rectangle Width="20" Height="20" Fill="#d3dcde">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDown" >
+                            <command:EventToCommand Command="{Binding OnMousedownForward}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_control_fastforward}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <TextBlock Grid.Row="2" Grid.Column="0" FontSize="10" VerticalAlignment="Top" TextAlignment="Right" Grid.ColumnSpan="3" Foreground="#3498db" Margin="0,0,2,0">
+                <Run Text="{Binding ActualTime, StringFormat=\{0:mm\\:ss\}}"/>
+                <Run Text=" - "/>
+                <Run Text="{Binding Track.DurationTime, StringFormat=\{0:mm\\:ss\}, Mode=OneWay}"/>
+            </TextBlock>
+            <Slider IsSnapToTickEnabled="True"  Margin="0,-4,0,0" Height="7"  IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="100" TickFrequency="0.01" Value="{Binding SliderValue}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"></Slider>
+
+        </Grid>
+
+
+
+
     </Grid>
 </UserControl>

@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
+using Shared;
 
 namespace DTO.Entity
 {
@@ -12,9 +14,9 @@ namespace DTO.Entity
     {
         public string Name { get; set; }
         public string PictureLink { get; set; }
-        public DateTime DateCreation { get; set; }
+        public DateTime? DateCreation { get; set; }
 
-        public int? fkArtist { get; set; }
+        public long? fkArtist { get; set; }
 
         [ForeignKey("fkArtist")]
         public virtual Artist Artist { get; set; }
@@ -22,6 +24,6 @@ namespace DTO.Entity
         public virtual ICollection<Track> Tracks { get; set; }
 
         [NotMapped]
-        public Bitmap Picture { get; set; }
+        public BitmapImage Picture => MusicFile.GetImage(Tracks.FirstOrDefault().Path, PictureLink);
     }
 }

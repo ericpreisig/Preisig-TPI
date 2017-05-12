@@ -7,8 +7,8 @@ namespace DTO.Entity
     {
         public bool IsMusicPlaying { get; set; }
 
-        public int? fkTrack { get; set; }
-        public int? fkRadio { get; set; }
+        public long? fkTrack { get; set; }
+        public long? fkRadio { get; set; }
 
         [ForeignKey("fkTrack")]
         public Track Track { get; set; }
@@ -16,7 +16,14 @@ namespace DTO.Entity
         [ForeignKey("fkRadio")]
         public Radio Radio { get; set; }
 
-        public TimeSpan ActualTime { get; set; }
+        [NotMapped]
+        public int IsLooping { get; set; }
+
+        [NotMapped]
+        public bool IsRandom { get; set; }
+
+        //in ms
+        public int ActualTime { get; set; }
 
 
     }

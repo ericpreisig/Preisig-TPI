@@ -10,14 +10,25 @@ namespace BLL
 {
     public static class FavoriteData
     {
+       
+        /// <summary>
+        /// Add an audio to favorite
+        /// </summary>
+        /// <param name="element"></param>
         public static void AddFavorite(Audio element)
         {
-            throw new NotImplementedException();
+            element.IsFavorite = true;
+            element.AddOrUpdateAudio();
         }
 
+        /// <summary>
+        /// remove an audio to favorite
+        /// </summary>
+        /// <param name="element"></param>
         public static void RemoveFavorite(Audio element)
         {
-            throw new NotImplementedException();
+            element.IsFavorite = false;
+            element.AddOrUpdateAudio();
         }
     }
 }

@@ -6,14 +6,17 @@ namespace DTO.Entity
 {
     public class Track : Audio
     {
-        public TimeSpan Duration { get; set; }
+        //in ms
+        public int Duration { get; set; }
 
         public virtual List<Playlist> Playlists { get; set; }
 
-        public int? fkAlbum { get; set; }
+        public long? fkAlbum { get; set; }
 
         [ForeignKey("fkAlbum")]
         public virtual Album Album { get; set; }
 
+        [NotMapped]
+        public TimeSpan DurationTime => TimeSpan.FromMilliseconds(Duration);        
     }
 }

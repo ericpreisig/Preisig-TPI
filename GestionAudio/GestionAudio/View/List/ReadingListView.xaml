@@ -7,6 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <DataGrid SelectedItem="{Binding SelectedItem}" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding ReadingList}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Morceaux" Binding="{Binding Name}" Width="*" />
+            </DataGrid.Columns>
+            <DataGridTemplateColumn Header="Image" Width="SizeToCells">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding Picture}" Width="100" Height="100" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid>
     </Grid>
 </UserControl>

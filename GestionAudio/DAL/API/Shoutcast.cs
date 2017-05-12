@@ -21,7 +21,7 @@ namespace DAL.API
         {
             throw new NotImplementedException();
         }
-        public string GetRadio(string name, string genre)
+        public List<Radio> GetRadio(string name, string genre)
         {
             throw new NotImplementedException();
         }

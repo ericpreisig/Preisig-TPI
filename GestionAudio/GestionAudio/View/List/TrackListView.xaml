@@ -7,6 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <DataGrid SelectedItem="{Binding SelectedItem}"  Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding Tracks}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="Durée" Binding="{Binding DurationTime, StringFormat=\{0:mm\\:ss\}}" Width="*" />
+                <DataGridTextColumn Header="Album" Binding="{Binding Album.Name}" Width="*" />
+                <DataGridTextColumn Header="Artist" Binding="{Binding Album.Artist.Name}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

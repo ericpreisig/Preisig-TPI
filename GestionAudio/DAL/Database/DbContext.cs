@@ -9,6 +9,7 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SQLite;
+using DTO.Entity;
 
 namespace DAL.Database
 {
@@ -30,9 +31,14 @@ namespace DAL.Database
 
         #region Public Properties
 
-        //public DbSet<AppSettings> AppSettings { get; set; }
-       // public DbSet<FileTrack> FileTrack { get; set; }
-       // public DbSet<User> Users { get; set; }
+        public DbSet<Album> Album { get; set; }
+        public DbSet<Artist> Artist { get; set; }
+        public DbSet<Context> Context { get; set; }
+        public DbSet<ExcludeFolder> ExcludeFolder { get; set; }
+        public DbSet<Genre> Genre { get; set; }
+        public DbSet<Playlist> Playlist { get; set; }
+        public DbSet<Radio> Radio { get; set; }
+        public DbSet<Track> Track { get; set; }
 
         #endregion Public Properties
 
@@ -44,25 +50,50 @@ namespace DAL.Database
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<DbApplicationContext>(modelBuilder);
+          //  var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<DbApplicationContext>(modelBuilder);
+            var sqliteConnectionInitializer = new SqliteDropCreateDatabaseAlways<DbApplicationContext>(modelBuilder);
             System.Data.Entity.Database.SetInitializer(sqliteConnectionInitializer);
-
-            /*modelBuilder.Entity<User>().Map(m =>
+            modelBuilder.Entity<Genre>().Map(m =>
             {
                 m.MapInheritedProperties();
-                m.ToTable("Users");
+                m.ToTable("t_Genre");
             });
-            modelBuilder.Entity<AppSettings>().Map(m =>
+            modelBuilder.Entity<Playlist>().Map(m =>
             {
                 m.MapInheritedProperties();
-                m.ToTable("AppSettings");
+                m.ToTable("t_Playlist");
             });
-            modelBuilder.Entity<FileTrack>().Map(m =>
+            modelBuilder.Entity<Radio>().Map(m =>
             {
                 m.MapInheritedProperties();
-                m.ToTable("FileTrack");
-            });*/
+                m.ToTable("t_Radio");
+            });
+            modelBuilder.Entity<Track>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("t_Track");
+            });
+            modelBuilder.Entity<Album>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("t_Album");
+            });
 
+            modelBuilder.Entity<Artist>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("t_Artist");
+            });
+            modelBuilder.Entity<Context>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("t_Context");
+            });
+            modelBuilder.Entity<ExcludeFolder>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("t_ExcludeFolder");
+            });
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             base.OnModelCreating(modelBuilder);
         }
