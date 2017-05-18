@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DTO.Entity;
-using NAudio.Wave;
 
 namespace DTO
 {
@@ -23,10 +22,10 @@ namespace DTO
         public string Path { get; set; }
 
         [NotMapped]
-        private WaveStream _file;
+        private int _file;
 
         [NotMapped]
-        public WaveStream File => _file ?? ( _file = this is Track ?Shared.MusicFile.LoadMusic(Path) : Shared.MusicFile.LoadRadio(Path));
+        public int File => _file != 0 ? _file : ( _file = this is Track ?Shared.MusicFile.LoadMusic(Path) : Shared.MusicFile.LoadRadio(Path));
 
     }
 }

@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 using BLL;
 using DTO.Entity;
 using MahApps.Metro.Controls.Dialogs;
-using NAudio.Wave;
+using ManagedBass;
 using Presentation.View;
 using Presentation.ViewModel;
 
@@ -93,8 +93,6 @@ namespace Presentation.Helper
         /// <returns></returns>
         public static Track TransformToTrack(string path)
         {
-            var fileValues = new AudioFileReader(path);
-
             var fileInfo = TagLib.File.Create(path);
             var artistName = fileInfo.Tag.FirstComposer ?? "Inconnu";
             var artist = ArtistData.CheckIfArtistExist(artistName)
@@ -124,10 +122,11 @@ namespace Presentation.Helper
                     ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == fileInfo.Tag.FirstGenre.ToLower())
                     : new Genre { Name = fileInfo.Tag.FirstGenre };
             }
+            var stream = Bass.CreateStream(path);
 
             var track= new Track
             {
-                Duration = (int)fileValues.TotalTime.TotalMilliseconds,
+                Duration = (int)Bass.ChannelGetLength(stream)*1000,
                 Album=album,
                 Name = fileInfo.Tag.Title ?? Path.GetFileNameWithoutExtension(path),
                 Genre = genre,

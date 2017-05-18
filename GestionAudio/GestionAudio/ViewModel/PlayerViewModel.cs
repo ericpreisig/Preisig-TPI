@@ -2,7 +2,6 @@ using BLL;
 using DTO.Entity;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using NAudio.Wave;
 using Presentation.Helper;
 using System;
 using System.Threading;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using DTO;
+using ManagedBass;
 using Presentation.View;
 
 namespace Presentation.ViewModel
@@ -181,7 +181,7 @@ namespace Presentation.ViewModel
         /// </summary>
         public void ClickPlay()
         {
-            if (MusicPlayer.Player.PlaybackState == PlaybackState.Playing)
+            if (Bass.ChannelIsActive(Helper.Context.ActualContext.ActualAudio.File) == PlaybackState.Playing)
             {
                 MusicPlayer.Pause();
             }

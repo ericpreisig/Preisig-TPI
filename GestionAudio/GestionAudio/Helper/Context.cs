@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BLL;
 using DTO;
 using DTO.Entity;
+using ManagedBass;
 using Presentation.ViewModel;
 
 namespace Presentation.Helper
@@ -33,9 +34,9 @@ namespace Presentation.Helper
         /// <param name="radio"></param>
         public static void PlayNewRadio(Radio radio)
         {
-            if (radio.File == null)
+            if (radio.File == 0)
             {
-                MusicPlayer.Player.Stop();
+                Bass.Stop();
                 return;
             }
             ActualContext.Radio = radio;

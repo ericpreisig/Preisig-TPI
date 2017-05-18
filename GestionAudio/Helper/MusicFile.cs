@@ -1,5 +1,4 @@
-﻿using NAudio.Wave;
-using System;
+﻿using System;
 using System.Configuration;
 using System.IO;
 using System.Net;
@@ -7,6 +6,8 @@ using System.Net.Configuration;
 using System.Threading;
 using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls.Dialogs;
+using ManagedBass;
+using Configuration = System.Configuration.Configuration;
 
 namespace Shared
 {
@@ -25,7 +26,7 @@ namespace Shared
             return sub;
         }
 
-        public static TimeSpan GetDuration(WaveOut file)
+        public static TimeSpan GetDuration(int file)
         {
             throw new NotImplementedException();
         }
@@ -52,9 +53,9 @@ namespace Shared
             }
         }
 
-        public static AudioFileReader LoadMusic(string path)
+        public static int LoadMusic(string path)
         {
-            return new AudioFileReader(path);
+            return Bass.CreateStream(path);
         }
 
         /// <summary>
@@ -74,13 +75,13 @@ namespace Shared
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static WaveStream LoadRadio(string path)
+        public static int LoadRadio(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
                 GeneralHelper.ShowMessage("Erreur", "Pas de chemin disponnible dans le fichier de stream",
                     MessageDialogStyle.Affirmative);
-                return null;
+                return 0;
             }
             StopRadio();
 
@@ -140,20 +141,21 @@ namespace Shared
                 while (ms.Length < 1000)
                 {
                     if (cancelStream)
-                        return null;
+                        return 0;
 
                     Thread.Sleep(100);
                 }
                
 
                 ms.Position = 0;
-                return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new AudioFileReader(ms)));
+                //return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new AudioFileReader(ms)));
+                return 0;
             }
             catch (Exception e)
             {
                 GeneralHelper.ShowMessage("Erreur", "Impossible de convertire le stream en mp3",
                     MessageDialogStyle.Affirmative);
-                return null;
+                return 0;
             }
 
         }

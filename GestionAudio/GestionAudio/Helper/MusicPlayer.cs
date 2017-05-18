@@ -5,8 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using DTO.Entity;
-using NAudio.Utils;
-using NAudio.Wave;
+using ManagedBass;
 using Presentation.ViewModel;
 using Shared;
 
@@ -14,8 +13,7 @@ namespace Presentation.Helper
 {
     public static class MusicPlayer
     {
-        public static readonly WaveOutEvent Player = new WaveOutEvent();
-        private static WaveStream _playerStream;
+        private static int _playerStream;
         static Thread _eachSecond;
 
         /// <summary>
@@ -24,11 +22,9 @@ namespace Presentation.Helper
         public static void NewPlay()
         {
             if (Context.ActualContext.ActualAudio == null) return;
-            Player.Stop();
+            Bass.Stop();
             _playerStream = Context.ActualContext.ActualAudio.File;
-            _playerStream.Position = 0;
-            WaveChannel32 volumeStream = new WaveChannel32(_playerStream);
-            Player.Init(volumeStream);
+            Bass.Init();
             Play();
             MainWindowViewModel.PlayerViewModel.InitPlayer(Context.ActualContext.ActualAudio);
         }
@@ -44,11 +40,11 @@ namespace Presentation.Helper
                 try
                 {
                     if (Context.ActualContext.Track == null) break;
-                    MainWindowViewModel.PlayerViewModel.ChangeTimeToSlider((int)_playerStream.CurrentTime.TotalMilliseconds, Context.ActualContext.Track.Duration);
+                    MainWindowViewModel.PlayerViewModel.ChangeTimeToSlider((int)Bass.ChannelGetPosition(_playerStream), Context.ActualContext.Track.Duration);
                     Thread.Sleep(100);
 
                     //go to next music if ended
-                    if ((int)_playerStream.CurrentTime.TotalMilliseconds >= Context.ActualContext.Track.Duration)
+                    if ((int)Bass.ChannelGetPosition(_playerStream) >= Context.ActualContext.Track.Duration)
                         Application.Current.Dispatcher.Invoke(Next);
                 }
                 catch (Exception e)
@@ -67,8 +63,7 @@ namespace Presentation.Helper
         public static void Play()
         {
             if (Context.ActualContext.ActualAudio == null)  return;
-            Context.ActualContext.IsMusicPlaying = true;
-            Player.Play();
+            Bass.ChannelPlay(Context.ActualContext.ActualAudio.File);
             _eachSecond = new Thread(EachSecondAction);
             _eachSecond.Start();
             MainWindowViewModel.PlayerViewModel.PlaylerStatus = false;
@@ -83,7 +78,7 @@ namespace Presentation.Helper
         {
             if (Context.ActualContext.ActualAudio == null) return;
             Context.ActualContext.IsMusicPlaying = false;
-            Player.Pause();
+            Bass.ChannelPause(Context.ActualContext.ActualAudio.File);
             _eachSecond.Abort();
             MainWindowViewModel.PlayerViewModel.PlaylerStatus = true;
             MainWindowViewModel.Main.ReadingList= new ObservableCollection<Track>(MainWindowViewModel.Main.ReadingList);
@@ -153,7 +148,7 @@ namespace Presentation.Helper
         {
             if (Context.ActualContext.Track == null) return;
             var newPosition = (long) (1.0 * Context.ActualContext.Track.Duration * (timeInPourcent * 1.0 / 100));
-            _playerStream.CurrentTime=TimeSpan.FromMilliseconds(newPosition);
+            Bass.ChannelSetPosition(_playerStream, newPosition);
         }
 
 

@@ -10,6 +10,7 @@ using DTO;
 using DTO.Entity;
 using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls;
+using ManagedBass;
 using Presentation.Helper;
 using Presentation.View;
 
@@ -42,6 +43,7 @@ namespace Presentation.ViewModel
 
         public MainWindowViewModel()
         {
+            Bass.Init();
             if (TrackData.CheckIfDatabaseEmpty())
                 MusicSync.NoMusic();
 
