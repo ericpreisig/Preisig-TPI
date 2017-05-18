@@ -11,6 +11,7 @@ using BLL;
 using DTO.Entity;
 using MahApps.Metro.Controls.Dialogs;
 using NAudio.Wave;
+using Presentation.View;
 using Presentation.ViewModel;
 
 namespace Presentation.Helper
@@ -34,8 +35,8 @@ namespace Presentation.Helper
         public static void SyncFolder(string path)
         {
 
-
-            foreach (var filePath in Directory.GetFiles(path))
+            //it^terate through all file with an authaurized format
+            foreach (var filePath in Directory.EnumerateFiles(path).Where(x => AllowedFormat.Any(a => x.EndsWith(a))))
             {
                 Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.AnalyseStatus = filePath);
 
@@ -77,7 +78,11 @@ namespace Presentation.Helper
            
         }
 
-
+        /// <summary>
+        /// Check if the format is on the format allowed list
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static bool CheckFileFormat(string path) => AllowedFormat.Any(a => a == Path.GetExtension(path));
 
 
@@ -91,7 +96,7 @@ namespace Presentation.Helper
             var fileValues = new AudioFileReader(path);
 
             var fileInfo = TagLib.File.Create(path);
-            var artistName = fileInfo.Tag.FirstPerformer ?? "Inconnu";
+            var artistName = fileInfo.Tag.FirstComposer ?? "Inconnu";
             var artist = ArtistData.CheckIfArtistExist(artistName)
                 ? ArtistData.GetArtists().FirstOrDefault(a => a.Name.ToLower() == artistName.ToLower())
                 : new Artist {Name = artistName };
@@ -101,7 +106,7 @@ namespace Presentation.Helper
 
             if (fileInfo.Tag.Year != 0) dateCreation = new DateTime((int) fileInfo.Tag.Year,1,1);
 
-            var album = AlbumData.CheckIfAlbumExist(albumName)
+            var album = AlbumData.CheckIfAlbumExist(albumName, artistName)
                 ? AlbumData.GetAlbums().FirstOrDefault(a => a.Name.ToLower() == albumName.ToLower())
                 : new Album
                 {
@@ -124,7 +129,7 @@ namespace Presentation.Helper
             {
                 Duration = (int)fileValues.TotalTime.TotalMilliseconds,
                 Album=album,
-                Name = Path.GetFileNameWithoutExtension(path),
+                Name = fileInfo.Tag.Title ?? Path.GetFileNameWithoutExtension(path),
                 Genre = genre,
                 Path = path
             };
@@ -169,7 +174,8 @@ namespace Presentation.Helper
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MainWindowViewModel.Main.AnalyseStatus = "";
-                    MainWindowViewModel.Main.ActualView.DataContext = Activator.CreateInstance(MainWindowViewModel.Main.ActualView.DataContext.GetType());
+                    if(MainWindowViewModel.Main.ActualView is MusicView)
+                        MainWindowViewModel.Main.ActualView.DataContext = Activator.CreateInstance(MainWindowViewModel.Main.ActualView.DataContext.GetType());
                 });
             });
 #else

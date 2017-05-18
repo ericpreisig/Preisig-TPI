@@ -24,14 +24,14 @@
             <list:PlaylistListView Margin="-5" />
         </GroupBox>
         <StackPanel  Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
-            <Button Style="{StaticResource TransparentButtonStyle}" Margin="0,0,15,0">
+            <Button Style="{StaticResource TransparentButtonStyle}" Margin="0,0,15,0"  Command="{Binding OnClickRemove}">
                 <Rectangle Width="20" Height="4" Fill="#d3dcde">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_minus}" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <Button Style="{StaticResource TransparentButtonStyle}">
+            <Button Style="{StaticResource TransparentButtonStyle}" Command="{Binding OnClickAdd}">
                 <Rectangle Width="20" Height="20" Fill="#d3dcde">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_add}" />
@@ -40,7 +40,7 @@
             </Button>
         </StackPanel>
         <GroupBox Header="Morceaux"  Grid.Row="0" Grid.Column="3">
-            <list:TrackListView Margin="-5"/>
+            <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5"/>
         </GroupBox>
         
     </Grid>

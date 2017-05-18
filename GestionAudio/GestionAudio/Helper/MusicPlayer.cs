@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -7,6 +8,7 @@ using DTO.Entity;
 using NAudio.Utils;
 using NAudio.Wave;
 using Presentation.ViewModel;
+using Shared;
 
 namespace Presentation.Helper
 {
@@ -21,14 +23,14 @@ namespace Presentation.Helper
         /// </summary>
         public static void NewPlay()
         {
-            if (Context.ActualContext.Track == null) return;
-            _playerStream = Context.ActualContext.Track.File;
+            if (Context.ActualContext.ActualAudio == null) return;
+            Player.Stop();
+            _playerStream = Context.ActualContext.ActualAudio.File;
             _playerStream.Position = 0;
             WaveChannel32 volumeStream = new WaveChannel32(_playerStream);
-            Player.Stop();
             Player.Init(volumeStream);
             Play();
-            MainWindowViewModel.PlayerViewModel.InitTrack(Context.ActualContext.Track);
+            MainWindowViewModel.PlayerViewModel.InitPlayer(Context.ActualContext.ActualAudio);
         }
 
         /// <summary>
@@ -64,12 +66,13 @@ namespace Presentation.Helper
         /// </summary>
         public static void Play()
         {
-            if (Context.ActualContext.Track == null)  return;
+            if (Context.ActualContext.ActualAudio == null)  return;
             Context.ActualContext.IsMusicPlaying = true;
             Player.Play();
             _eachSecond = new Thread(EachSecondAction);
             _eachSecond.Start();
             MainWindowViewModel.PlayerViewModel.PlaylerStatus = false;
+            MainWindowViewModel.Main.ReadingList = new ObservableCollection<Track>(MainWindowViewModel.Main.ReadingList);
 
         }
 
@@ -78,11 +81,12 @@ namespace Presentation.Helper
         /// </summary>
         public static void Pause()
         {
-            if (Context.ActualContext.Track == null) return;
+            if (Context.ActualContext.ActualAudio == null) return;
             Context.ActualContext.IsMusicPlaying = false;
             Player.Pause();
             _eachSecond.Abort();
             MainWindowViewModel.PlayerViewModel.PlaylerStatus = true;
+            MainWindowViewModel.Main.ReadingList= new ObservableCollection<Track>(MainWindowViewModel.Main.ReadingList);
         }
 
         /// <summary>
@@ -100,20 +104,20 @@ namespace Presentation.Helper
             {
                 //Take a random number between all the tracks in the reading list
                 var rand = new Random();
-                var randomIndex = rand.Next(0, MainWindowViewModel.ReadingList.Count);
-                newTrackToPlay = MainWindowViewModel.ReadingList.ElementAt(randomIndex);
+                var randomIndex = rand.Next(0, MainWindowViewModel.Main.ReadingList.Count);
+                newTrackToPlay = MainWindowViewModel.Main.ReadingList.ElementAt(randomIndex);
             }
             else
             {
                 //Or just take the next one
-                newTrackToPlay = MainWindowViewModel.ReadingList.SkipWhile(a => a != Context.ActualContext.Track).Skip(1).FirstOrDefault();
+                newTrackToPlay = MainWindowViewModel.Main.ReadingList.SkipWhile(a => a != Context.ActualContext.Track).Skip(1).FirstOrDefault();
             }
 
             switch (Context.ActualContext.IsLooping)
             {
                 case 1: //if the user is on loop mode, take the first music back and last track of the readinfg list
                     if(newTrackToPlay == null)
-                        newTrackToPlay = MainWindowViewModel.ReadingList.FirstOrDefault();
+                        newTrackToPlay = MainWindowViewModel.Main.ReadingList.FirstOrDefault();
                     break;
                 case 2://if the user is on one only mode, take the same
                     newTrackToPlay = Context.ActualContext.Track;
@@ -131,7 +135,7 @@ namespace Presentation.Helper
         {
             if (Context.ActualContext.Track == null) return;
             Pause();
-            var listTrackReversed = MainWindowViewModel.ReadingList.ToList();
+            var listTrackReversed = MainWindowViewModel.Main.ReadingList.ToList();
             listTrackReversed.Reverse();
 
             var newTrackToPlay = listTrackReversed.SkipWhile(a => a != Context.ActualContext.Track).Skip(1).FirstOrDefault();

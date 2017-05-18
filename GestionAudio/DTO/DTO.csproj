@@ -77,7 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infos.cs" />
+    <Compile Include="ContextMenu.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\ExcludeFolder.cs" />
     <Compile Include="Entity\Playlist.cs" />

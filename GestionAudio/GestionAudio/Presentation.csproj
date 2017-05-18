@@ -106,9 +106,6 @@
     <Compile Include="Helper\MusicPlayer.cs" />
     <Compile Include="Helper\MusicSync.cs" />
     <Compile Include="Helper\RightClick.cs" />
-    <Compile Include="TrackInfoExtracter\WmvInfo.cs" />
-    <Compile Include="TrackInfoExtracter\Mp3Info.cs" />
-    <Compile Include="TrackInfoExtracter\WmaInfo.cs" />
     <Compile Include="ViewModel\SettingFlyoutViewModel.cs" />
     <Compile Include="ViewModel\PropertyFlyoutViewModel.cs" />
     <Compile Include="ViewModel\RadioViewModel.cs" />
@@ -317,6 +314,10 @@
       <Project>{9e33503d-9993-4f66-aa67-5ae9a4edf8f3}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helper\Shared.csproj">
+      <Project>{A336C315-8EF3-466E-8079-8F734C0EC232}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\WindowsIcons-license.txt" />
@@ -325,6 +326,9 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Images\pause.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -333,7 +337,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\play.png" />
+    <Content Include="Resources\Images\play.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -32,7 +32,7 @@ namespace BLL
         /// <summary>
         /// Check if a album exist by it's name
         /// </summary>
-        public static bool CheckIfAlbumExist(string name) => new Repository<Album>().GetList().Any(a => a.Name.ToLower() == name.ToLower());
+        public static bool CheckIfAlbumExist(string name, string artistName) => new Repository<Album>().GetList().Any(a => a.Name.ToLower() == name.ToLower() && a.Artist.Name==artistName);
 
 
     }

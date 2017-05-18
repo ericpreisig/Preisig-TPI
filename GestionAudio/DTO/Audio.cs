@@ -13,9 +13,6 @@ namespace DTO
     {
         public string Name { get; set; }
 
-        [NotMapped]
-        private string _path;
-
         public long? fkGenre { get; set; }
 
         [ForeignKey("fkGenre")]
@@ -23,17 +20,13 @@ namespace DTO
 
         public bool IsFavorite { get; set; }
 
-        public string Path
-        {
-            get { return _path; }
-            set
-            {
-                File = Shared.MusicFile.LoadMusic(value);
-                _path = value;
-            }
-        }
+        public string Path { get; set; }
 
         [NotMapped]
-        public AudioFileReader File { get; set; }
+        private WaveStream _file;
+
+        [NotMapped]
+        public WaveStream File => _file ?? ( _file = this is Track ?Shared.MusicFile.LoadMusic(Path) : Shared.MusicFile.LoadRadio(Path));
+
     }
 }

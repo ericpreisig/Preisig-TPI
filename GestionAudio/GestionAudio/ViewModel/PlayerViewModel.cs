@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using DTO;
 using Presentation.View;
 
 namespace Presentation.ViewModel
@@ -23,7 +24,7 @@ namespace Presentation.ViewModel
         private double _oldValue;
         private bool _playlerStatus;
         private double _sliderValuerack;
-        private Track _track;
+        private Audio _audio;
 
         #endregion Private Fields
 
@@ -111,12 +112,12 @@ namespace Presentation.ViewModel
             }
         }
 
-        public Track Track
+        public Audio Audio
         {
-            get { return _track; }
+            get { return _audio; }
             set
             {
-                _track = value;
+                _audio = value;
                 RaisePropertyChanged();
             }
         }
@@ -125,6 +126,11 @@ namespace Presentation.ViewModel
 
         #region Public Methods
 
+        /// <summary>
+        /// Change the time of the slider
+        /// </summary>
+        /// <param name="milisecond"></param>
+        /// <param name="total"></param>
         public void ChangeTimeToSlider(int milisecond, int total)
         {
             ActualTime = TimeSpan.FromMilliseconds(milisecond);
@@ -136,11 +142,11 @@ namespace Presentation.ViewModel
         /// </summary>
         public void ClickFavorite()
         {
-            if (Track.IsFavorite)
-                FavoriteData.RemoveFavorite(Track);
+            if (Audio.IsFavorite)
+                FavoriteData.RemoveFavorite(Audio);
             else
-                FavoriteData.AddFavorite(Track);
-            RaisePropertyChanged("Track");
+                FavoriteData.AddFavorite(Audio);
+            RaisePropertyChanged("Audio");
 
             //Uppdate FavoritList
             if (MainWindowViewModel.Main.ActualView.DataContext is MusicViewModel)
@@ -162,11 +168,17 @@ namespace Presentation.ViewModel
             Helper.Context.ActualContext.IsLooping = IsLooping = GetNextLoopinhAction();
         }
 
+        /// <summary>
+        /// When the user click on the picture, open the running flyout
+        /// </summary>
         public void ClickPicture()
         {
             MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
         }
 
+        /// <summary>
+        /// Play the music
+        /// </summary>
         public void ClickPlay()
         {
             if (MusicPlayer.Player.PlaybackState == PlaybackState.Playing)
@@ -187,26 +199,43 @@ namespace Presentation.ViewModel
            Helper.Context.ActualContext.IsRandom= IsRandom = !IsRandom;
         }
 
+
+        /// <summary>
+        /// Show the reading list
+        /// </summary>
         public void ClickReadingList()
         {
             MainWindowViewModel.Main.IsFlyoutReadingListOpen = true;
         }
 
+        /// <summary>
+        /// Go to previous music
+        /// </summary>
         public void ClickRewind()
         {
             MusicPlayer.Previous();
         }
 
-        public void InitTrack(Track track)
+        /// <summary>
+        /// Set up a track
+        /// </summary>
+        /// <param name="audio"></param>
+        public void InitPlayer(Audio audio)
         {
-            Track = track;
+            Audio = audio;
         }
 
+        /// <summary>
+        /// When the user hold down the forward button
+        /// </summary>
         public void MousedownForward()
         {
             Task.Run(() => MovePosition(3, ClickForward));
         }
 
+        /// <summary>
+        /// When the user hold down the rewind button
+        /// </summary>
         public void MousedownRewind()
         {
             Task.Run(() => MovePosition(-3, ClickRewind));
@@ -216,6 +245,10 @@ namespace Presentation.ViewModel
 
         #region Private Methods
 
+        /// <summary>
+        /// Get the next icon to show (continous, loop, or only one song)
+        /// </summary>
+        /// <returns></returns>
         private int GetNextLoopinhAction()
         {
             var newLoopingAction = IsLooping + 1;
@@ -224,6 +257,12 @@ namespace Presentation.ViewModel
             return newLoopingAction;
         }
 
+
+        /// <summary>
+        /// Move the position of the cursor on the slide bar
+        /// </summary>
+        /// <param name="changeValue"></param>
+        /// <param name="actionOnClick"></param>
         private void MovePosition(int changeValue, Action actionOnClick)
         {
             _isMouseHolded = true;

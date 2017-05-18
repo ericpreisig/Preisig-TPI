@@ -50,7 +50,7 @@ namespace DAL.Database
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-          //  var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<DbApplicationContext>(modelBuilder);
+            //var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<DbApplicationContext>(modelBuilder);
             var sqliteConnectionInitializer = new SqliteDropCreateDatabaseAlways<DbApplicationContext>(modelBuilder);
             System.Data.Entity.Database.SetInitializer(sqliteConnectionInitializer);
             modelBuilder.Entity<Genre>().Map(m =>

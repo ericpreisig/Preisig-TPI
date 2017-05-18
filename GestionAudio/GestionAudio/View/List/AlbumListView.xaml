@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Presentation.View"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -14,7 +16,7 @@
                         <DataTemplate>
                             <Border Width="100" Height="100" BorderBrush="LightGray" BorderThickness="1">
                                 <Border.Background>
-                                    <ImageBrush ImageSource="{Binding Picture}" Stretch="UniformToFill"/>
+                                    <ImageBrush ImageSource="{Binding Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 </Border.Background>
                             </Border>
                         </DataTemplate>

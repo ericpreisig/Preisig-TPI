@@ -13,7 +13,6 @@ namespace UnitTest
     public class RadioTest
     {
         private List<Radio> _radios;
-        private Shoutcast _api;
 
         /// <summary>
         /// Try to initialize an API connection
@@ -21,7 +20,7 @@ namespace UnitTest
         [Test]
         public void CheckApiConnection()
         {
-            _api= new Shoutcast();
+            //_api= new Shoutcast();
         }
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace UnitTest
         [Test]
         public void CheckApiData()
         {
-            _radios = _api.GetRadio("acdc", "metal");
+            _radios = Shoutcast.GetRadioByKeyWord("acdc", "metal");
         }
 
         /// <summary>

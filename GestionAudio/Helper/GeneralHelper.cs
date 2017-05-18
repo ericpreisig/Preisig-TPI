@@ -1,13 +1,19 @@
-﻿using MahApps.Metro.Controls;
+﻿using System;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Design.PluralizationServices;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Dynamic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace Shared
 {
@@ -43,5 +49,31 @@ namespace Shared
             });
             return null;
         }
+
+        /// <summary>
+        /// Show a prompt
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="message"></param>
+        /// <param name="dialogStyle"></param>
+        /// <returns></returns>
+        public static async Task<Tuple<string, bool>> ShowPrompt(string title, string message, MessageDialogStyle dialogStyle)
+        {
+            return await Application.Current.Dispatcher.Invoke(async () =>
+             {
+                 while (true)
+                 {
+                     var metroWindow = (Application.Current.MainWindow as MetroWindow);
+                     metroWindow.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
+                     metroWindow.MetroDialogOptions.AffirmativeButtonText = "OK";
+                     metroWindow.MetroDialogOptions.NegativeButtonText = "Annuler";
+                     var text = await metroWindow.ShowInputAsync(title, message, metroWindow.MetroDialogOptions);
+                     return string.IsNullOrWhiteSpace(text) ? new Tuple<string, bool>(text, false) : new Tuple<string, bool>(text, true);
+                 }
+             });
+        }
+
     }
+
+   
 }

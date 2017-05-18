@@ -100,7 +100,7 @@
 
 
         <StackPanel  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="#d3dcde" >
-            <Button Style="{StaticResource TransparentButtonStyle}" Height="100" Width="80">
+            <Button Style="{StaticResource TransparentButtonStyle}" Height="100" Width="80" Command="{Binding OnClickMusic}">
                 <StackPanel  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Rectangle Width="50" Height="66" Fill="White">
                         <Rectangle.OpacityMask>
@@ -110,7 +110,7 @@
                     <TextBlock TextAlignment="Center"  Foreground="White">Musique</TextBlock>
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource TransparentButtonStyle}" Height="100" Width="80">
+            <Button Style="{StaticResource TransparentButtonStyle}" Height="100" Width="80" Command="{Binding OnClickPlaylist}">
                 <StackPanel  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Rectangle Width="50" Height="50" Fill="White">
                         <Rectangle.OpacityMask>
@@ -120,7 +120,7 @@
                     <TextBlock TextAlignment="Center" Foreground="White">Playlist</TextBlock>
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource TransparentButtonStyle}" Height="100" Width="80">
+            <Button Style="{StaticResource TransparentButtonStyle}" Height="100" Width="80" Command="{Binding OnClickRadio}">
                 <StackPanel  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Rectangle Width="60" Height="60" Fill="White">
                         <Rectangle.OpacityMask>

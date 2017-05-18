@@ -25,6 +25,8 @@ namespace DTO.Entity
         //in ms
         public int ActualTime { get; set; }
 
+        [NotMapped]
+        public Audio ActualAudio => Track ?? (Audio)Radio;
 
     }
 }

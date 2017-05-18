@@ -20,8 +20,29 @@ namespace Presentation.Helper
         /// <param name="track"></param>
         public static void PlayNewSong(Track track)
         {
+            Shared.MusicFile.StopRadio();
             ActualContext.Track = track;
+            ActualContext.Radio = null;
             MusicPlayer.NewPlay();
+            MainWindowViewModel.Main.RaisePropertyChanged("ReadingList");
+        }
+
+        /// <summary>
+        /// Clear the reading list and play a new song
+        /// </summary>
+        /// <param name="radio"></param>
+        public static void PlayNewRadio(Radio radio)
+        {
+            if (radio.File == null)
+            {
+                MusicPlayer.Player.Stop();
+                return;
+            }
+            ActualContext.Radio = radio;
+            ActualContext.Track = null;
+
+            MusicPlayer.NewPlay();
+            MainWindowViewModel.Main.RaisePropertyChanged("ReadingList");
         }
 
         public static void AddToReadingList(Track track)
@@ -35,9 +56,9 @@ namespace Presentation.Helper
         /// <param name="track"></param>
         public static void RemoveFromReadingList(Track track)
         {
-            if (MainWindowViewModel.ReadingList.Any(a => a == track))
+            if (MainWindowViewModel.Main.ReadingList.Any(a => a == track))
             {
-                MainWindowViewModel.ReadingList.Remove(track);
+                MainWindowViewModel.Main.ReadingList.Remove(track);
             }
         }
 

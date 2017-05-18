@@ -53,8 +53,8 @@
         <GroupBox Header="Favoris"  Grid.Row="0" Grid.Column="3">
             <list:FavoriteListView Margin="-5"/>
         </GroupBox>
-        <GroupBox Header="Chanson récentes" Grid.Column="3" Grid.Row="2" >
+        <!--<GroupBox Header="Chanson récentes" Grid.Column="3" Grid.Row="2" >
             <list:RecentListView Margin="-5" />
-        </GroupBox>
+        </GroupBox>-->
     </Grid>
 </UserControl>

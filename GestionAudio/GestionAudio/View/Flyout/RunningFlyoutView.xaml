@@ -28,38 +28,38 @@
                 <BlurEffect x:Name="BlurEffect" Radius="15" RenderingBias="Performance" KernelType="Gaussian"/>
             </Border.Effect>
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Track.Album.Picture}" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="{Binding Audio.Album.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="LowQuality"/>
             </Border.Background>
         </Border>
         <Border Grid.Column="1" Grid.Row="1">
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Track.Album.Picture}" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="{Binding Audio.Album.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="NearestNeighbor"/>
             </Border.Background>
         </Border>
         <StackPanel  Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Center">
-            <TextBlock Margin="20,0,0,10" FontSize="25" Foreground="White" Text="{Binding Track.Album.Name}">
+            <TextBlock Margin="20,0,0,10" FontSize="25" Foreground="White" Text="{Binding Audio.Album.Name}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock Margin="20,0,0,10" FontSize="25" Foreground="White" Text="{Binding  Track.Album.Artist.Name}">
+            <TextBlock Margin="20,0,0,10" FontSize="25" Foreground="White" Text="{Binding  Audio.Album.Artist.Name}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding  Track.Genre.Name}">
+            <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding  Audio.Genre.Name}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding  Track.Album.DateCreation, StringFormat=\{0:yyyy\}}">
+            <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding  Audio.Album.DateCreation, StringFormat=\{0:yyyy\}}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
                 </TextBlock.Effect>
             </TextBlock>
         </StackPanel>
 
-        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"  Text="{Binding Track.Name}" Foreground="#3498db"/>
+        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"  Text="{Binding Audio.Name}" Foreground="#3498db" TextTrimming="WordEllipsis"/>
 
         <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal">
             <Button  Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Left" Command="{Binding OnClickReadingList}">
@@ -81,7 +81,7 @@
                                 </Setter>
                             </Style.Setters>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=Track.IsFavorite}" Value="False">
+                                <DataTrigger Binding="{Binding Path=Audio.IsFavorite}" Value="False">
                                     <Setter Property="OpacityMask">
                                         <Setter.Value>
                                             <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_star}" />
@@ -217,7 +217,7 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" FontSize="15" TextAlignment="Right" Foreground="#3498db">
                 <Run Text="{Binding ActualTime, StringFormat=\{0:mm\\:ss\}}"/>
                 <Run Text=" - "/>
-                <Run Text="{Binding Track.DurationTime, StringFormat=\{0:mm\\:ss\}, Mode=OneWay}"/>
+                <Run Text="{Binding Audio.DurationTime, StringFormat=\{0:mm\\:ss\}, Mode=OneWay}"/>
             </TextBlock>
             <Slider IsSnapToTickEnabled="True" TickFrequency="0.01" IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="100" Value="{Binding SliderValue}" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="5" Margin="0,0,0,35"></Slider>
         </Grid>

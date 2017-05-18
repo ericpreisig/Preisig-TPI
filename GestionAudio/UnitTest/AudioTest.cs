@@ -75,7 +75,7 @@ namespace UnitTest
                 Path = "http://54.202.122.200:8000",
             };
 
-            MainWindowViewModel.ReadingList = new ObservableCollection<Track>(tracks);
+            MainWindowViewModel.Main.ReadingList = new ObservableCollection<Track>(tracks);
         }
 
         /// <summary>

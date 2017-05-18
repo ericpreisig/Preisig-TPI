@@ -18,5 +18,6 @@ namespace DTO.Entity
 
         [NotMapped]
         public TimeSpan DurationTime => TimeSpan.FromMilliseconds(Duration);        
+
     }
 }

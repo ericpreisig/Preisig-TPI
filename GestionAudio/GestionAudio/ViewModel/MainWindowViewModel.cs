@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using BLL;
 using DTO;
 using DTO.Entity;
+using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls;
 using Presentation.Helper;
 using Presentation.View;
@@ -21,12 +22,32 @@ namespace Presentation.ViewModel
     {
         public static MetroWindow MetroWindow = (System.Windows.Application.Current.MainWindow as MetroWindow);
         public static MainWindowViewModel Main;
-        public static ObservableCollection<Track> ReadingList { get; set; }
+
+        public RelayCommand OnClickMusic { get; set; }
+        public RelayCommand OnClickPlaylist { get; set; }
+        public RelayCommand OnClickRadio { get; set; }
+
+        private ObservableCollection<Track> _readingList = new ObservableCollection<Track>();
+
+        public ObservableCollection<Track> ReadingList
+        {
+            get { return _readingList; }
+            set
+            {
+                _readingList=value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         public MainWindowViewModel()
         {
             if (TrackData.CheckIfDatabaseEmpty())
                 MusicSync.NoMusic();
+
+            OnClickMusic = new RelayCommand(ClickMusic);
+            OnClickPlaylist = new RelayCommand(ClickPlaylist);
+            OnClickRadio = new RelayCommand(ClickRadio);
 
             Main = this;
             ActualView = new MusicView { DataContext = new MusicViewModel() };
@@ -42,25 +63,35 @@ namespace Presentation.ViewModel
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Open the music view
+        /// </summary>
         public void ClickMusic()
         {
-            throw new NotImplementedException();
+            ActualView = new MusicView { DataContext = new MusicViewModel() };
         }
 
+        /// <summary>
+        /// Open the playlist view
+        /// </summary>
         public void ClickPlaylist()
         {
-            throw new NotImplementedException();
+            ActualView = new PlaylistView { DataContext = new PlaylistViewModel() };
         }
 
+        /// <summary>
+        /// Open the radio view
+        /// </summary>
         public void ClickRadio()
         {
-            throw new NotImplementedException();
+            ActualView = new RadioView { DataContext = new RadioViewModel() };
         }
 
         public void ClickSetting()
         {
             throw new NotImplementedException();
         }
+
         public void OpenFlyoutReading()
         {
             throw new NotImplementedException();
@@ -79,6 +110,7 @@ namespace Presentation.ViewModel
         {
             throw new NotImplementedException();
         }
+
 
         public static PlayerViewModel PlayerViewModel {get; set; }= new PlayerViewModel();
 

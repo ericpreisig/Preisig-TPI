@@ -17,10 +17,15 @@ namespace BLL
             throw new NotImplementedException();
         }
 
+
+
         public static List<Track> GetSuggeredTracks(string genre)
         {
             throw new NotImplementedException();
         }
+
+
+      
 
         /// <summary>
         /// Get all tracks from thge db

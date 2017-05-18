@@ -21,7 +21,7 @@
         <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource TransparentButtonStyle}" Command="{Binding OnClickPicture}">
             <Border Width="45" Height="45" BorderBrush="LightGray" BorderThickness="1">
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding Track.Album.Picture}" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="{Binding Audio.Album.Picture}" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
         </Button>
@@ -41,9 +41,9 @@
 
             </Grid.RowDefinitions>
             <TextBlock Margin="2,0,0,0" Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0"   FontSize="12"  Text="" Foreground="#3498db" TextTrimming="WordEllipsis">
-                <Run Text="{Binding Track.Name}"/>
+                <Run Text="{Binding Audio.Name}"/>
                 <Run Text=" - "/>
-                <Run Text="{Binding Track.Album.Artist.Name}"/>
+                <Run Text="{Binding Audio.Album.Artist.Name}"/>
                 </TextBlock>
             
             <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource TransparentButtonStyle}" Padding="0">
@@ -99,7 +99,7 @@
             <TextBlock Grid.Row="2" Grid.Column="0" FontSize="10" VerticalAlignment="Top" TextAlignment="Right" Grid.ColumnSpan="3" Foreground="#3498db" Margin="0,0,2,0">
                 <Run Text="{Binding ActualTime, StringFormat=\{0:mm\\:ss\}}"/>
                 <Run Text=" - "/>
-                <Run Text="{Binding Track.DurationTime, StringFormat=\{0:mm\\:ss\}, Mode=OneWay}"/>
+                <Run Text="{Binding Audio.DurationTime, StringFormat=\{0:mm\\:ss\}, Mode=OneWay}"/>
             </TextBlock>
             <Slider IsSnapToTickEnabled="True"  Margin="0,-4,0,0" Height="7"  IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="100" TickFrequency="0.01" Value="{Binding SliderValue}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"></Slider>
 
