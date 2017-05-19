@@ -8,5 +8,11 @@ namespace DTO.Entity
     {
         public string ShoutCastId { get; set; }
         public string Desrciption { get; set; }
+        public string LogoUrl { get; set; }
+        public string Format { get; set; }
+
+        [NotMapped]
+        public string RadioPlayingTrack { get; set; }
+
     }
 }

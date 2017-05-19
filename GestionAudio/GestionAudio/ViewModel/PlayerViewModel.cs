@@ -148,11 +148,12 @@ namespace Presentation.ViewModel
                 FavoriteData.AddFavorite(Audio);
             RaisePropertyChanged("Audio");
 
-            //Uppdate FavoritList
+            //Uppdate Favorite list
             if (MainWindowViewModel.Main.ActualView.DataContext is MusicViewModel)
                 ((MusicViewModel) MainWindowViewModel.Main.ActualView.DataContext).SetFavorite();
 
-            //Track = TrackData.GetTrackByPath(Track.Path);
+            if (MainWindowViewModel.Main.ActualView.DataContext is RadioViewModel)
+                ((RadioViewModel)MainWindowViewModel.Main.ActualView.DataContext).SetFavorite();
         }
 
         public void ClickForward()

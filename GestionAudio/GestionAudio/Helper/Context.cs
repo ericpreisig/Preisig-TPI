@@ -32,7 +32,7 @@ namespace Presentation.Helper
         /// </summary>
         /// <param name="radio"></param>
         public static void PlayNewRadio(Radio radio)
-        {
+        {         
             if (radio.File == null)
             {
                 MusicPlayer.Player.Stop();

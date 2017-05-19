@@ -4,9 +4,12 @@ using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Net.Configuration;
+using System.Security.Permissions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls.Dialogs;
+using NAudio.Lame;
 
 namespace Shared
 {
@@ -14,7 +17,14 @@ namespace Shared
     {
         #region Public Methods
 
-        public static string Beetween(this string source, string start, string end)
+        /// <summary>
+        /// Get a string beetween
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static string Between(this string source, string start, string end)
         {
             var indexOf1 = source.IndexOf(start);
             if (indexOf1 == -1) return "";
@@ -25,10 +35,6 @@ namespace Shared
             return sub;
         }
 
-        public static TimeSpan GetDuration(WaveOut file)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Get an image from the file or from the setted up path
@@ -52,20 +58,55 @@ namespace Shared
             }
         }
 
-        public static AudioFileReader LoadMusic(string path)
+        /// <summary>
+        /// Load a music, if it fails, try to load it with the windows api
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static WaveStream LoadMusic(string path)
         {
-            return new AudioFileReader(path);
+            try
+            {
+                return new AudioFileReader(path);
+            }
+            catch (Exception e)
+            {
+                return new MediaFoundationReader(path);
+            }
         }
 
         /// <summary>
         /// Stop the buffering thread of the radio
         /// </summary>
+         [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
         public static void StopRadio()
         {
-            if(_radioThread!=null && _radioThread.IsAlive)
-                _radioThread.Abort();
+            if (_radioThread == null || !_radioThread.IsAlive) return;
+
+            _radioThread.Abort();
+                           
+            //Wait for the true stop
+            while (_radioThread.IsAlive)
+                Thread.Sleep(100);
         }
 
+        /// <summary>
+        /// Change stream to an mp3 stream
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static Stream StreamToMp3(this Stream source)
+        {
+            var retMs = new MemoryStream();
+            var rdr = new StreamMediaFoundationReader(source);
+            var wtr = new LameMP3FileWriter(retMs, rdr.WaveFormat, LAMEPreset.VBR_90);           
+             rdr.CopyTo(wtr);
+            return retMs;
+            
+        }
+
+        private static Stream ms = new MemoryStream();
+        private static Stream Mp3ms = new MemoryStream();
         private static Thread _radioThread;
 
         /// <summary>
@@ -73,8 +114,9 @@ namespace Shared
         /// Read a streaming music
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="file"></param>
         /// <returns></returns>
-        public static WaveStream LoadRadio(string path)
+        public static WaveStream LoadRadio(string path, string mt)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -84,30 +126,42 @@ namespace Shared
             }
             StopRadio();
 
-            Stream ms = new MemoryStream();
+          
+            ms = new MemoryStream();
+            Mp3ms = new MemoryStream();
             var cancelStream = false;
+
+            //make sure that radios are stopped
             _radioThread = new Thread(delegate(object o)
                 {
-
                     Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                     SettingsSection section = (SettingsSection) config.GetSection("system.net/settings");
                     section.HttpWebRequest.UseUnsafeHeaderParsing = true;
                     ServicePointManager.Expect100Continue = false;
                     ServicePointManager.MaxServicePointIdleTime = 2000;
                     config.Save();
+
                     try
                     {
                         var response = WebRequest.Create(path).GetResponse();
+
+                        //ask the radio for stream
                         using (var stream = response.GetResponseStream())
                         {
                             byte[] buffer = new byte[65536]; // 64KB chunks
+                            byte[] buffer2 = new byte[65536]; // 64KB chunks
                             int read;
+
+                            //Read all bytes from the reponse the radio gave 
                             while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
-                            {                              
+                            {
+                                if (cancelStream) break;
                                 var pos = ms.Position;
                                 ms.Position = ms.Length;
                                 ms.Write(buffer, 0, read);
                                 ms.Position = pos;
+
+                                //if the stream is always 0 after the first iteration, abort the radio
                                 if (ms.Length == 0)
                                 {
                                     cancelStream = true;
@@ -115,12 +169,35 @@ namespace Shared
                                         MessageDialogStyle.Affirmative);
                                     break;
                                 }
+                                try
+                                {
+                                    if (mt == "audio/mpeg") continue;
+
+                                    //Convert the stream to an mpeg format
+                                    var mp3Stream = StreamToMp3(ms);
+                                    mp3Stream.Position = Mp3ms.Length;
+
+                                    //Read the stream and put every thing back in a stream
+                                    while ((read = mp3Stream.Read(buffer2, 0, buffer2.Length)) > 0)
+                                    {
+                                        var pos2 = Mp3ms.Position;
+                                        Mp3ms.Position = Mp3ms.Length;
+                                        Mp3ms.Write(buffer2, 0, read);
+                                        Mp3ms.Position = pos2;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    cancelStream = true;
+                                    GeneralHelper.ShowMessage("Erreur", "Une erreur inattendue c'est produite",
+                                        MessageDialogStyle.Affirmative);
+                                }
                             }
                         }
                     }
                     catch (ThreadAbortException e)
                     {
-                        cancelStream = true;                      
+                        cancelStream = true;
                     }
                     catch (Exception e)
                     {
@@ -128,26 +205,33 @@ namespace Shared
                         GeneralHelper.ShowMessage("Erreur", "Le serveur de stream a mal répondu",
                             MessageDialogStyle.Affirmative);
                     }
-
                 }
-            );
-            _radioThread.IsBackground = true;
+            ) {IsBackground = true};
             _radioThread.Start();
 
             try
             {
                 // Pre-buffering some data to allow NAudio to start playing
-                while (ms.Length < 1000)
+                while (ms.Length < 16000)
                 {
                     if (cancelStream)
                         return null;
-
                     Thread.Sleep(100);
                 }
-               
 
-                ms.Position = 0;
-                return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new AudioFileReader(ms)));
+                //If the steram is an mpeg, take directly the stream
+                if (mt== "audio/mpeg")
+                {                 
+                    Mp3ms.Position = 0;
+                    return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(ms)));
+                }
+                else
+                {
+                    //else, take the converted stream
+                    ms.Position = 0;
+                    return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(Mp3ms)));
+                }
+               
             }
             catch (Exception e)
             {

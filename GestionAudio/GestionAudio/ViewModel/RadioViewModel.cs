@@ -17,6 +17,7 @@ namespace Presentation.ViewModel
     {
         public ObservableCollection<Radio> Radios { get; set; }= new ObservableCollection<Radio>();
         public ObservableCollection<Radio> LastRadios { get; set; }= new ObservableCollection<Radio>();
+        public ObservableCollection<Radio> Favorites { get; set; }= new ObservableCollection<Radio>();
         public RelayCommand OnRightClickRadio { get; set; }
         public RelayCommand OnClickElement { get; set; }
 
@@ -31,11 +32,17 @@ namespace Presentation.ViewModel
                 var radios = RadioData.GetRadioTop500Radios();
                 Application.Current.Dispatcher.Invoke(() =>Radios.AddRang(radios));
             });
-
-            //set favortie and recent
-
+            SetFavorite();
         }
 
+        /// <summary>
+        /// Set the list of all favorites radios
+        /// </summary>
+        public void SetFavorite()
+        {
+            Favorites.Clear();
+            Favorites.AddRang(RadioData.GetFavouriteRadios());         
+        }
 
         /// <summary>
         /// When the user right click, set the rightclicked object and remove the selection
@@ -64,6 +71,7 @@ namespace Presentation.ViewModel
 
         public void ClickRadio()
         {
+            SelectedItem.File = null;
             var radioWithPath = RadioData.SetRadioPath(SelectedItem);
             Helper.Context.PlayNewRadio(radioWithPath);
             MainWindowViewModel.Main.ReadingList.Clear();

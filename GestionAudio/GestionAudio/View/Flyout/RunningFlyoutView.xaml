@@ -28,12 +28,12 @@
                 <BlurEffect x:Name="BlurEffect" Radius="15" RenderingBias="Performance" KernelType="Gaussian"/>
             </Border.Effect>
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Audio.Album.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="LowQuality"/>
+                <ImageBrush ImageSource="{Binding Audio.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="LowQuality"/>
             </Border.Background>
         </Border>
         <Border Grid.Column="1" Grid.Row="1">
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Audio.Album.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                <ImageBrush ImageSource="{Binding Audio.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="NearestNeighbor"/>
             </Border.Background>
         </Border>
         <StackPanel  Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Center">
@@ -59,7 +59,11 @@
             </TextBlock>
         </StackPanel>
 
-        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"  Text="{Binding Audio.Name}" Foreground="#3498db" TextTrimming="WordEllipsis"/>
+        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"   Foreground="#3498db" TextTrimming="WordEllipsis">
+            <Run Text="{Binding Audio.Name}"/>
+            <Run Text=" - "/>
+            <Run Text="{Binding Audio.RadioPlayingTrack}"/>
+        </TextBlock>
 
         <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal">
             <Button  Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Left" Command="{Binding OnClickReadingList}">

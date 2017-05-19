@@ -15,36 +15,42 @@ namespace DAL.API
     {
         private const string DevId = "l2VAYjJAcjDXcbai";
 
-        private static void ApiConnect()
-        {
-            
-        }
-
+        /// <summary>
+        /// Execute a request and wait for the anser
+        /// </summary>
+        /// <param name="executionString"></param>
+        /// <returns></returns>
         private static string ApiExecute(string executionString)
         {
-            var request = (HttpWebRequest)WebRequest.Create(executionString);
-            var response = (HttpWebResponse)request.GetResponse();
-            return new StreamReader(response.GetResponseStream()).ReadToEnd();
+            using (var client = new WebClient())
+            {
+                return client.DownloadString(executionString);
+            }         
         }
 
-        private static string ApiStringPrepare(string name)
-        {
-            return "http://api.shoutcast.com/legacy/" + name + "?k=" + DevId+ "&mt=audio/aacp";
-        }
+        /// <summary>
+        /// Prepare a string with the api key
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private static string ApiStringPrepare(string name)=>"http://api.shoutcast.com/legacy/" + name + "?k=" + DevId;
 
         public static List<Radio> GetRadioByKeyWord(string name, string genre)
         {
             throw new NotImplementedException();
         }
 
-        public static string GetTop500Radios()
-        {
-            return ApiExecute(ApiStringPrepare("Top500"));          
-        }
+        /// <summary>
+        /// Get the top 500 radios
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTop500Radios()=> ApiExecute(ApiStringPrepare("Top500"));          
 
-        public static string DownloadFile(string id)
-        {
-            return ApiExecute("http://yp.shoutcast.com/sbin/tunein-station.m3u?id=" + id);
-        }
+        /// <summary>
+        /// Download the radio file
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string DownloadFile(string id)=>ApiExecute("http://yp.shoutcast.com/sbin/tunein-station.m3u?id=" + id);
     }
 }

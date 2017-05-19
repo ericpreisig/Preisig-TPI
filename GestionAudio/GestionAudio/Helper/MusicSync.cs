@@ -93,7 +93,15 @@ namespace Presentation.Helper
         /// <returns></returns>
         public static Track TransformToTrack(string path)
         {
-            var fileValues = new AudioFileReader(path);
+            WaveStream fileValues;
+            try
+            {
+                fileValues = new AudioFileReader(path);
+            }
+            catch (Exception e)
+            {
+                fileValues = new MediaFoundationReader(path);
+            }
 
             var fileInfo = TagLib.File.Create(path);
             var artistName = fileInfo.Tag.FirstComposer ?? "Inconnu";

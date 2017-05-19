@@ -21,7 +21,7 @@
         <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource TransparentButtonStyle}" Command="{Binding OnClickPicture}">
             <Border Width="45" Height="45" BorderBrush="LightGray" BorderThickness="1">
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding Audio.Album.Picture}" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="{Binding Audio.Picture}" Stretch="UniformToFill"/>
                 </Border.Background>
             </Border>
         </Button>

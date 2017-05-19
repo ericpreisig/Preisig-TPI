@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Xml.Linq;
 using DAL.API;
+using DAL.Database;
 using DTO.Entity;
 using Shared;
 
@@ -23,6 +25,9 @@ namespace BLL
                 {
                     ShoutCastId = (string)i.Attribute("id"),
                     Name = (string)i.Attribute("name"),
+                    RadioPlayingTrack= string.IsNullOrWhiteSpace((string)i.Attribute("ct")) ? "Indéfini" : (string)i.Attribute("ct"),
+                    LogoUrl = (string)i.Attribute("logo"),
+                    Format = (string)i.Attribute("mt"),                   
                     Desrciption = (string)i.Attribute("ct"),
                     Genre = GeneralData.CheckIfGenreExist((string)i.Attribute("genre")) ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == ((string)i.Attribute("genre")).ToLower())
                         : new Genre { Name = (string)i.Attribute("genre") }
@@ -48,8 +53,9 @@ namespace BLL
             if (!string.IsNullOrWhiteSpace(radio.Path)) return radio;
 
             var downloadedFile = Shoutcast.DownloadFile(radio.ShoutCastId);
+
             var path = downloadedFile.Replace("\r", "").Split('\n');
-            radio.Path = path.Length>=2 ? path[2] ?? "" : "";
+            radio.Path = path.Length>=3 ? path[2] ?? "" : "";
             return radio;
         }
 
@@ -58,9 +64,9 @@ namespace BLL
             return Shoutcast.GetRadioByKeyWord("","");
         }
 
-        public static List<Track> GetFavouriteRadios()
+        public static List<Radio> GetFavouriteRadios()
         {
-            throw new NotImplementedException();
+            return new Repository<Radio>().GetList().Where(radio => radio.IsFavorite).ToList();
         }
 
         public static List<Track> Get10LastRadios()
