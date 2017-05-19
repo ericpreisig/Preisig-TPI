@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DTO.Entity
 {
     public class Artist : BaseEntity
     {
-        public string Name { get; set; }
+        #region Public Properties
+
         public virtual ICollection<Album> Albums { get; set; }
+        public string Name { get; set; }
+
+        #endregion Public Properties
     }
 }

@@ -7,9 +7,13 @@ namespace Presentation.View.List
     /// </summary>
     public partial class RecentListView : UserControl
     {
+        #region Public Constructors
+
         public RecentListView()
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
     }
 }

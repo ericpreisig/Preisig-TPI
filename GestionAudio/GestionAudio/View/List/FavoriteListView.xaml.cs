@@ -7,9 +7,13 @@ namespace Presentation.View.List
     /// </summary>
     public partial class FavoriteListView : UserControl
     {
+        #region Public Constructors
+
         public FavoriteListView()
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
     }
 }

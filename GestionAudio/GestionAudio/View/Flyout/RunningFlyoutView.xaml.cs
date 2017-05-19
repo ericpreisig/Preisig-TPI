@@ -7,9 +7,13 @@ namespace Presentation.View.Flyout
     /// </summary>
     public partial class RunningFlyoutView : UserControl
     {
+        #region Public Constructors
+
         public RunningFlyoutView()
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
     }
 }

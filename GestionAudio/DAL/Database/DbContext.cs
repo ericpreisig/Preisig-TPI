@@ -4,12 +4,12 @@ Version : 1.0.0
 Date : 06.04.2017
 */
 
+using DTO.Entity;
 using SQLite.CodeFirst;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SQLite;
-using DTO.Entity;
 
 namespace DAL.Database
 {
@@ -34,7 +34,7 @@ namespace DAL.Database
         public DbSet<Album> Album { get; set; }
         public DbSet<Artist> Artist { get; set; }
         public DbSet<Context> Context { get; set; }
-        public DbSet<ExcludeFolder> ExcludeFolder { get; set; }
+        public DbSet<IncludeFolder> IncludeFolder { get; set; }
         public DbSet<Genre> Genre { get; set; }
         public DbSet<Playlist> Playlist { get; set; }
         public DbSet<Radio> Radio { get; set; }
@@ -50,8 +50,8 @@ namespace DAL.Database
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<DbApplicationContext>(modelBuilder);
-            var sqliteConnectionInitializer = new SqliteDropCreateDatabaseAlways<DbApplicationContext>(modelBuilder);
+            var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<DbApplicationContext>(modelBuilder);
+            //var sqliteConnectionInitializer = new SqliteDropCreateDatabaseAlways<DbApplicationContext>(modelBuilder);
             System.Data.Entity.Database.SetInitializer(sqliteConnectionInitializer);
             modelBuilder.Entity<Genre>().Map(m =>
             {
@@ -89,10 +89,10 @@ namespace DAL.Database
                 m.MapInheritedProperties();
                 m.ToTable("t_Context");
             });
-            modelBuilder.Entity<ExcludeFolder>().Map(m =>
+            modelBuilder.Entity<IncludeFolder>().Map(m =>
             {
                 m.MapInheritedProperties();
-                m.ToTable("t_ExcludeFolder");
+                m.ToTable("t_IncludeFolder");
             });
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             base.OnModelCreating(modelBuilder);

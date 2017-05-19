@@ -7,9 +7,13 @@ namespace Presentation.View.List
     /// </summary>
     public partial class SuggestListView : UserControl
     {
+        #region Public Constructors
+
         public SuggestListView()
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
     }
 }

@@ -1,4 +1,6 @@
-﻿using NAudio.Wave;
+﻿using MahApps.Metro.Controls.Dialogs;
+using NAudio.Lame;
+using NAudio.Wave;
 using System;
 using System.Configuration;
 using System.IO;
@@ -8,14 +10,18 @@ using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using MahApps.Metro.Controls.Dialogs;
-using NAudio.Lame;
 
 namespace Shared
 {
     public static class MusicFile
     {
         #region Public Methods
+
+        private static Thread _radioThread;
+
+        private static Stream Mp3ms = new MemoryStream();
+
+        private static Stream ms = new MemoryStream();
 
         /// <summary>
         /// Get a string beetween
@@ -28,13 +34,12 @@ namespace Shared
         {
             var indexOf1 = source.IndexOf(start);
             if (indexOf1 == -1) return "";
-            source = source.Substring(indexOf1+ start.Length);
+            source = source.Substring(indexOf1 + start.Length);
             var indexOf2 = source.IndexOf(end);
             if (indexOf2 == -1) return "";
             var sub = source.Substring(0, indexOf2);
             return sub;
         }
-
 
         /// <summary>
         /// Get an image from the file or from the setted up path
@@ -76,40 +81,6 @@ namespace Shared
         }
 
         /// <summary>
-        /// Stop the buffering thread of the radio
-        /// </summary>
-         [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
-        public static void StopRadio()
-        {
-            if (_radioThread == null || !_radioThread.IsAlive) return;
-
-            _radioThread.Abort();
-                           
-            //Wait for the true stop
-            while (_radioThread.IsAlive)
-                Thread.Sleep(100);
-        }
-
-        /// <summary>
-        /// Change stream to an mp3 stream
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static Stream StreamToMp3(this Stream source)
-        {
-            var retMs = new MemoryStream();
-            var rdr = new StreamMediaFoundationReader(source);
-            var wtr = new LameMP3FileWriter(retMs, rdr.WaveFormat, LAMEPreset.VBR_90);           
-             rdr.CopyTo(wtr);
-            return retMs;
-            
-        }
-
-        private static Stream ms = new MemoryStream();
-        private static Stream Mp3ms = new MemoryStream();
-        private static Thread _radioThread;
-
-        /// <summary>
         /// Code adapted from http://stackoverflow.com/questions/184683/play-audio-from-a-stream-using-c-sharp:
         /// Read a streaming music
         /// </summary>
@@ -124,18 +95,16 @@ namespace Shared
                     MessageDialogStyle.Affirmative);
                 return null;
             }
-            StopRadio();
 
-          
             ms = new MemoryStream();
             Mp3ms = new MemoryStream();
             var cancelStream = false;
 
             //make sure that radios are stopped
-            _radioThread = new Thread(delegate(object o)
+            _radioThread = new Thread(delegate (object o)
                 {
                     Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    SettingsSection section = (SettingsSection) config.GetSection("system.net/settings");
+                    SettingsSection section = (SettingsSection)config.GetSection("system.net/settings");
                     section.HttpWebRequest.UseUnsafeHeaderParsing = true;
                     ServicePointManager.Expect100Continue = false;
                     ServicePointManager.MaxServicePointIdleTime = 2000;
@@ -152,7 +121,7 @@ namespace Shared
                             byte[] buffer2 = new byte[65536]; // 64KB chunks
                             int read;
 
-                            //Read all bytes from the reponse the radio gave 
+                            //Read all bytes from the reponse the radio gave
                             while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
                             {
                                 if (cancelStream) break;
@@ -206,7 +175,8 @@ namespace Shared
                             MessageDialogStyle.Affirmative);
                     }
                 }
-            ) {IsBackground = true};
+            )
+            { IsBackground = true };
             _radioThread.Start();
 
             try
@@ -216,12 +186,12 @@ namespace Shared
                 {
                     if (cancelStream)
                         return null;
-                    Thread.Sleep(100);
+                    Thread.Sleep(200);
                 }
 
                 //If the steram is an mpeg, take directly the stream
-                if (mt== "audio/mpeg")
-                {                 
+                if (mt == "audio/mpeg")
+                {
                     Mp3ms.Position = 0;
                     return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(ms)));
                 }
@@ -231,7 +201,6 @@ namespace Shared
                     ms.Position = 0;
                     return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(Mp3ms)));
                 }
-               
             }
             catch (Exception e)
             {
@@ -239,7 +208,39 @@ namespace Shared
                     MessageDialogStyle.Affirmative);
                 return null;
             }
+        }
 
+        /// <summary>
+        /// Stop the buffering thread of the radio
+        /// </summary>
+        [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
+        public static void StopRadio()
+        {
+            if (_radioThread == null || !_radioThread.IsAlive) return;
+           
+            //Wait for the true stop
+            while (_radioThread!= null && _radioThread.IsAlive)
+            {
+               _radioThread.Abort();
+               _radioThread=null;
+               
+                Thread.Sleep(100);
+            }
+            _radioThread = null;
+        }
+
+        /// <summary>
+        /// Change stream to an mp3 stream
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static Stream StreamToMp3(this Stream source)
+        {
+            var retMs = new MemoryStream();
+            var rdr = new StreamMediaFoundationReader(source);
+            var wtr = new LameMP3FileWriter(retMs, rdr.WaveFormat, LAMEPreset.VBR_90);
+            rdr.CopyTo(wtr);
+            return retMs;
         }
 
         #endregion Public Methods

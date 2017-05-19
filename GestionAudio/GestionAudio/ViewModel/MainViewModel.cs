@@ -16,6 +16,8 @@ namespace Presentation.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        #region Public Constructors
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -30,5 +32,7 @@ namespace Presentation.ViewModel
             ////    // Code runs "for real"
             ////}
         }
+
+        #endregion Public Constructors
     }
 }

@@ -79,7 +79,7 @@
   <ItemGroup>
     <Compile Include="ContextMenu.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
-    <Compile Include="Entity\ExcludeFolder.cs" />
+    <Compile Include="Entity\IncludeFolder.cs" />
     <Compile Include="Entity\Playlist.cs" />
     <Compile Include="Entity\Radio.cs" />
     <Compile Include="Entity\Context.cs" />

@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace DTO.Entity
 {
     public class Genre : BaseEntity
     {
-        public string Name { get; set; }
+        #region Public Properties
+
         public int ListenedTimes { get; set; }
+        public string Name { get; set; }
         public virtual ICollection<Track> Tracks { get; set; }
+
+        #endregion Public Properties
     }
 }

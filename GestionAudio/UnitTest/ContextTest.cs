@@ -1,7 +1,4 @@
-﻿using System;
-using DTO.Entity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Presentation.Helper;
 
 namespace UnitTest
@@ -12,6 +9,8 @@ namespace UnitTest
     [TestFixture]
     public class ContextTest
     {
+        #region Public Methods
+
         /// <summary>
         /// Create a simple context that should play lthe actual music
         /// </summary>
@@ -32,5 +31,7 @@ namespace UnitTest
             MusicPlayer.Next();
             MusicPlayer.Previous();
         }
+
+        #endregion Public Methods
     }
 }

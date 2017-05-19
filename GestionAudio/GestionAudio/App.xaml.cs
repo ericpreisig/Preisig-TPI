@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Presentation.ViewModel;
 
 namespace Presentation
 {
@@ -7,5 +8,7 @@ namespace Presentation
     /// </summary>
     public partial class App : Application
     {
+
     }
+
 }

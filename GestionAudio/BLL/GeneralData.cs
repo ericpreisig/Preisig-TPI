@@ -1,20 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Database;
+﻿using DAL.Database;
 using DTO;
 using DTO.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BLL
 {
     public static class GeneralData
     {
-        public static List<Genre> GetMoreListenedGenre()
+        #region Public Methods
+     
+        /// <summary>
+        /// Add or update an audio element
+        /// </summary>
+        /// <param name="audio"></param>
+        public static void AddOrUpdateAudio(this Audio audio)
         {
-            throw new NotImplementedException();
+            if (audio is Track)
+                new Repository<Track>().AddOrUpdate((Track)audio);
+            else if (audio is Radio)
+                new Repository<Radio>().AddOrUpdate((Radio)audio);
         }
+
+        /// <summary>
+        /// Check if a genre exist by it's name
+        /// </summary>
+        public static bool CheckIfGenreExist(string name) => new Repository<Genre>().GetList().Any(a => a.Name.ToLower() == name.ToLower());
+
+        /// <summary>
+        /// Get or create a application context
+        /// if context does exist, else, create it
+        /// </summary>
+        /// <returns></returns>
+        public static Context GetContext()=> new Repository<Context>().GetList().Any() ? new Repository<Context>().GetList().FirstOrDefault() : new Context();
+        
 
         /// <summary>
         /// Get all genre from thge db
@@ -23,71 +43,34 @@ namespace BLL
         public static List<Genre> GetGenres() => new Repository<Genre>().GetList();
 
         /// <summary>
-        /// Check if a genre exist by it's name
+        /// Get all folder to sync
         /// </summary>
-        public static bool CheckIfGenreExist(string name)=> new Repository<Genre>().GetList().Any(a => a.Name.ToLower() == name.ToLower());
+        public static List<IncludeFolder> GetIncludedFolder()=>new Repository<IncludeFolder>().GetList();
 
         /// <summary>
-        /// Add one time to the listen times in genre table
+        /// remove a folder from the sync list
         /// </summary>
-        public static void AddListen()
+        public static void RemoveIncludeFolder(this IncludeFolder folder)
         {
-            throw new NotImplementedException();
-        }
-        public static void AddExludeFolder()
-        {
-            throw new NotImplementedException();
-        }
+            new Repository<IncludeFolder>().Delete(folder);
+        } 
 
-        public static void RemoveExludeFolder()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void IsFolderExclude()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void GetConfig()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void SetConfig()
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
-        /// Add or update an audio element
+        /// add a folder from the sync list
         /// </summary>
-        /// <param name="audio"></param>
-        public static void AddOrUpdateAudio(this Audio audio)
+        public static void AddIncludeFolder(this IncludeFolder folder)
         {
-            if(audio is Track)
-                new Repository<Track>().AddOrUpdate((Track) audio);
-            else if (audio is Radio)
-                new Repository<Radio>().AddOrUpdate((Radio) audio);
-        }
+            if(new Repository<IncludeFolder>().GetList().All(a => a.Path != folder.Path))
+                new Repository<IncludeFolder>().AddOrUpdate(folder);
+        } 
 
         /// <summary>
-        /// Get or create a application context
+        /// Save the context
         /// </summary>
-        /// <returns></returns>
-        public static Context GetContext()
-        {
-            Context context = null;
-            //if context does exist, else, create it
-            context = new Repository<Context>().GetList().Any() ? new Repository<Context>().GetList().FirstOrDefault() : new Context();
+        /// <param name="context"></param>
+        public static void SetContext(this Context context)=>new Repository<Context>().AddOrUpdate(context);
 
-            return context;
-        }
-
-
-        public static void SetContext()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion Public Methods
     }
 }

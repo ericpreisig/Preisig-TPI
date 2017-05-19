@@ -1,5 +1,5 @@
 using BLL;
-using DTO.Entity;
+using DTO;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using NAudio.Wave;
@@ -9,8 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DTO;
-using Presentation.View;
+using DTO.Entity;
 
 namespace Presentation.ViewModel
 {
@@ -19,12 +18,12 @@ namespace Presentation.ViewModel
         #region Private Fields
 
         private TimeSpan _actualTime;
+        private Audio _audio;
         private int _isLooping;
         private bool _isMouseHolded = false;
         private double _oldValue;
         private bool _playlerStatus;
-        private double _sliderValuerack;
-        private Audio _audio;
+        private double _sliderValue;
 
         #endregion Private Fields
 
@@ -46,12 +45,36 @@ namespace Presentation.ViewModel
 
         #region Public Properties
 
+        private bool _isRandom;
+
         public TimeSpan ActualTime
         {
             get { return _actualTime; }
             set
             {
                 _actualTime = value;
+                RaisePropertyChanged();
+            }
+        }
+        private Visibility _isRadio= Visibility.Visible;
+        public Visibility IsRadio
+        {
+            get { return _isRadio; }
+            set
+            {
+                _isRadio = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+
+        public Audio Audio
+        {
+            get { return _audio; }
+            set
+            {
+                _audio = value;
                 RaisePropertyChanged();
             }
         }
@@ -66,14 +89,24 @@ namespace Presentation.ViewModel
             }
         }
 
+        public bool IsRandom
+        {
+            get { return _isRandom; }
+            set
+            {
+                _isRandom = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public RelayCommand OnClickFavorite { get; set; }
         public RelayCommand OnClickLoopReadingList { get; set; }
         public RelayCommand OnClickPicture { get; set; }
         public RelayCommand OnClickPlay { get; set; }
-        public RelayCommand OnMousedownForward { get; set; }
-        public RelayCommand OnMousedownRewind { get; set; }
         public RelayCommand OnClickRandom { get; set; }
         public RelayCommand OnClickReadingList { get; set; }
+        public RelayCommand OnMousedownForward { get; set; }
+        public RelayCommand OnMousedownRewind { get; set; }
 
         public bool PlaylerStatus
         {
@@ -85,39 +118,18 @@ namespace Presentation.ViewModel
             }
         }
 
-        private bool _isRandom;
-        public bool IsRandom
-        {
-            get { return _isRandom; }
-            set
-            {
-                _isRandom = value;
-                RaisePropertyChanged();
-            }
-        }
-
         public double SliderValue
         {
-            get { return _sliderValuerack; }
+            get { return _sliderValue; }
             set
             {
-                _sliderValuerack = value;
+                _sliderValue = value;
                 //it means the user chnage the time
-                if (Math.Abs(_sliderValuerack - _oldValue) > 1)
+                if (Math.Abs(_sliderValue - _oldValue) > 1)
                 {
-                    MusicPlayer.ChangeTime((int)Math.Round(_sliderValuerack));
+                    MusicPlayer.ChangeTime((int)Math.Round(_sliderValue));
                 }
 
-                RaisePropertyChanged();
-            }
-        }
-
-        public Audio Audio
-        {
-            get { return _audio; }
-            set
-            {
-                _audio = value;
                 RaisePropertyChanged();
             }
         }
@@ -136,6 +148,8 @@ namespace Presentation.ViewModel
             ActualTime = TimeSpan.FromMilliseconds(milisecond);
             SliderValue = _oldValue = 1.0 * milisecond / total * 100;
         }
+    
+     
 
         /// <summary>
         /// When the user click on the favorite/unfavorite logo
@@ -150,7 +164,7 @@ namespace Presentation.ViewModel
 
             //Uppdate Favorite list
             if (MainWindowViewModel.Main.ActualView.DataContext is MusicViewModel)
-                ((MusicViewModel) MainWindowViewModel.Main.ActualView.DataContext).SetFavorite();
+                ((MusicViewModel)MainWindowViewModel.Main.ActualView.DataContext).SetFavorite();
 
             if (MainWindowViewModel.Main.ActualView.DataContext is RadioViewModel)
                 ((RadioViewModel)MainWindowViewModel.Main.ActualView.DataContext).SetFavorite();
@@ -197,9 +211,8 @@ namespace Presentation.ViewModel
         /// </summary>
         public void ClickRandom()
         {
-           Helper.Context.ActualContext.IsRandom= IsRandom = !IsRandom;
+            Helper.Context.ActualContext.IsRandom = IsRandom = !IsRandom;
         }
-
 
         /// <summary>
         /// Show the reading list
@@ -223,6 +236,7 @@ namespace Presentation.ViewModel
         /// <param name="audio"></param>
         public void InitPlayer(Audio audio)
         {
+            IsRadio = audio is Track ? Visibility.Visible : Visibility.Collapsed;          
             Audio = audio;
         }
 
@@ -257,7 +271,6 @@ namespace Presentation.ViewModel
                 newLoopingAction = 0;
             return newLoopingAction;
         }
-
 
         /// <summary>
         /// Move the position of the cursor on the slide bar

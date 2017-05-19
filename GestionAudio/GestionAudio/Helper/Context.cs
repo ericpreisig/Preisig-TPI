@@ -1,18 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BLL;
-using DTO;
+﻿using BLL;
 using DTO.Entity;
 using Presentation.ViewModel;
+using System;
+using System.Linq;
 
 namespace Presentation.Helper
 {
     public static class Context
     {
+        #region Public Fields
+
         public static DTO.Entity.Context ActualContext = GeneralData.GetContext();
+
+        #endregion Public Fields
+
+        #region Public Methods
+
+        public static void AddToReadingList(Track track)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Clear the reading list and play a new song
+        /// </summary>
+        /// <param name="radio"></param>
+        public static void PlayNewRadio(Radio radio)
+        {
+            if (radio.File == null)
+            {
+                MusicPlayer.Player.Stop();
+                return;
+            }
+            ActualContext.Radio = radio;
+            ActualContext.Track = null;
+
+            MusicPlayer.NewPlay();
+            MainWindowViewModel.Main.RaisePropertyChanged("ReadingList");
+        }
 
         /// <summary>
         /// Clear the reading list and play a new song
@@ -28,29 +53,6 @@ namespace Presentation.Helper
         }
 
         /// <summary>
-        /// Clear the reading list and play a new song
-        /// </summary>
-        /// <param name="radio"></param>
-        public static void PlayNewRadio(Radio radio)
-        {         
-            if (radio.File == null)
-            {
-                MusicPlayer.Player.Stop();
-                return;
-            }
-            ActualContext.Radio = radio;
-            ActualContext.Track = null;
-
-            MusicPlayer.NewPlay();
-            MainWindowViewModel.Main.RaisePropertyChanged("ReadingList");
-        }
-
-        public static void AddToReadingList(Track track)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Removes a track from the reaing list if it's on there
         /// </summary>
         /// <param name="track"></param>
@@ -62,14 +64,16 @@ namespace Presentation.Helper
             }
         }
 
+        public static void SaveConext()
+        {
+            throw new NotImplementedException();
+        }
+
         public static void SetConext()
         {
             throw new NotImplementedException();
         }
 
-        public static void SaveConext()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion Public Methods
     }
 }

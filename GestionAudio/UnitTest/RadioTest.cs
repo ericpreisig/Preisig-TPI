@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using DAL.API;
+﻿using DAL.API;
 using DTO.Entity;
 using NUnit.Framework;
+using System.Collections.Generic;
+using BLL;
 
 namespace UnitTest
 {
@@ -12,7 +12,13 @@ namespace UnitTest
     [TestFixture]
     public class RadioTest
     {
+        #region Private Fields
+
         private List<Radio> _radios;
+
+        #endregion Private Fields
+
+        #region Public Methods
 
         /// <summary>
         /// Try to initialize an API connection
@@ -29,7 +35,7 @@ namespace UnitTest
         [Test]
         public void CheckApiData()
         {
-            _radios = Shoutcast.GetRadioByKeyWord("acdc", "metal");
+            _radios =  RadioData.GetRadioByKeyWord("metal");
         }
 
         /// <summary>
@@ -41,5 +47,6 @@ namespace UnitTest
             Assert.IsTrue(_radios[0].Genre.Name.ToLower() == "metal");
         }
 
+        #endregion Public Methods
     }
 }

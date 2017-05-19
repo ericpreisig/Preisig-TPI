@@ -7,9 +7,13 @@ namespace Presentation.View.List
     /// </summary>
     public partial class GenreListView : UserControl
     {
+        #region Public Constructors
+
         public GenreListView()
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
     }
 }

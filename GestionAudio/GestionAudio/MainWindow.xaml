@@ -8,9 +8,14 @@
         xmlns:viewModel="clr-namespace:Presentation.ViewModel"
         xmlns:view="clr-namespace:Presentation.View"
         xmlns:flyout="clr-namespace:Presentation.View.Flyout"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="Gestion Audio" Height="720" Width="1080"  Loaded="MainWindow_OnLoaded">
-
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding OnClose}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout
@@ -20,7 +25,7 @@
                 Theme="Adapt"
                 IsModal="True"
                 IsOpen="{Binding IsFlyoutMusicOpen, Mode=TwoWay}">
-                <flyout:MusicFlyoutView DataContext="{Binding ActualView.DataContext}"/>
+                <flyout:MusicFlyoutView DataContext="{Binding MusicViewModel}" />
             </controls:Flyout>
             <controls:Flyout
                 Position="Right"
@@ -39,17 +44,24 @@
                 Theme="Adapt"
                 IsModal="True"
                 IsOpen="{Binding IsFlyoutRunningOpen, Mode=TwoWay}">
-                <flyout:RunningFlyoutView DataContext="{Binding PlayerViewModel}"/>
+                <flyout:RunningFlyoutView DataContext="{Binding PlayerViewModel}" />
+            </controls:Flyout>
+            <controls:Flyout
+                Position="Right"
+                IsPinned="False"
+                Width="300"
+                AreAnimationsEnabled="True"
+                Theme="Adapt"
+                IsModal="True"
+                IsOpen="{Binding IsFlyoutSettingOpen, Mode=TwoWay}">
+                <flyout:SettingFlyoutView DataContext="{Binding SettingFlyoutViewModel}" />
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
-
-
-
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button>
+            <Button Command="{Binding OnOpenSettingFlyout}">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20"
                                Height="20"
@@ -67,23 +79,23 @@
     </controls:MetroWindow.RightWindowCommands>
     <Grid Background="#f0f3f4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="15" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
 
-        <DockPanel  Grid.Column="1" Width="500"  >
+        <DockPanel  Grid.Column="1" Width="500">
 
-            <TextBox Height="30" controls:TextBoxHelper.Watermark="Recherche..." Width="500"  FontSize="15" HorizontalAlignment="Stretch">
+            <TextBox Height="30" controls:TextBoxHelper.Watermark="Recherche..." Width="500" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" FontSize="15" HorizontalAlignment="Stretch">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="11"/>
+                        <Setter Property="CornerRadius" Value="11" />
                     </Style>
                 </TextBox.Resources>
             </TextBox>
@@ -96,10 +108,9 @@
             </Button>
         </DockPanel>
 
-        <view:SmallPlayerView Grid.Column="2" Grid.Row="0" DataContext="{Binding PlayerViewModel}"/>
+        <view:SmallPlayerView Grid.Column="2" Grid.Row="0" DataContext="{Binding PlayerViewModel}" />
 
-
-        <StackPanel  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="#d3dcde" >
+        <StackPanel  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="#d3dcde">
             <Button Style="{StaticResource TransparentButtonStyle}" Height="100" Width="80" Command="{Binding OnClickMusic}">
                 <StackPanel  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Rectangle Width="50" Height="66" Fill="White">
@@ -132,15 +143,13 @@
             </Button>
         </StackPanel>
 
-
         <ContentControl Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Content="{Binding ActualView}"></ContentControl>
         <!--<view:MusicView Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"></view:MusicView>-->
-        
+
         <StatusBar Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2">
             <StatusBarItem>
-                <TextBlock Foreground="White" Text="{Binding AnalyseStatus}"/>
+                <TextBlock Foreground="White" Text="{Binding AnalyseStatus}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>
 </controls:MetroWindow>
-

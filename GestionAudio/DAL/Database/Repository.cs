@@ -4,29 +4,27 @@ Version : 1.0.0
 Date : 06.04.2017
 */
 
+using DTO.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Linq;
-using DTO;
-using DTO.Entity;
 
 namespace DAL.Database
 {
     public static class GetContext
     {
+        #region Public Fields
+
         public static DbApplicationContext Context;
+
+        #endregion Public Fields
     }
 
     public class Repository<T> where T : BaseEntity
     {
-        #region Public Fields
-
-
-        #endregion Public Fields
-
         #region Private Fields
 
         private readonly string _errorMessage = string.Empty;
@@ -65,6 +63,25 @@ namespace DAL.Database
         #region Public Methods
 
         /// <summary>
+        /// Update or insert an entity
+        /// </summary>
+        /// <param name="entity"></param>
+        public void AddOrUpdate(T entity)
+        {
+            try
+            {
+                if (entity == null)
+                    throw new ArgumentNullException(nameof(entity));
+                Entities.AddOrUpdate(entity);
+                GetContext.Context.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                throw new Exception(_errorMessage, dbEx);
+            }
+        }
+
+        /// <summary>
         /// Delete an entity
         /// </summary>
         /// <param name="entity"></param>
@@ -100,26 +117,6 @@ namespace DAL.Database
         public List<T> GetList()
         {
             return Entities.ToList();
-        }
-
-    
-        /// <summary>
-        /// Update or insert an entity
-        /// </summary>
-        /// <param name="entity"></param>
-        public void AddOrUpdate(T entity)
-        {
-            try
-            {
-                if (entity == null)
-                    throw new ArgumentNullException(nameof(entity));
-                Entities.AddOrUpdate(entity);
-                GetContext.Context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                throw new Exception(_errorMessage, dbEx);
-            }
         }
 
         #endregion Public Methods

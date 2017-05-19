@@ -1,19 +1,19 @@
 ﻿<UserControl x:Class="Presentation.View.Flyout.RunningFlyoutView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Presentation.View"
              xmlns:list="clr-namespace:Presentation.View.List"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="920" d:DesignWidth="1080">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="250"/>
-            <ColumnDefinition Width="500"/>
-            <ColumnDefinition Width="*" MinWidth="250"/>
+            <ColumnDefinition Width="*" MinWidth="250" />
+            <ColumnDefinition Width="500" />
+            <ColumnDefinition Width="*" MinWidth="250" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -25,48 +25,44 @@
         </Grid.RowDefinitions>
         <Border Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3">
             <Border.Effect>
-                <BlurEffect x:Name="BlurEffect" Radius="15" RenderingBias="Performance" KernelType="Gaussian"/>
+                <BlurEffect x:Name="BlurEffect" Radius="15" RenderingBias="Performance" KernelType="Gaussian" />
             </Border.Effect>
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Audio.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="LowQuality"/>
+                <ImageBrush ImageSource="{Binding Audio.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="LowQuality" />
             </Border.Background>
         </Border>
         <Border Grid.Column="1" Grid.Row="1">
             <Border.Background>
-                <ImageBrush ImageSource="{Binding Audio.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                <ImageBrush ImageSource="{Binding Audio.Picture}" Stretch="UniformToFill"  RenderOptions.BitmapScalingMode="NearestNeighbor" />
             </Border.Background>
         </Border>
         <StackPanel  Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Center">
             <TextBlock Margin="20,0,0,10" FontSize="25" Foreground="White" Text="{Binding Audio.Album.Name}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
-                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
+                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3" />
                 </TextBlock.Effect>
             </TextBlock>
             <TextBlock Margin="20,0,0,10" FontSize="25" Foreground="White" Text="{Binding  Audio.Album.Artist.Name}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
-                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
+                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3" />
                 </TextBlock.Effect>
             </TextBlock>
             <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding  Audio.Genre.Name}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
-                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
+                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3" />
                 </TextBlock.Effect>
             </TextBlock>
             <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding  Audio.Album.DateCreation, StringFormat=\{0:yyyy\}}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
-                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3"/>
+                    <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3" />
                 </TextBlock.Effect>
             </TextBlock>
         </StackPanel>
 
-        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"   Foreground="#3498db" TextTrimming="WordEllipsis">
-            <Run Text="{Binding Audio.Name}"/>
-            <Run Text=" - "/>
-            <Run Text="{Binding Audio.RadioPlayingTrack}"/>
-        </TextBlock>
+        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"   Foreground="#3498db" TextTrimming="WordEllipsis"  Text="{Binding Audio.Name}"/>
 
         <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal">
-            <Button  Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Left" Command="{Binding OnClickReadingList}">
+            <Button  Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Left" Command="{Binding OnClickReadingList}" Visibility="{Binding IsRadio}">
                 <Rectangle Width="30" Height="30" Fill="#d3dcde" Margin="10">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_lines_horizontal_4}" />
@@ -99,37 +95,30 @@
             </Button>
         </StackPanel>
 
-        <Button  Grid.Row="4" Grid.Column="2" Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Right">
-            <Rectangle Width="30" Height="30" Fill="#d3dcde" Margin="10">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_settings}" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-        </Button>
 
-        <Grid Grid.Row="5" Grid.Column="1" Margin="0,0,0,37" >
+        <Grid Grid.Row="5" Grid.Column="1" Margin="0,0,0,37">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="121"/>
-                <RowDefinition Height="28"/>
-                <RowDefinition Height="51"/>
+                <RowDefinition Height="121" />
+                <RowDefinition Height="28" />
+                <RowDefinition Height="51" />
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Top" Height="20" Command="{Binding OnClickRandom}">
+            <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Top" Height="20" Command="{Binding OnClickRandom}" Visibility="{Binding IsRadio}">
                 <Rectangle Width="25" Height="20">
                      <Rectangle.Style>
                         <Style TargetType="{x:Type Rectangle}">
                             <Style.Setters>
-                                <Setter Property="Fill" Value="#d3dcde"/>
+                                <Setter Property="Fill" Value="#d3dcde" />
                             </Style.Setters>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=IsRandom}" Value="True">
-                                    <Setter Property="Fill" Value="Black"/>
+                                    <Setter Property="Fill" Value="Black" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -139,7 +128,7 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <Button Grid.Row="0" Grid.Column="4" Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Top" Height="14" Command="{Binding OnClickLoopReadingList}">
+            <Button Grid.Row="0" Grid.Column="4" Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Top" Height="14" Command="{Binding OnClickLoopReadingList}" Visibility="{Binding IsRadio}">
                 <Rectangle Width="30" Height="14" Fill="#d3dcde">
                     <Rectangle.Style>
                         <Style TargetType="{x:Type Rectangle}">
@@ -170,10 +159,10 @@
                     </Rectangle.Style>
                 </Rectangle>
             </Button>
-            <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource TransparentButtonStyle}" Padding="0">
+            <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource TransparentButtonStyle}" Padding="0" Visibility="{Binding IsRadio}">
                 <Rectangle Width="80" Height="70" Fill="#d3dcde">
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDown" >
+                        <i:EventTrigger EventName="MouseDown">
                             <command:EventToCommand Command="{Binding OnMousedownRewind}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -206,10 +195,10 @@
                     </Rectangle.Style>
                 </Rectangle>
             </Button>
-            <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource TransparentButtonStyle}" Padding="0">
+            <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource TransparentButtonStyle}" Padding="0" Visibility="{Binding IsRadio}">
                 <Rectangle Width="80" Height="70" Fill="#d3dcde">
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDown" >
+                        <i:EventTrigger EventName="MouseDown">
                             <command:EventToCommand Command="{Binding OnMousedownForward}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -218,12 +207,12 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </Button>
-            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" FontSize="15" TextAlignment="Right" Foreground="#3498db">
-                <Run Text="{Binding ActualTime, StringFormat=\{0:mm\\:ss\}}"/>
-                <Run Text=" - "/>
-                <Run Text="{Binding Audio.DurationTime, StringFormat=\{0:mm\\:ss\}, Mode=OneWay}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" FontSize="15" TextAlignment="Right" Foreground="#3498db" Visibility="{Binding IsRadio}">
+                <Run Text="{Binding ActualTime, StringFormat=\{0:mm\\:ss\}}" />
+                <Run Text=" - " />
+                <Run Text="{Binding Audio.DurationTime, StringFormat=\{0:mm\\:ss\}, Mode=OneWay}" />
             </TextBlock>
-            <Slider IsSnapToTickEnabled="True" TickFrequency="0.01" IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="100" Value="{Binding SliderValue}" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="5" Margin="0,0,0,35"></Slider>
+            <Slider Visibility="{Binding IsRadio}" IsSnapToTickEnabled="True" TickFrequency="0.01" IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="100" Value="{Binding SliderValue}" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="5" Margin="0,0,0,35"></Slider>
         </Grid>
     </Grid>
 </UserControl>

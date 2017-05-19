@@ -1,7 +1,4 @@
-﻿using System;
-using DAL.Database;
-using DTO.Entity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DAL.Database;
 using NUnit.Framework;
 
 namespace UnitTest
@@ -12,15 +9,18 @@ namespace UnitTest
     [TestFixture]
     public class DatabaseTest
     {
+        #region Public Methods
+
         /// <summary>
-        /// Try to contect  on the database 
+        /// Try to contect  on the database
         /// </summary>
         [Test]
         public void CheckConnection()
         {
-            var database= new DbApplicationContext();
+            var database = new DbApplicationContext();
             database.SaveChanges();
         }
 
+        #endregion Public Methods
     }
 }

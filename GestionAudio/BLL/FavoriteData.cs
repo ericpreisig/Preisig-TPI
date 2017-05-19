@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DTO;
-using DTO.Entity;
+﻿using DTO;
 
 namespace BLL
 {
     public static class FavoriteData
     {
-       
+        #region Public Methods
+
         /// <summary>
         /// Add an audio to favorite
         /// </summary>
@@ -30,5 +25,7 @@ namespace BLL
             element.IsFavorite = false;
             element.AddOrUpdateAudio();
         }
+
+        #endregion Public Methods
     }
 }

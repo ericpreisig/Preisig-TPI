@@ -7,9 +7,13 @@ namespace Presentation.View.List
     /// </summary>
     public partial class RadioListView : UserControl
     {
+        #region Public Constructors
+
         public RadioListView()
         {
             InitializeComponent();
         }
+
+        #endregion Public Constructors
     }
 }

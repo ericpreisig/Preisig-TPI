@@ -1,31 +1,88 @@
-﻿using System;
+﻿using BLL;
+using DTO.Entity;
+using NAudio.Wave;
+using Presentation.View;
+using Presentation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Imaging;
-using BLL;
-using DTO.Entity;
 using MahApps.Metro.Controls.Dialogs;
-using NAudio.Wave;
-using Presentation.View;
-using Presentation.ViewModel;
 
 namespace Presentation.Helper
 {
     public static class MusicSync
     {
-        static readonly string[] AllowedFormat =  {".wma",".mp3",".wav"};
+        #region Private Fields
 
-        public static void SyncDrives()
+        private static readonly string[] AllowedFormat = { ".wma", ".mp3", ".wav" };
+        private static List<string> _analysedFolder= new List<string>();
+
+        #endregion Private Fields
+
+        #region Public Methods
+
+        /// <summary>
+        /// Check if the format is on the format allowed list
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool CheckFileFormat(string path) => AllowedFormat.Any(a => a == Path.GetExtension(path));
+
+        /// <summary>
+        /// If the local library is empty
+        /// </summary>
+        public static async void NoMusic()
         {
-            foreach (var drives in DriveInfo.GetDrives())
+#if DEBUG
+            await Task.Run(() =>
             {
-                SyncFolder(drives.Name);
-            }
+                SyncFolder(@"C:\WORKSPACE\TPI\GestionAudio\DocumentTest");
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MainWindowViewModel.Main.AnalyseStatus = "";
+                    if (MainWindowViewModel.Main.ActualView is MusicView)
+                        MainWindowViewModel.Main.ActualView.DataContext = Activator.CreateInstance(MainWindowViewModel.Main.ActualView.DataContext.GetType());
+                });
+            });
+#else
+                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Erreur", "Nous n'avons détecter aucune chanson. Voulez-vous procéder à une syncronisation de votre bibliothèque ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                {
+                    DefaultButtonFocus = MessageDialogResult.Affirmative,
+                    NegativeButtonText = "Fermer"
+                });
+            if (wrong == MessageDialogResult.Negative) return;
+            new IncludeFolder { Path=Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)}.AddIncludeFolder();   
+            SyncAllFolders();
+#endif
+        }
+
+        /// <summary>
+        /// Sync all folder from the database folder include
+        /// </summary>
+        public static async void SyncAllFolders()
+        {
+            var syncMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Syncronisation", "Syncronisation en cours, veuillez patienter");
+            await Task.Run(() =>
+            {
+                    
+               _analysedFolder = new List<string>();
+                foreach (var folders in GeneralData.GetIncludedFolder())
+                {
+                    SyncFolder(folders.Path);
+                }
+                syncMessage.CloseAsync();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MainWindowViewModel.Main.AnalyseStatus = "";
+                    if (MainWindowViewModel.Main.ActualView is MusicView)
+                        MainWindowViewModel.Main.ActualView.DataContext = Activator.CreateInstance(MainWindowViewModel.Main.ActualView.DataContext.GetType());
+                });
+            });
+
         }
 
         /// <summary>
@@ -35,31 +92,46 @@ namespace Presentation.Helper
         public static void SyncFolder(string path)
         {
 
-            //it^terate through all file with an authaurized format
-            foreach (var filePath in Directory.EnumerateFiles(path).Where(x => AllowedFormat.Any(a => x.EndsWith(a))))
+            //if already analysed folder, pass through 
+            if (_analysedFolder.All(a => a != path))
             {
-                Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.AnalyseStatus = filePath);
+                _analysedFolder.Add(path);
 
-                if (!CheckFileFormat(filePath)) continue;
-
-                // already in database
-                if (TrackData.CheckIfAlreadyInDatabase(filePath))
+                //Remove file if not exist anymore
+                foreach (var track in TrackData.GetTracks())
                 {
-                    TrackData.GetTrackByPath(filePath).UpdateTrackInfo(TransformToTrack(filePath)).AddOrUpdateAudio();
+                    if(!File.Exists(track.Path))
+                        track.RemoveTrack();
                 }
-                else
+
+
+                //it terate through all file with an authaurized format
+                foreach (var filePath in Directory.EnumerateFiles(path).Where(x => AllowedFormat.Any(a => x.EndsWith(a))))
                 {
-                    //Ignore mp3 that have a smaple rate change                  
-                    try
+                    Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.AnalyseStatus = filePath);
+
+                    if (!CheckFileFormat(filePath)) continue;
+
+                    // already in database
+                    if (TrackData.CheckIfAlreadyInDatabase(filePath))
                     {
-                        TransformToTrack(filePath).AddOrUpdateAudio();
+                        TrackData.GetTrackByPath(filePath).UpdateTrackInfo(TransformToTrack(filePath)).AddOrUpdateAudio();
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Console.WriteLine(e);
+                        //Ignore mp3 that have a smaple rate change
+                        try
+                        {
+                            TransformToTrack(filePath).AddOrUpdateAudio();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
                     }
                 }
             }
+            
             foreach (var folderPath in Directory.GetDirectories(path))
             {
                 try
@@ -72,19 +144,9 @@ namespace Presentation.Helper
                     //Unotorized folder
                 }
             }
-            
 
             //Update list after sync
-           
         }
-
-        /// <summary>
-        /// Check if the format is on the format allowed list
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static bool CheckFileFormat(string path) => AllowedFormat.Any(a => a == Path.GetExtension(path));
-
 
         /// <summary>
         /// Transform a file to a track
@@ -107,12 +169,12 @@ namespace Presentation.Helper
             var artistName = fileInfo.Tag.FirstComposer ?? "Inconnu";
             var artist = ArtistData.CheckIfArtistExist(artistName)
                 ? ArtistData.GetArtists().FirstOrDefault(a => a.Name.ToLower() == artistName.ToLower())
-                : new Artist {Name = artistName };
+                : new Artist { Name = artistName };
 
             var albumName = fileInfo.Tag.Album ?? "Inconnu";
             DateTime? dateCreation = null;
 
-            if (fileInfo.Tag.Year != 0) dateCreation = new DateTime((int) fileInfo.Tag.Year,1,1);
+            if (fileInfo.Tag.Year != 0) dateCreation = new DateTime((int)fileInfo.Tag.Year, 1, 1);
 
             var album = AlbumData.CheckIfAlbumExist(albumName, artistName)
                 ? AlbumData.GetAlbums().FirstOrDefault(a => a.Name.ToLower() == albumName.ToLower())
@@ -124,26 +186,26 @@ namespace Presentation.Helper
                     Name = albumName,
                 };
 
+            var genreName = fileInfo.Tag.FirstGenre ?? "Inconnu";
 
-            Genre genre = null;
-            if (fileInfo.Tag.FirstGenre!=null)
-            {
-                genre = GeneralData.CheckIfGenreExist(fileInfo.Tag.FirstGenre)
-                    ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == fileInfo.Tag.FirstGenre.ToLower())
-                    : new Genre { Name = fileInfo.Tag.FirstGenre };
-            }
+            Genre genre = GeneralData.CheckIfGenreExist(genreName)
+                ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == genreName.ToLower())
+                : new Genre { Name = genreName };
 
-            var track= new Track
+            var track = new Track
             {
                 Duration = (int)fileValues.TotalTime.TotalMilliseconds,
-                Album=album,
+                Album = album,
                 Name = fileInfo.Tag.Title ?? Path.GetFileNameWithoutExtension(path),
                 Genre = genre,
                 Path = path
             };
             return track;
-
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         /// <summary>
         /// Look for an image in the folder of the track
@@ -169,44 +231,6 @@ namespace Presentation.Helper
             return null;
         }
 
-        /// <summary>
-        /// If the local library is empty
-        /// </summary>
-        public static async void NoMusic()
-        {
-
-#if DEBUG
-            await Task.Run(() =>
-            {
-                SyncFolder(@"C:\WORKSPACE\TPI\GestionAudio\DocumentTest");
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    MainWindowViewModel.Main.AnalyseStatus = "";
-                    if(MainWindowViewModel.Main.ActualView is MusicView)
-                        MainWindowViewModel.Main.ActualView.DataContext = Activator.CreateInstance(MainWindowViewModel.Main.ActualView.DataContext.GetType());
-                });
-            });
-#else
-                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Erreur", "Nous n'avons détecter aucune chanson. Voulez-vous procéder à une syncronisation ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
-                {
-                    DefaultButtonFocus = MessageDialogResult.Affirmative,
-                    NegativeButtonText = "Fermer"
-                });
-                if (wrong != MessageDialogResult.Negative)
-                {
-                      await Task.Run(() =>
-                     {
-                         SyncFolder(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-                         Application.Current.Dispatcher.Invoke(() =>
-                         {
-                             MainWindowViewModel.Main.AnalyseStatus = "";
-                             MainWindowViewModel.Main.ActualView.DataContext =  Activator.CreateInstance(MainWindowViewModel.Main.ActualView.DataContext.GetType());
-                         });
-                     });
-                }
-#endif
-
-        }
-
+        #endregion Private Methods
     }
 }

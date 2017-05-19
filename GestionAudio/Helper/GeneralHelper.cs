@@ -1,24 +1,16 @@
-﻿using System;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Dynamic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Imaging;
-using System.Xml.Linq;
 
 namespace Shared
 {
     public static class GeneralHelper
     {
+        #region Public Methods
 
         /// <summary>
         /// Allow to add rang in a observablecollection #not thread safe
@@ -73,7 +65,6 @@ namespace Shared
              });
         }
 
+        #endregion Public Methods
     }
-
-   
 }

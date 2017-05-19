@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using Presentation.ViewModel;
+﻿using Presentation.ViewModel;
+using System.Windows;
 
 namespace Presentation
 {
@@ -8,14 +8,22 @@ namespace Presentation
     /// </summary>
     public partial class MainWindow
     {
+        #region Public Constructors
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        #endregion Public Constructors
+
+        #region Private Methods
+
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             DataContext = new MainWindowViewModel();
         }
+
+        #endregion Private Methods
     }
 }

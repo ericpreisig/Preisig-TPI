@@ -1,10 +1,8 @@
-﻿using System;
+﻿using NUnit.Framework;
+using Presentation.Helper;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DTO.Entity;
-using NUnit.Framework;
-using Presentation.Helper;
 
 namespace UnitTest
 {
@@ -14,7 +12,13 @@ namespace UnitTest
     [TestFixture]
     public class SyncTest
     {
-        readonly List<string> _directories= new List<string>();
+        #region Private Fields
+
+        private readonly List<string> _directories = new List<string>();
+
+        #endregion Private Fields
+
+        #region Public Methods
 
         /// <summary>
         /// check that folder are the folders I was looking for
@@ -23,9 +27,22 @@ namespace UnitTest
         public void AnalyseFolderTree()
         {
             RecursiveFolderSearch("../../DocumentTest");
-            Assert.IsTrue(_directories.Any(a=>a=="Chopin"));
-            Assert.IsTrue(_directories.Any(a=>a=="Mozart"));
+            Assert.IsTrue(_directories.Any(a => a == "Chopin"));
+            Assert.IsTrue(_directories.Any(a => a == "Mozart"));
         }
+
+        /// <summary>
+        /// Try to sync a folder with the database
+        /// </summary>
+        [Test]
+        public void SyncFolder()
+        {
+            MusicSync.SyncFolder("../../DocumentTest");
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         /// <summary>
         /// Recusivly search child folder in a folder
@@ -40,14 +57,6 @@ namespace UnitTest
             }
         }
 
-        /// <summary>
-        /// Try to sync a folder with the database
-        /// </summary>
-        [Test]
-        public void SyncFolder()
-        {
-            MusicSync.SyncFolder("../../DocumentTest");
-        }
-
+        #endregion Private Methods
     }
 }
