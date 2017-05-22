@@ -213,7 +213,7 @@ namespace Presentation.ViewModel
         /// </summary>
         public void SaveContext()
         {
-            Helper.Context.ActualContext.SetContext();
+            Helper.Context.ActualContext.SaveContext();
         }
 
         /// <summary>
@@ -221,9 +221,10 @@ namespace Presentation.ViewModel
         /// </summary>
         private void RestoreContext()
         {
+            var context = GeneralData.LoadContext();
+
             try
             {
-                var context = GeneralData.GetContext();
                 if (context.Track != null)
                 {
                     var actualTime = (int)Math.Round(1.0 * context.ActualTime / context.Track.Duration * 100);
@@ -232,15 +233,23 @@ namespace Presentation.ViewModel
                 }
                 if (context.Radio != null)
                 {
-                    var radio = new RadioViewModel();
-                    radio.SelectedItem=context.Radio;
-                    radio.ClickRadio();
+                    //Launch a radio 
+                    new RadioViewModel(true) {SelectedItem = context.Radio};
                 }
-                if(!context.IsMusicPlayingOnStart || !context.IsMusicPlaying)
-                    MusicPlayer.Pause();
+                if (!context.IsMusicPlayingOnStart || !context.IsMusicPlaying)
+                {
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(10);
+                        MusicPlayer.Pause();
+                    });
+                }                           
             }
             catch (Exception e)
             {
+                context.Track = null;
+                context.Radio = null;
+                context.SaveContext();
                 Shared.GeneralHelper.ShowMessage("Erreur", "Impossible de récupérer le contexte",MessageDialogStyle.Affirmative);
             }
         }

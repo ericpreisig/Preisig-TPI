@@ -85,7 +85,7 @@ namespace Presentation.ViewModel
             {
                 _launchMusicOnStart = value;
                 Helper.Context.ActualContext.IsMusicPlayingOnStart = _launchMusicOnStart;
-                Helper.Context.ActualContext.SetContext();
+                Helper.Context.ActualContext.SaveContext();
                 RaisePropertyChanged();
             }
         }

@@ -4,6 +4,7 @@ using DTO.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Xml.Linq;
 
 namespace BLL
@@ -27,9 +28,8 @@ namespace BLL
         public static void AddRadioToRecent(this Radio radio)
         {
             var repo= new Repository<Radio>();
-            var newRadio = repo.GetList().Any(a => a.ShoutCastId == radio.ShoutCastId)
-                ? repo.GetList().FirstOrDefault(a => a.ShoutCastId == radio.ShoutCastId)
-                : radio;
+            var newRadio = repo.GetList().FirstOrDefault(a => a.ShoutCastId == radio.ShoutCastId) ?? radio;
+          
             newRadio.LastListen= DateTime.Now;
             repo.AddOrUpdate(newRadio);
             DeleteOldRadio();
@@ -66,7 +66,7 @@ namespace BLL
         /// </summary>
         /// <param name="keyWord"></param>
         /// <returns></returns>
-        public static List<Radio> GetRadioByKeyWord(string keyWord) => GetRadiosFromXml(Shoutcast.GetRadioByKeyWord(keyWord)).Where(a=>a.Name.ToLower().Contains(keyWord) || a.Genre.Name.ToLower().Contains(keyWord)).ToList();
+        public static List<Radio> GetRadioByKeyWord(string keyWord) => GetRadiosFromXml(Shoutcast.GetRadioByKeyWord(keyWord)).Where(a=>a.Name.ToLower().Contains(keyWord) || a.Genres.Any(b=>b.Name.ToLower().Contains(keyWord))).ToList();
 
         /// <summary>
         /// Get top 500 radios
@@ -110,8 +110,8 @@ namespace BLL
                             LogoUrl = (string)i.Attribute("logo"),
                             Format = (string)i.Attribute("mt"),
                             Desrciption = (string)i.Attribute("ct"),
-                            Genre = GeneralData.CheckIfGenreExist((string)i.Attribute("genre")) ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == ((string)i.Attribute("genre")).ToLower())
-                                : new Genre { Name = (string)i.Attribute("genre") }
+                            Genres = new List<Genre> {  GeneralData.CheckIfGenreExist((string)i.Attribute("genre")) ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == ((string)i.Attribute("genre")).ToLower())
+                                : new Genre { Name = (string)i.Attribute("genre") }}                          
                         };
 
             return items.ToList();

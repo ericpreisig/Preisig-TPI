@@ -2,7 +2,9 @@
 using NAudio.Wave;
 using Shared;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Windows.Media.Imaging;
 
 namespace DTO
@@ -31,10 +33,7 @@ namespace DTO
             }
         }
 
-        public long? fkGenre { get; set; }
-
-        [ForeignKey("fkGenre")]
-        public Genre Genre { get; set; }
+        public virtual List<Genre> Genres { get; set; }
 
         public bool IsFavorite { get; set; }
         public string Name { get; set; }
@@ -42,6 +41,9 @@ namespace DTO
 
         [NotMapped]
         public BitmapImage Picture => this is Radio ? new BitmapImage(new Uri((this as Radio).LogoUrl)) : (this as Track).Album.Picture;
+
+        [NotMapped]
+        public string GenresString => string.Join(", ", Genres.Select(a=>a.Name));
 
         #endregion Public Properties
     }

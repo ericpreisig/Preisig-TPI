@@ -57,6 +57,8 @@ namespace Presentation.ViewModel
             }
         }
         private Visibility _isRadio= Visibility.Visible;
+        private float _volumeValue;
+
         public Visibility IsRadio
         {
             get { return _isRadio; }
@@ -114,6 +116,17 @@ namespace Presentation.ViewModel
             set
             {
                 _playlerStatus = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public float VolumeValue
+        {
+            get { return _volumeValue; }
+            set
+            {
+                _volumeValue = value;
+                MusicPlayer.Player.Volume = _volumeValue;
                 RaisePropertyChanged();
             }
         }

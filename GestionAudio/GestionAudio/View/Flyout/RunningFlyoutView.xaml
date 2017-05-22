@@ -214,5 +214,13 @@
             </TextBlock>
             <Slider Visibility="{Binding IsRadio}" IsSnapToTickEnabled="True" TickFrequency="0.01" IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="100" Value="{Binding SliderValue}" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="5" Margin="0,0,0,35"></Slider>
         </Grid>
+        <StackPanel Orientation="Vertical" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="15,0,0,0">
+            <Rectangle Width="30" Height="30" Fill="#d3dcde">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_sound_3}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            <Slider Orientation="Vertical" Height="125" IsSnapToTickEnabled="True" TickFrequency="0.01" IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="1" Value="{Binding VolumeValue}"  Margin="0,8,0,0"></Slider>
+        </StackPanel>
     </Grid>
 </UserControl>

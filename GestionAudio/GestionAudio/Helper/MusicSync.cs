@@ -140,8 +140,8 @@ namespace Presentation.Helper
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
                     //Unotorized folder
+                    Console.WriteLine(e);
                 }
             }
 
@@ -186,18 +186,25 @@ namespace Presentation.Helper
                     Name = albumName,
                 };
 
-            var genreName = fileInfo.Tag.FirstGenre ?? "Inconnu";
 
-            Genre genre = GeneralData.CheckIfGenreExist(genreName)
-                ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == genreName.ToLower())
-                : new Genre { Name = genreName };
+            List<Genre> genres = new List<Genre>();
+            List<string> genreTag= new List<string>(fileInfo.Tag.Genres);
+            if(genreTag.Count==0)
+                genreTag.Add("Inconnu");
+             
+            foreach (var tagGenre in genreTag)
+            {
+                genres.Add(GeneralData.CheckIfGenreExist(tagGenre)
+                    ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == tagGenre.ToLower())
+                    : new Genre { Name = tagGenre });
+            }
 
             var track = new Track
             {
                 Duration = (int)fileValues.TotalTime.TotalMilliseconds,
                 Album = album,
                 Name = fileInfo.Tag.Title ?? Path.GetFileNameWithoutExtension(path),
-                Genre = genre,
+                Genres = genres,
                 Path = path
             };
             return track;

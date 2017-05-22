@@ -8,8 +8,10 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using MahApps.Metro.Controls.Dialogs;
 using NAudio.Wave;
 using Presentation.Helper;
+using Presentation.View;
 
 namespace Presentation.ViewModel
 {
@@ -25,21 +27,32 @@ namespace Presentation.ViewModel
 
         #region Public Constructors
 
-        public RadioViewModel()
+        public RadioViewModel(bool instantLoadRadio=false)
         {
             OnClickElement = new RelayCommand(ClickRadio);
             OnRightClickRadio = new RelayCommand(RightClickRadio);
-            Task.Run(() =>
-            {
-                //Get top 500 radios
-                var radios = RadioData.GetRadioTop500Radios();
-                Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
-            });
+            LoadRadio();
             SetFavorite();
             SetLastRadios();
+            if(instantLoadRadio)
+                ClickRadio();
         }
 
+        /// <summary>
+        /// Get and populate the top 500 radios
+        /// </summary>
+        private async void LoadRadio()
+        {
+            //Get top 500 radios         
+            var radioMessage =await MainWindowViewModel.MetroWindow.ShowProgressAsync("Radio", "Accès à Shoutcast en cours... Veuillez patienter");
+            await Task.Run(() =>
+            {
 
+                var radios = RadioData.GetRadioTop500Radios();
+                radioMessage.CloseAsync();
+                Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
+            });
+        }
 
         public RadioViewModel(List<Radio> radios)
         {
@@ -81,20 +94,29 @@ namespace Presentation.ViewModel
         /// <summary>
         /// When the user click on a radio
         /// </summary>
-        public void ClickRadio()
+        public async void ClickRadio()
         {
+            if(SelectedItem==null) return;
             SelectedItem.File = null;
-            var radioWithPath = RadioData.SetRadioPath(SelectedItem);
-            Helper.Context.PlayNewRadio(radioWithPath);
-            MainWindowViewModel.Main.ReadingList.Clear();
-            MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
-
-            //if the radio worked
-            if (MusicPlayer.Player.PlaybackState == PlaybackState.Playing)
+            var accessRadioMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Radio", "Accès à la radio en cours... Veuillez patienter");
+            await Task.Run(() =>
             {
-                radioWithPath.AddRadioToRecent();
-                SetLastRadios();
-            }
+                var radioWithPath = RadioData.SetRadioPath(SelectedItem);
+                Helper.Context.PlayNewRadio(radioWithPath);
+                Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.ReadingList.Clear());
+           
+                MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
+
+                //if the radio worked
+                if (MusicPlayer.Player.PlaybackState == PlaybackState.Playing)
+                {
+                    radioWithPath.AddRadioToRecent();
+                    Application.Current.Dispatcher.Invoke(SetLastRadios);
+                }
+                accessRadioMessage.CloseAsync();
+            });
+            await Task.Run(() => { Thread.Sleep(10); SelectedItem = null; });
+
         }
 
         public void DblClickRadio()

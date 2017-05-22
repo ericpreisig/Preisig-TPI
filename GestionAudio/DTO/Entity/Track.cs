@@ -14,6 +14,8 @@ namespace DTO.Entity
         //in ms
         public int Duration { get; set; }
 
+        public int ListenedTimes { get; set; }
+
         [NotMapped]
         public TimeSpan DurationTime => TimeSpan.FromMilliseconds(Duration);
 

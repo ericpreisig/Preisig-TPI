@@ -20,14 +20,14 @@
             </i:Interaction.Triggers>
 
             <DataGrid.ContextMenu>
-                <ContextMenu ItemsSource="{Binding ContextMenu}">
+                <ContextMenu ItemsSource="{Binding ContextMenu, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <Setter Property="ItemsSource" Value="{Binding SubItems}"></Setter>
                             <Setter Property="Header" Value="{Binding Header}"></Setter>
                             <Setter Property="Command" Value="{Binding Command}"></Setter>
                             <Setter Property="CommandParameter" Value="{Binding CommandParameter}"></Setter>
-                            <Setter Property="IsEnabled" Value="{Binding IsEnable}"></Setter>
+                            <Setter Property="IsEnabled" Value="{Binding IsEnable, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></Setter>
                             <Setter Property="Height" Value="25"></Setter>
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <Setter Property="FontSize" Value="14"></Setter>
@@ -40,7 +40,7 @@
                 <DataGridTextColumn Header="Durée" Binding="{Binding DurationTime, StringFormat=\{0:mm\\:ss\}}" Width="*" />
                 <DataGridTextColumn Header="Album" Binding="{Binding Album.Name}" Width="*" />
                 <DataGridTextColumn Header="Artiste" Binding="{Binding Album.Artist.Name}" Width="*" />
-                <DataGridTextColumn Header="Genre" Binding="{Binding Genre.Name}" Width="*" />
+                <DataGridTextColumn Header="Genre" Binding="{Binding GenresString}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

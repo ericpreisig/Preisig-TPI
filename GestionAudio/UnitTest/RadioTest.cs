@@ -2,6 +2,7 @@
 using DTO.Entity;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using BLL;
 
 namespace UnitTest
@@ -44,7 +45,7 @@ namespace UnitTest
         [Test]
         public void CheckRadioInfo()
         {
-            Assert.IsTrue(_radios[0].Genre.Name.ToLower() == "metal");
+            Assert.IsTrue(_radios[0].Genres.FirstOrDefault().Name.ToLower() == "metal");
         }
 
         #endregion Public Methods

@@ -75,6 +75,7 @@ namespace Presentation.Helper
             _playerStream.Position = 0;
             WaveChannel32 volumeStream = new WaveChannel32(_playerStream);
             Player.Init(volumeStream);
+            MainWindowViewModel.PlayerViewModel.VolumeValue = Player.Volume;
             Play();
             MainWindowViewModel.PlayerViewModel.InitPlayer(Context.ActualContext.ActualAudio);
         }

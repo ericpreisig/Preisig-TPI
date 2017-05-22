@@ -118,7 +118,6 @@ namespace Shared
                         using (var stream = response.GetResponseStream())
                         {
                             byte[] buffer = new byte[65536]; // 64KB chunks
-                            byte[] buffer2 = new byte[65536]; // 64KB chunks
                             int read;
 
                             //Read all bytes from the reponse the radio gave
@@ -147,11 +146,11 @@ namespace Shared
                                     mp3Stream.Position = Mp3ms.Length;
 
                                     //Read the stream and put every thing back in a stream
-                                    while ((read = mp3Stream.Read(buffer2, 0, buffer2.Length)) > 0)
+                                    while ((read = mp3Stream.Read(buffer, 0, buffer.Length)) > 0)
                                     {
                                         var pos2 = Mp3ms.Position;
                                         Mp3ms.Position = Mp3ms.Length;
-                                        Mp3ms.Write(buffer2, 0, read);
+                                        Mp3ms.Write(buffer, 0, read);
                                         Mp3ms.Position = pos2;
                                     }
                                 }

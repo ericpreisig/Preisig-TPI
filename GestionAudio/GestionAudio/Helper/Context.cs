@@ -2,7 +2,10 @@
 using DTO.Entity;
 using Presentation.ViewModel;
 using System;
+using System.IO;
 using System.Linq;
+using MahApps.Metro.Controls.Dialogs;
+using Shared;
 
 namespace Presentation.Helper
 {
@@ -10,7 +13,7 @@ namespace Presentation.Helper
     {
         #region Public Fields
 
-        public static DTO.Entity.Context ActualContext = GeneralData.GetContext();
+        public static DTO.Entity.Context ActualContext = GeneralData.LoadContext();
 
         #endregion Public Fields
 
@@ -45,6 +48,15 @@ namespace Presentation.Helper
         /// <param name="track"></param>
         public static void PlayNewSong(Track track)
         {
+            //check that the file exist
+            if (!File.Exists(track.Path))
+            {
+                GeneralHelper.ShowMessage("Erreur", "Le fichier est introuvable, il va donc être supprimer de la liste",
+                    MessageDialogStyle.Affirmative);
+                track.RemoveTrack();
+                return;
+            }
+
             Shared.MusicFile.StopRadio();
             ActualContext.Track = track;
             ActualContext.Radio = null;

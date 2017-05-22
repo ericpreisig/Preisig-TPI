@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace DAL.API
 {
@@ -20,7 +21,7 @@ namespace DAL.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string DownloadFile(string id) => ApiExecute("http://yp.shoutcast.com/sbin/tunein-station.m3u?id=" + id);
+        public static string DownloadFile(string id) => ApiExecute("http://yp.shoutcast.com/sbin/tunein-station.m3u?id=" + id).Result;
 
         /// <summary>
         /// Return all radio that match the result in xml
@@ -29,14 +30,14 @@ namespace DAL.API
         /// <returns></returns>
         public static string GetRadioByKeyWord(string keyWord)
         {
-            return ApiExecute(ApiStringPrepare("stationsearch") + "&search=" + keyWord.Replace(" ", "+")+ "&limit=100");
+            return ApiExecute(ApiStringPrepare("stationsearch") + "&search=" + keyWord.Replace(" ", "+")+ "&limit=100").Result;
         }
 
         /// <summary>
         /// Get the top 500 radios
         /// </summary>
         /// <returns></returns>
-        public static string GetTop500Radios() => ApiExecute(ApiStringPrepare("Top500"));
+        public static string GetTop500Radios() => ApiExecute(ApiStringPrepare("Top500")).Result;
 
         #endregion Public Methods
 
@@ -47,12 +48,16 @@ namespace DAL.API
         /// </summary>
         /// <param name="executionString"></param>
         /// <returns></returns>
-        private static string ApiExecute(string executionString)
+        private static async Task<string> ApiExecute(string executionString)
         {
-            using (var client = new WebClient())
+            return await Task.Run(() =>
             {
-                return client.DownloadString(executionString);
-            }
+                using (var client = new WebClient())
+                {
+                    return client.DownloadString(executionString);
+                }
+            });
+         
         }
 
         /// <summary>

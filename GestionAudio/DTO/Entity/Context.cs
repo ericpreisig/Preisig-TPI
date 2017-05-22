@@ -26,10 +26,10 @@ namespace DTO.Entity
         public bool IsRandom { get; set; }
 
         [ForeignKey("fkRadio")]
-        public Radio Radio { get; set; }
+        public virtual Radio Radio { get; set; }
 
         [ForeignKey("fkTrack")]
-        public Track Track { get; set; }
+        public virtual Track Track { get; set; }
 
         #endregion Public Properties
     }

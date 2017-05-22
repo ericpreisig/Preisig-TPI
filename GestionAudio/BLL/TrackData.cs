@@ -75,9 +75,15 @@ namespace BLL
         public static Track UpdateTrackInfo(this Track oldTrack, Track newTrack)
         {
             oldTrack.Duration = newTrack.Duration;
-            oldTrack.Genre = newTrack.Genre;
+            oldTrack.Genres = newTrack.Genres;
             return oldTrack;
         }
+
+        //TODO
+        //volume, suppression, genres
+
+
+
 
         #endregion Public Methods
     }

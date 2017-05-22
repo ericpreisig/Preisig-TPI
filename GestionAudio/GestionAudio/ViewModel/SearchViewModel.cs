@@ -61,7 +61,7 @@ namespace Presentation.ViewModel
                 _allTracks = _allTracks ?? TrackData.GetTracks();
                 _allAlbums = _allAlbums ?? _allTracks.Select(a => a.Album).Distinct().ToList();
                 _allArtists = _allArtists ?? _allAlbums.Select(a => a.Artist).Distinct().ToList();
-                MusicViewModel.Tracks = new ObservableCollection<Track>(_allTracks.Where(a => Look(a.Name) || Look(a.Genre.Name)).ToList());
+                MusicViewModel.Tracks = new ObservableCollection<Track>(_allTracks.Where(a => Look(a.Name) || a.Genres.Any(b=>Look(b.Name))).ToList());
                 MusicViewModel.Albums = new ObservableCollection<Album>(_allAlbums.Where(a => Look(a.Name)).ToList());
                 MusicViewModel.Artists = new ObservableCollection<Artist>(_allArtists.Where(a => Look(a.Name)).ToList());
             });

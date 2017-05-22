@@ -33,7 +33,7 @@ namespace BLL
         /// if context does exist, else, create it
         /// </summary>
         /// <returns></returns>
-        public static Context GetContext()=> new Repository<Context>().GetList().Any() ? new Repository<Context>().GetList().FirstOrDefault() : new Context();
+        public static Context LoadContext()=> new Repository<Context>().GetList().Any() ? new Repository<Context>().GetList().FirstOrDefault() : new Context();
         
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace BLL
         /// Save the context
         /// </summary>
         /// <param name="context"></param>
-        public static void SetContext(this Context context)=>new Repository<Context>().AddOrUpdate(context);
+        public static void SaveContext(this Context context)=>new Repository<Context>().AddOrUpdate(context);
 
         #endregion Public Methods
     }
