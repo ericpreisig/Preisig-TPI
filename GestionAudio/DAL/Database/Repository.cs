@@ -33,7 +33,6 @@ namespace DAL.Database
         #endregion Private Fields
 
         #region Public Constructors
-
         /// <summary>
         /// On the first time, create a context
         /// </summary>
@@ -72,6 +71,7 @@ namespace DAL.Database
             {
                 if (entity == null)
                     throw new ArgumentNullException(nameof(entity));
+
                 Entities.AddOrUpdate(entity);
                 GetContext.Context.SaveChanges();
             }

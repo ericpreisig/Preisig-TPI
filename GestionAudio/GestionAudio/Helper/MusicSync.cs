@@ -80,6 +80,7 @@ namespace Presentation.Helper
                     MainWindowViewModel.Main.AnalyseStatus = "";
                     if (MainWindowViewModel.Main.ActualView is MusicView)
                         MainWindowViewModel.Main.ActualView.DataContext = Activator.CreateInstance(MainWindowViewModel.Main.ActualView.DataContext.GetType());
+                    SearchViewModel.EmptyBuffer();
                 });
             });
 
@@ -119,7 +120,7 @@ namespace Presentation.Helper
                     }
                     else
                     {
-                        //Ignore mp3 that have a smaple rate change
+                        //Ignore mp3 that have a sample rate change
                         try
                         {
                             TransformToTrack(filePath).AddOrUpdateAudio();
@@ -166,7 +167,9 @@ namespace Presentation.Helper
             }
 
             var fileInfo = TagLib.File.Create(path);
-            var artistName = fileInfo.Tag.FirstComposer ?? "Inconnu";
+            var artistName = fileInfo.Tag.FirstAlbumArtist ?? fileInfo.Tag.FirstComposer ?? fileInfo.Tag.FirstPerformer ?? "Inconnu";
+
+
             var artist = ArtistData.CheckIfArtistExist(artistName)
                 ? ArtistData.GetArtists().FirstOrDefault(a => a.Name.ToLower() == artistName.ToLower())
                 : new Artist { Name = artistName };

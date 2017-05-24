@@ -31,11 +31,12 @@ namespace Presentation.ViewModel
         {
             OnClickElement = new RelayCommand(ClickRadio);
             OnRightClickRadio = new RelayCommand(RightClickRadio);
-            LoadRadio();
+
+            //if I only want to play a radio, return
+            if (instantLoadRadio) return;
             SetFavorite();
             SetLastRadios();
-            if(instantLoadRadio)
-                ClickRadio();
+            LoadRadio();
         }
 
         /// <summary>
@@ -47,10 +48,18 @@ namespace Presentation.ViewModel
             var radioMessage =await MainWindowViewModel.MetroWindow.ShowProgressAsync("Radio", "Accès à Shoutcast en cours... Veuillez patienter");
             await Task.Run(() =>
             {
-
-                var radios = RadioData.GetRadioTop500Radios();
+                try
+                {
+                    var radios = RadioData.GetRadioTop500Radios();
+                    Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
+                }
+                catch (Exception e)
+                {
+                    GeneralHelper.ShowMessage("Erreur", "Accès à Shoutcast impossible", MessageDialogStyle.Affirmative);
+                }
                 radioMessage.CloseAsync();
-                Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
+
+
             });
         }
 
@@ -101,27 +110,24 @@ namespace Presentation.ViewModel
             var accessRadioMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Radio", "Accès à la radio en cours... Veuillez patienter");
             await Task.Run(() =>
             {
-                var radioWithPath = RadioData.SetRadioPath(SelectedItem);
-                Helper.Context.PlayNewRadio(radioWithPath);
-                Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.ReadingList.Clear());
-           
-                MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
-
-                //if the radio worked
-                if (MusicPlayer.Player.PlaybackState == PlaybackState.Playing)
+                try
                 {
-                    radioWithPath.AddRadioToRecent();
-                    Application.Current.Dispatcher.Invoke(SetLastRadios);
+                    var radioWithPath = RadioData.SetRadioPath(SelectedItem);
+                    Helper.Context.PlayNewRadio(radioWithPath.AddRadioToRecent());
+                    Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.ReadingList.Clear());
+
+                    MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
+                    Application.Current.Dispatcher.Invoke(SetLastRadios);                   
+                }
+                catch (Exception e)
+                {
+                    GeneralHelper.ShowMessage("Erreur", "Accès à Shoutcast impossible", MessageDialogStyle.Affirmative);
                 }
                 accessRadioMessage.CloseAsync();
+
             });
-            await Task.Run(() => { Thread.Sleep(10); SelectedItem = null; });
+            await Task.Run(() => { Thread.Sleep(30); SelectedItem = null; });
 
-        }
-
-        public void DblClickRadio()
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

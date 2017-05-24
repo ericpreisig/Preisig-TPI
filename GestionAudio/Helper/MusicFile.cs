@@ -51,7 +51,6 @@ namespace Shared
         {
             if (string.IsNullOrWhiteSpace(pictureLink))
                 return GetBitmapFromFile(path);
-
             try
             {
                 return GetBitmapFromLink(pictureLink);
@@ -103,13 +102,6 @@ namespace Shared
             //make sure that radios are stopped
             _radioThread = new Thread(delegate (object o)
                 {
-                    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                    SettingsSection section = (SettingsSection)config.GetSection("system.net/settings");
-                    section.HttpWebRequest.UseUnsafeHeaderParsing = true;
-                    ServicePointManager.Expect100Continue = false;
-                    ServicePointManager.MaxServicePointIdleTime = 2000;
-                    config.Save();
-
                     try
                     {
                         var response = WebRequest.Create(path).GetResponse();
@@ -154,6 +146,10 @@ namespace Shared
                                         Mp3ms.Position = pos2;
                                     }
                                 }
+                                catch (ThreadAbortException e)
+                                {
+                                    cancelStream = true;
+                                }
                                 catch (Exception e)
                                 {
                                     cancelStream = true;
@@ -177,36 +173,43 @@ namespace Shared
             )
             { IsBackground = true };
             _radioThread.Start();
-
-            try
+            var numberTry = 0;
+            while (numberTry<3)
             {
-                // Pre-buffering some data to allow NAudio to start playing
-                while (ms.Length < 16000)
+                try
                 {
-                    if (cancelStream)
-                        return null;
-                    Thread.Sleep(200);
-                }
+                    // Pre-buffering some data to allow NAudio to start playing
+                    while (ms.Length < 16000)
+                    {
+                        if (cancelStream)
+                            return null;
+                        Thread.Sleep(200);
+                    }
 
-                //If the steram is an mpeg, take directly the stream
-                if (mt == "audio/mpeg")
-                {
-                    Mp3ms.Position = 0;
-                    return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(ms)));
-                }
-                else
-                {
+                    //If the steram is an mpeg, take directly the stream
+                    if (mt == "audio/mpeg")
+                    {
+                        Mp3ms.Position = 0;
+                        return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(ms)));
+                    }
+
                     //else, take the converted stream
                     ms.Position = 0;
                     return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(Mp3ms)));
                 }
+                catch (Exception e)
+                {
+                    numberTry++;
+                    Thread.Sleep(100 * numberTry);
+                    if (numberTry<3) continue;
+                    GeneralHelper.ShowMessage("Erreur", "Impossible de convertire le stream en mp3",
+                        MessageDialogStyle.Affirmative);
+                    throw new ArgumentException("Impossible de convertire le stream en mp3");
+                }
             }
-            catch (Exception e)
-            {
-                GeneralHelper.ShowMessage("Erreur", "Impossible de convertire le stream en mp3",
-                    MessageDialogStyle.Affirmative);
-                return null;
-            }
+            return null;
+
+
         }
 
         /// <summary>

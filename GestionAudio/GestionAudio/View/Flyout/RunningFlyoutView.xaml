@@ -21,8 +21,16 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
             <RowDefinition Height="50" />
-            <RowDefinition Height="200" />
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
+        <StackPanel Grid.RowSpan="3" Grid.ColumnSpan="3">
+            <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                        <GradientStop Color="#2c3e50" Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="0.8"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>              
+        </StackPanel>
         <Border Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3">
             <Border.Effect>
                 <BlurEffect x:Name="BlurEffect" Radius="15" RenderingBias="Performance" KernelType="Gaussian" />
@@ -214,8 +222,8 @@
             </TextBlock>
             <Slider Visibility="{Binding IsRadio}" IsSnapToTickEnabled="True" TickFrequency="0.01" IsMoveToPointEnabled="True" Style="{DynamicResource FlatSlider}" Minimum="0" Maximum="100" Value="{Binding SliderValue}" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="5" Margin="0,0,0,35"></Slider>
         </Grid>
-        <StackPanel Orientation="Vertical" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="15,0,0,0">
-            <Rectangle Width="30" Height="30" Fill="#d3dcde">
+        <StackPanel Orientation="Vertical" Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="20,0,0,0">
+            <Rectangle Width="25" Height="25" Fill="#d3dcde">
                 <Rectangle.OpacityMask>
                     <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_sound_3}" />
                 </Rectangle.OpacityMask>

@@ -37,6 +37,8 @@ namespace DTO
 
         public bool IsFavorite { get; set; }
         public string Name { get; set; }
+
+        [Index(IsUnique = true)]
         public string Path { get; set; }
 
         [NotMapped]

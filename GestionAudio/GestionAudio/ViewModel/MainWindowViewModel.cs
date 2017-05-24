@@ -9,8 +9,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Shared;
 
 namespace Presentation.ViewModel
 {
@@ -97,7 +99,8 @@ namespace Presentation.ViewModel
                 RaisePropertyChanged();
             }
         }
-        
+
+        private Thread _searchThread;
 
         private string _search;
         public string Search
@@ -106,10 +109,16 @@ namespace Presentation.ViewModel
             set
             {
                 _search = value;
-
+                if(_searchThread!=null && _searchThread.IsAlive)
+                    _searchThread.Abort();
                 //Trigger the search
-                ActualView= new SearchView { DataContext = new SearchViewModel(_search) };
-
+                _searchThread = new Thread(()=>
+                {
+                    Thread.Sleep(500);
+                    //wait that the user finish tapping
+                    Application.Current.Dispatcher.Invoke(() => ActualView = new SearchView {DataContext = new SearchViewModel(_search)});
+                });
+                _searchThread.Start();
                 RaisePropertyChanged();
             }
         }
@@ -219,38 +228,39 @@ namespace Presentation.ViewModel
         /// <summary>
         /// Set back the context
         /// </summary>
-        private void RestoreContext()
+        private static void RestoreContext()
         {
             var context = GeneralData.LoadContext();
-
+            var isMusicPlaying = context.IsMusicPlaying;
             try
             {
                 if (context.Track != null)
                 {
+                    //launch track
                     var actualTime = (int)Math.Round(1.0 * context.ActualTime / context.Track.Duration * 100);
-                    new MusicViewModel().ClickElement(context.Track);
+                    Helper.Context.PlayNewSong(context.Track);
                     MusicPlayer.ChangeTime(actualTime);
                 }
                 if (context.Radio != null)
                 {
                     //Launch a radio 
-                    new RadioViewModel(true) {SelectedItem = context.Radio};
+                    Helper.Context.PlayNewRadio(context.Radio);
                 }
-                if (!context.IsMusicPlayingOnStart || !context.IsMusicPlaying)
+                if (!context.IsMusicPlayingOnStart || !isMusicPlaying)
                 {
                     Task.Run(() =>
                     {
                         Thread.Sleep(10);
                         MusicPlayer.Pause();
-                    });
-                }                           
+                    } );
+                }
             }
             catch (Exception e)
             {
                 context.Track = null;
                 context.Radio = null;
                 context.SaveContext();
-                Shared.GeneralHelper.ShowMessage("Erreur", "Impossible de récupérer le contexte",MessageDialogStyle.Affirmative);
+                Shared.GeneralHelper.ShowMessage("Erreur", "Impossible de récupérer le contexte", MessageDialogStyle.Affirmative);
             }
         }
 

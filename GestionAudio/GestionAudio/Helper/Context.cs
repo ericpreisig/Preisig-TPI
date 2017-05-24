@@ -30,6 +30,7 @@ namespace Presentation.Helper
         /// <param name="radio"></param>
         public static void PlayNewRadio(Radio radio)
         {
+            radio.File = null;
             if (radio.File == null)
             {
                 MusicPlayer.Player.Stop();
@@ -37,7 +38,6 @@ namespace Presentation.Helper
             }
             ActualContext.Radio = radio;
             ActualContext.Track = null;
-
             MusicPlayer.NewPlay();
             MainWindowViewModel.Main.RaisePropertyChanged("ReadingList");
         }

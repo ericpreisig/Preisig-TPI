@@ -10,7 +10,12 @@
         xmlns:flyout="clr-namespace:Presentation.View.Flyout"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Gestion Audio" Height="720" Width="1080"  Loaded="MainWindow_OnLoaded">
+        BorderThickness="0" 
+        GlowBrush="Black"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen"
+        Icon="./Resources/Images/logoApp.ico"                      
+        Title="Gestion Audio" MinHeight="720" MinWidth="1080"  Loaded="MainWindow_OnLoaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding OnClose}"/>

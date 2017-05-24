@@ -21,7 +21,7 @@
             </i:Interaction.Triggers>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Radio" Binding="{Binding Name}" Width="*" />
-                <DataGridTextColumn Header="Genre" Binding="{Binding Genre.Name}"  Width="*" />
+                <DataGridTextColumn Header="Genre" Binding="{Binding GenresString}"  Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

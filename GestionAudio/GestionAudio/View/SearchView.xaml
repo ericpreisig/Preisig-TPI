@@ -7,72 +7,82 @@
              xmlns:list="clr-namespace:Presentation.View.List"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1080">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="*" MinHeight="100" />
-            <RowDefinition Height="Auto" MinHeight="230" />
-            <RowDefinition Height="*" MinHeight="100" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="1" FontSize="22" Foreground="#3498db" Grid.ColumnSpan="3">
-            <Run Text="Recherche : " />
-            <Run Text="{Binding KeyWord}" />
-        </TextBlock>
-        <GroupBox Grid.Column="2" Grid.Row="1" Background="Transparent" BorderThickness="0">
-            <GroupBox.Header>
-                <Label Foreground="#3498db"  FontSize="19">Morceaux</Label>
-            </GroupBox.Header>
-            <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5" />
-        </GroupBox>
+   <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="10" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" MinHeight="300" />
+                <RowDefinition Height="Auto" MinHeight="230"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="1" FontSize="22" Foreground="#3498db" Grid.ColumnSpan="3">
+               <Run Text="Recherche : " />
+               <Run Text="{Binding KeyWord}" />
+            </TextBlock>
+            <GroupBox Grid.Column="2" Grid.Row="1" Background="Transparent" BorderThickness="0">
+                <GroupBox.Header>
+                    <Label Foreground="#3498db"  FontSize="19">Morceaux</Label>
+                </GroupBox.Header>
+                <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5" />
+            </GroupBox>
 
-        <GroupBox Grid.Column="4" Grid.Row="1" Background="Transparent"  BorderThickness="0">
-            <GroupBox.Header>
-                <Label  FontSize="19" Foreground="#3498db">Artistes</Label>
-            </GroupBox.Header>
-            <list:ArtistListView DataContext="{Binding MusicViewModel}" Margin="-5" />
-        </GroupBox>
+            <GroupBox Grid.Column="4" Grid.Row="1" Background="Transparent"  BorderThickness="0">
+                <GroupBox.Header>
+                    <Label  FontSize="19" Foreground="#3498db">Artistes</Label>
+                </GroupBox.Header>
+                <list:ArtistListView DataContext="{Binding MusicViewModel}" Margin="-5" />
+            </GroupBox>
 
-        <GroupBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" DataContext="{Binding MusicViewModel}" Background="Transparent" BorderThickness="0">
-            <GroupBox.Header>
-                <Label  FontSize="19" Foreground="#3498db">Albums</Label>
-            </GroupBox.Header>
-            <ItemsControl ItemsSource="{Binding Albums}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Style="{StaticResource TransparentButtonStyle}" Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+            <GroupBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" DataContext="{Binding MusicViewModel}" Background="Transparent" BorderThickness="0">
+                <GroupBox.Header>
+                    <Label  FontSize="19" Foreground="#3498db">Albums</Label>
+                </GroupBox.Header>
+                <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Albums, IsAsync=True}">
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource TransparentButtonStyle}" Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
                              Path=DataContext.OnClickAlbumCover}" CommandParameter="{Binding}" Margin="0,0,10,10"  Width="150" Height="150" Padding="0">
-                            <StackPanel>
-                                <Border Width="130" Height="130" BorderBrush="LightGray" BorderThickness="1">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="{Binding Picture}" Stretch="UniformToFill" />
-                                    </Border.Background>
-                                </Border>
-                                <TextBlock Foreground="#3498db" TextAlignment="Center" Text="{Binding Name}" FontSize="14" />
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </GroupBox>
+                                <StackPanel>
+                                    <Border Width="130" Height="130" BorderBrush="LightGray" BorderThickness="1">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding Picture, Mode=OneTime}" Stretch="UniformToFill" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock Foreground="#3498db" TextAlignment="Center" Text="{Binding Name}" FontSize="14" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </GroupBox>
 
-        <GroupBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="3" Background="Transparent" BorderThickness="0">
-            <GroupBox.Header>
-                <Label  FontSize="19" Foreground="#3498db">Radios</Label>
-            </GroupBox.Header>
-            <list:RadioListView DataContext="{Binding RadioViewModel}" Margin="-5" />
-        </GroupBox>
-    </Grid>
+            <GroupBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="3" Background="Transparent" BorderThickness="0" Height="300">
+                <GroupBox.Header>
+                    <Label  FontSize="19" Foreground="#3498db">Radios</Label>
+                </GroupBox.Header>
+                <list:RadioListView DataContext="{Binding RadioViewModel}" Margin="-5" />
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
+   
 </UserControl>

@@ -116,6 +116,9 @@ namespace Presentation.Helper
                     break;
             }
 
+            if(newTrackToPlay==null)
+                return;
+
             Context.ActualContext.Track = newTrackToPlay;
             NewPlay();
         }

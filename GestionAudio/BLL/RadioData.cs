@@ -25,14 +25,14 @@ namespace BLL
         /// Add a radio to recent radios, and remove when they is more than 10 radios 
         /// </summary>
         /// <returns></returns>
-        public static void AddRadioToRecent(this Radio radio)
+        public static Radio AddRadioToRecent(this Radio radio)
         {
             var repo= new Repository<Radio>();
-            var newRadio = repo.GetList().FirstOrDefault(a => a.ShoutCastId == radio.ShoutCastId) ?? radio;
-          
+            var newRadio = repo.GetList().FirstOrDefault(a => a.Path == radio.Path) ?? radio;
             newRadio.LastListen= DateTime.Now;
             repo.AddOrUpdate(newRadio);
             DeleteOldRadio();
+            return newRadio;
         }
 
         /// <summary>

@@ -19,8 +19,10 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
-            <DataGrid.ContextMenu>
-                <ContextMenu ItemsSource="{Binding ContextMenu, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+
+            <DataGrid.Resources>
+                <ContextMenu x:Key="ContextMenu" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                    AncestorType={x:Type DataGrid}}, Path=DataContext.ContextMenu}">
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <Setter Property="ItemsSource" Value="{Binding SubItems}"></Setter>
@@ -34,7 +36,20 @@
                         </Style>
                     </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
-            </DataGrid.ContextMenu>
+            </DataGrid.Resources>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                    <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#3498db" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#503498db" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="AUTO" />
                 <DataGridTextColumn Header="Durée" Binding="{Binding DurationTime, StringFormat=\{0:mm\\:ss\}}" Width="*" />

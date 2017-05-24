@@ -327,6 +327,7 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Images\logoApp.ico" />
     <Content Include="Resources\Images\pause.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

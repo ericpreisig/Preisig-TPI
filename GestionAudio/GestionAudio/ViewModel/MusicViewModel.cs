@@ -48,7 +48,7 @@ namespace Presentation.ViewModel
             Albums.Clear();
             Genres.Clear();
 
-            Tracks.AddRang(TrackData.GetTracks());
+            Tracks.AddRang(TrackData.GetTracks().OrderBy(a=>a.Name).ToList());
             Artists.AddRang(ArtistData.GetArtists());
             Albums.AddRang(AlbumData.GetAlbums());
             Genres.AddRang(GeneralData.GetGenres().Where(a => a.Tracks.Count > 0).ToList());
@@ -229,7 +229,7 @@ namespace Presentation.ViewModel
             }
 
             //remove the selection of the item selected
-            Task.Run(() => { Thread.Sleep(10); SelectedItem = null; });
+            Task.Run(() => { Thread.Sleep(30); SelectedItem = null; });
         }
 
         /// <summary>
@@ -410,10 +410,7 @@ namespace Presentation.ViewModel
         private void RightClick(object track)
         {
             if (SelectedItem is Track)
-            {
                 _rightClickedItem = track as Track;
-                ContextMenu.ElementAt(0).IsEnable = true;
-            }
 
             _isRightClick = false;
 
@@ -427,7 +424,6 @@ namespace Presentation.ViewModel
         private void RightClickTrack()
         {
             _isRightClick = true;
-            ContextMenu.ElementAt(0).IsEnable = false;
 
         }
 

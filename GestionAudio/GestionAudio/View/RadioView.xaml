@@ -22,7 +22,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <GroupBox Header="Radios"  Grid.Row="0" Grid.Column="1"  Grid.RowSpan="3">
+        <GroupBox Header="Top 500 des radios Shoutcast"  Grid.Row="0" Grid.Column="1"  Grid.RowSpan="3" Margin="0,5,10,5">
             <list:RadioListView Margin="-5" />
         </GroupBox>
 

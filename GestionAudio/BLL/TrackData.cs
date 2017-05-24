@@ -74,8 +74,11 @@ namespace BLL
         /// </summary>
         public static Track UpdateTrackInfo(this Track oldTrack, Track newTrack)
         {
-            oldTrack.Duration = newTrack.Duration;
+            oldTrack.Album = newTrack.Album;
+            oldTrack.Album.Artist = newTrack.Album.Artist;
             oldTrack.Genres = newTrack.Genres;
+            oldTrack.Name = newTrack.Name;
+            oldTrack.Duration = newTrack.Duration;
             return oldTrack;
         }
 
