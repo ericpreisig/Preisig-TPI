@@ -105,6 +105,16 @@ namespace Shared
                     try
                     {
                         var response = WebRequest.Create(path).GetResponse();
+                        var errorResponse = response as HttpWebResponse;
+
+                        //Check that is not a 404 error
+                        if (errorResponse.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            cancelStream = true;
+                            GeneralHelper.ShowMessage("Erreur", "La radio n'est pas disponnible",
+                                MessageDialogStyle.Affirmative);
+                            return;
+                        }
 
                         //ask the radio for stream
                         using (var stream = response.GetResponseStream())

@@ -41,9 +41,9 @@ namespace Presentation.ViewModel
         public string KeyWord { get; set; }
 
 
-        private static List<Track> _allTracks= new List<Track>(); 
-        private static List<Album> _allAlbums = new List<Album>(); 
-        private static List<Artist> _allArtists = new List<Artist>(); 
+        private static List<Track> _allTracks; 
+        private static List<Album> _allAlbums; 
+        private static List<Artist> _allArtists; 
 
         public SearchViewModel(string text)
         {
@@ -57,31 +57,25 @@ namespace Presentation.ViewModel
         /// </summary>
         private void SearchInMusic()
         {
-            Task.Run(() =>
-            {
+          
                 MusicViewModel = new MusicViewModel(true);
                 _allTracks = _allTracks ?? TrackData.GetTracks();
                 _allAlbums = _allAlbums ?? _allTracks.Select(a => a.Album).Distinct().ToList();
                 _allArtists = _allArtists ?? _allAlbums.Select(a => a.Artist).Distinct().ToList();
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    MusicViewModel.Tracks.AddRang(_allTracks.Where(a => Look(a.Name) || a.Genres.Any(b => Look(b.Name))).ToList());
-                    MusicViewModel.Albums.AddRang(_allAlbums.Where(a => Look(a.Name)).ToList());
-                    MusicViewModel.Artists.AddRang(_allArtists.Where(a => Look(a.Name)).ToList());
-                });
+                MusicViewModel.Tracks.AddRang(_allTracks.Where(a => Look(a.Name) || a.Genres.Any(b => Look(b.Name))).ToList());
+                MusicViewModel.Albums.AddRang(_allAlbums.Where(a => Look(a.Name)).ToList());
+                MusicViewModel.Artists.AddRang(_allArtists.Where(a => Look(a.Name)).ToList());
               
-               
-            });         
-        }
+           }
 
         /// <summary>
         /// empty all buffer list (fired after the sync)
         /// </summary>
         public static void EmptyBuffer()
         {
-            _allTracks.Clear();
-            _allArtists.Clear();
-            _allAlbums.Clear();
+            _allTracks=null;
+            _allArtists = null;
+            _allAlbums = null;
         }
 
         /// <summary>

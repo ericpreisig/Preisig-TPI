@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading;
 using System.Xml.Linq;
+using static System.String;
 
 namespace BLL
 {
@@ -17,9 +19,7 @@ namespace BLL
         /// Get last ten listened radios
         /// </summary>
         /// <returns></returns>
-        public static List<Radio> Get10LastRadios()=> new Repository<Radio>().GetList().OrderByDescending(a => a.LastListen).Take(10).ToList();
-        
-
+        public static List<Radio> Get10LastRadios()=> new Repository<Radio>().GetList().OrderByDescending(a => a.LastListen).Take(10).ToList();      
 
         /// <summary>
         /// Add a radio to recent radios, and remove when they is more than 10 radios 
@@ -56,10 +56,7 @@ namespace BLL
         /// Get all radio the user put on favorite
         /// </summary>
         /// <returns></returns>
-        public static List<Radio> GetFavouriteRadios()
-        {
-            return new Repository<Radio>().GetList().Where(radio => radio.IsFavorite).ToList();
-        }
+        public static List<Radio> GetFavouriteRadios()=> new Repository<Radio>().GetList().Where(radio => radio.IsFavorite).ToList();
 
         /// <summary>
         /// Get all radio that match the keyword
@@ -79,12 +76,25 @@ namespace BLL
 
         public static Radio SetRadioPath(Radio radio)
         {
-            if (!string.IsNullOrWhiteSpace(radio.Path)) return radio;
+            if (!IsNullOrWhiteSpace(radio.Path)) return radio;
 
-            var downloadedFile = Shoutcast.DownloadFile(radio.ShoutCastId);
+            var counterTry = 0;
+            while (counterTry<3 && IsNullOrWhiteSpace(radio.Path))
+            {
+                Thread.Sleep(200*counterTry);
+                var downloadedFile = Shoutcast.DownloadFile(radio.ShoutCastId);
+                var doc = XDocument.Parse(downloadedFile).Root;
+                var path = "";
+                if (doc != null)
+                {
+                    path = (from d in doc.Descendants()
+                        where d.Name.LocalName == "location"
+                        select d.Value).FirstOrDefault();
+                }
 
-            var path = downloadedFile.Replace("\r", "").Split('\n');
-            radio.Path = path.Length >= 3 ? path[2] ?? "" : "";
+                radio.Path = path;
+                counterTry++;
+            }          
             return radio;
         }
 
@@ -99,7 +109,7 @@ namespace BLL
         /// <returns></returns>
         private static List<Radio> GetRadiosFromXml(string xml)
         {
-            if(string.IsNullOrWhiteSpace(xml)) return new List<Radio>();
+            if(IsNullOrWhiteSpace(xml)) return new List<Radio>();
 
             //parse the xml
             var items = from i in XDocument.Parse(xml).Descendants("station")

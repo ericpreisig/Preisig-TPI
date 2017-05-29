@@ -31,14 +31,14 @@
                 <GroupBox.Header>
                     <Label Foreground="#3498db"  FontSize="19">Morceaux</Label>
                 </GroupBox.Header>
-                <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5" />
+                <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5" Height="300"/>
             </GroupBox>
 
             <GroupBox Grid.Column="4" Grid.Row="1" Background="Transparent"  BorderThickness="0">
                 <GroupBox.Header>
                     <Label  FontSize="19" Foreground="#3498db">Artistes</Label>
                 </GroupBox.Header>
-                <list:ArtistListView DataContext="{Binding MusicViewModel}" Margin="-5" />
+                <list:ArtistListView DataContext="{Binding MusicViewModel}" Margin="-5" Height="300" />
             </GroupBox>
 
             <GroupBox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" DataContext="{Binding MusicViewModel}" Background="Transparent" BorderThickness="0">

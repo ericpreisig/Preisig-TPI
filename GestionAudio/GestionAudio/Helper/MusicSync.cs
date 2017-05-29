@@ -40,7 +40,7 @@ namespace Presentation.Helper
 #if DEBUG
             await Task.Run(() =>
             {
-                SyncFolder(@"C:\WORKSPACE\TPI\GestionAudio\DocumentTest");
+                LaunchSync(@"C:\WORKSPACE\TPI\GestionAudio\DocumentTest");
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MainWindowViewModel.Main.AnalyseStatus = "";
@@ -65,14 +65,15 @@ namespace Presentation.Helper
         /// </summary>
         public static async void SyncAllFolders()
         {
-            var syncMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Syncronisation", "Syncronisation en cours, veuillez patienter");
+            var syncMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Synchronisation", "Synchronisation en cours, veuillez patienter");
             await Task.Run(() =>
             {
                     
                _analysedFolder = new List<string>();
+
                 foreach (var folders in GeneralData.GetIncludedFolder())
                 {
-                    SyncFolder(folders.Path);
+                    LaunchSync(folders.Path);
                 }
                 syncMessage.CloseAsync();
                 Application.Current.Dispatcher.Invoke(() =>
@@ -87,10 +88,44 @@ namespace Presentation.Helper
         }
 
         /// <summary>
+        /// Remove all trash files
+        /// </summary>
+        private static void CleanDatabase()
+        {      
+            //Remove file if not exist anymore
+            foreach (var track in TrackData.GetTracks())
+            {
+                if (!File.Exists(track.Path))
+                    track.RemoveTrack();
+            }
+
+            var folderToAnalyse =GeneralData.GetIncludedFolder();
+
+
+            //Remove all music that are not in path anymore
+            foreach (var track in TrackData.GetTracks())
+            {
+                if (!folderToAnalyse.Any(a=>Path.GetFullPath(track.Path).StartsWith(Path.GetFullPath(a.Path))))
+                    track.RemoveTrack();
+            }
+        }
+
+        /// <summary>
         /// Loop recursively through a folder to add or update new tracks
         /// </summary>
         /// <param name="path"></param>
-        public static void SyncFolder(string path)
+        private static void LaunchSync(string path)
+        {
+            CleanDatabase();
+            SyncFolder(path);
+        }
+
+
+        /// <summary>
+        /// Loop recursively through a folder to add or update new tracks
+        /// </summary>
+        /// <param name="path"></param>
+        private static void SyncFolder(string path)
         {
 
             //if already analysed folder, pass through 
@@ -98,14 +133,7 @@ namespace Presentation.Helper
             {
                 _analysedFolder.Add(path);
 
-                //Remove file if not exist anymore
-                foreach (var track in TrackData.GetTracks())
-                {
-                    if(!File.Exists(track.Path))
-                        track.RemoveTrack();
-                }
-
-
+              
                 //it terate through all file with an authaurized format
                 foreach (var filePath in Directory.EnumerateFiles(path).Where(x => AllowedFormat.Any(a => x.EndsWith(a))))
                 {

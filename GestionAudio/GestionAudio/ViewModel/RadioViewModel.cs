@@ -75,7 +75,7 @@ namespace Presentation.ViewModel
 
         #endregion Public Constructors
 
-            #region Public Properties
+        #region Public Properties
 
         public ObservableCollection<Radio> Favorites { get; set; } = new ObservableCollection<Radio>();
         public ObservableCollection<Radio> LastRadios { get; set; } = new ObservableCollection<Radio>();

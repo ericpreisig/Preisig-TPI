@@ -21,7 +21,7 @@ namespace DAL.API
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string DownloadFile(string id) => ApiExecute("http://yp.shoutcast.com/sbin/tunein-station.m3u?id=" + id).Result;
+        public static string DownloadFile(string id) => ApiExecute("http://yp.shoutcast.com/sbin/tunein-station.xspf?id=" + id).Result;
 
         /// <summary>
         /// Return all radio that match the result in xml

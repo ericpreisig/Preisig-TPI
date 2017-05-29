@@ -43,15 +43,25 @@ namespace Presentation.ViewModel
         /// </summary>
         private void Update()
         {
-            Tracks.Clear();
-            Artists.Clear();
-            Albums.Clear();
-            Genres.Clear();
+            try
+            {
+                Tracks.Clear();
+                Artists.Clear();
+                Albums.Clear();
+                Genres.Clear();
 
-            Tracks.AddRang(TrackData.GetTracks().OrderBy(a=>a.Name).ToList());
-            Artists.AddRang(ArtistData.GetArtists());
-            Albums.AddRang(AlbumData.GetAlbums());
-            Genres.AddRang(GeneralData.GetGenres().Where(a => a.Tracks.Count > 0).ToList());
+                Tracks.AddRang(TrackData.GetTracks().OrderBy(a => a.Name).ToList());
+                Artists.AddRang(ArtistData.GetArtists());
+                Albums.AddRang(AlbumData.GetAlbums());
+                Genres.AddRang(GeneralData.GetGenres().Where(a => a.Tracks.Count > 0).ToList());
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+          
         }
 
         public MusicViewModel(bool fromSearch)
