@@ -19,7 +19,7 @@ namespace Presentation.Helper
         #region Private Fields
 
         private static readonly string[] AllowedFormat = { ".wma", ".mp3", ".wav" };
-        private static List<string> _analysedFolder= new List<string>();
+        private static List<string> _analysedFolder = new List<string>();
 
         #endregion Private Fields
 
@@ -49,7 +49,7 @@ namespace Presentation.Helper
                 });
             });
 #else
-                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Erreur", "Nous n'avons détecter aucune chanson. Voulez-vous procéder à une syncronisation de votre bibliothèque ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Erreur", "Nous n'avons détecter aucune chanson. Voulez-vous procéder à une Synchronisation de votre bibliothèque ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                 {
                     DefaultButtonFocus = MessageDialogResult.Affirmative,
                     NegativeButtonText = "Fermer"
@@ -173,8 +173,6 @@ namespace Presentation.Helper
                     Console.WriteLine(e);
                 }
             }
-
-            //Update list after sync
         }
 
         /// <summary>

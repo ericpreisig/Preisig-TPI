@@ -11,7 +11,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
+using NAudio.Wave;
 using Presentation.Helper;
 
 namespace Presentation.ViewModel
@@ -26,7 +28,7 @@ namespace Presentation.ViewModel
         private Track _rightClickedItem;
         private object _selectedItem;
         private string _type;
-
+        
         #endregion Private Fields
 
         #region Public Constructors
@@ -201,9 +203,14 @@ namespace Presentation.ViewModel
             if (element is Track)
             {
                 Helper.Context.PlayNewSong((Track)element);
+
+                //Ifit worked, Show the flyout
+                if (MusicPlayer.Player.PlaybackState == PlaybackState.Playing)
+                    MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
+
                 MainWindowViewModel.Main.ReadingList.Clear();
                 MainWindowViewModel.Main.ReadingList.AddRang(Tracks.ToList());
-                MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
+
             }
             else if (element is Album)
             {
@@ -303,7 +310,7 @@ namespace Presentation.ViewModel
         /// <param name="playlist"></param>
         public void RemovingFromPlaylist(Playlist playlist)
         {
-            playlist.Tracks.Remove(_rightClickedItem as Track);
+            playlist.Tracks.Remove(_rightClickedItem);
 
             //update playlist
             (MainWindowViewModel.Main.ActualView.DataContext as PlaylistViewModel).UpdatePlaylist();
@@ -411,6 +418,8 @@ namespace Presentation.ViewModel
             OnDeleteFromLibrary = new RelayCommand(()=>DeleteElement(false));
             OnDeleteFromDisk = new RelayCommand(()=> DeleteElement(true));
             CreateContextMenu();
+            Messenger.Default.Register<string>(this, (action) => Update());
+
         }
 
         /// <summary>

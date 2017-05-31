@@ -112,12 +112,22 @@ namespace Presentation.ViewModel
             {
                 try
                 {
+                    var lastRadio = Helper.Context.ActualContext.Radio;
+                    MusicPlayer.Player.Pause();
                     var radioWithPath = RadioData.SetRadioPath(SelectedItem);
                     Helper.Context.PlayNewRadio(radioWithPath.AddRadioToRecent());
-                    Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.ReadingList.Clear());
 
-                    MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
-                    Application.Current.Dispatcher.Invoke(SetLastRadios);                   
+                    //If the music is not started, launch the previous radio
+                    if (MusicPlayer.Player.PlaybackState != PlaybackState.Playing && lastRadio != null)
+                    {
+                        Helper.Context.PlayNewRadio(lastRadio);
+                    }
+                    else
+                    {
+                        Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.ReadingList.Clear());
+                        MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
+                        Application.Current.Dispatcher.Invoke(SetLastRadios);
+                    }                            
                 }
                 catch (Exception e)
                 {

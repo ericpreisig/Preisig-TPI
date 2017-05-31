@@ -4,6 +4,7 @@ using Presentation.ViewModel;
 using System;
 using System.IO;
 using System.Linq;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using Shared;
 
@@ -18,11 +19,6 @@ namespace Presentation.Helper
         #endregion Public Fields
 
         #region Public Methods
-
-        public static void AddToReadingList(Track track)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Clear the reading list and play a new song
@@ -51,13 +47,19 @@ namespace Presentation.Helper
             //check that the file exist
             if (!File.Exists(track.Path))
             {
-                GeneralHelper.ShowMessage("Erreur", "Le fichier est introuvable, il va donc être supprimer de la liste",
+                GeneralHelper.ShowMessage("Erreur", "Le fichier est introuvable, il va donc être supprimé de la base de données",
                     MessageDialogStyle.Affirmative);
+                
                 track.RemoveTrack();
+                MainWindowViewModel.Main.ReadingList.Remove(track);
+
+                //Send a message to update lists from all MusicViewModels and ReadingList
+                Messenger.Default.Send("UpdateList");
+
                 return;
             }
 
-            Shared.MusicFile.StopRadio();
+            MusicFile.StopRadio();
             ActualContext.Track = track;
             ActualContext.Radio = null;
             MusicPlayer.NewPlay();

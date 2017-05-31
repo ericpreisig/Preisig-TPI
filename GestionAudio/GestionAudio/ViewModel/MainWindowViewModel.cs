@@ -56,6 +56,7 @@ namespace Presentation.ViewModel
             OnClickPlaylist = new RelayCommand(ClickPlaylist);
             OnClickRadio = new RelayCommand(ClickRadio);
             OnClose = new RelayCommand(SaveContext);
+            OnClickElement = new RelayCommand(() => Helper.Context.PlayNewSong(_selectedItem));
 
             Main = this;
             ActualView = new MusicView { DataContext = MusicViewModel = new MusicViewModel() };
@@ -144,6 +145,8 @@ namespace Presentation.ViewModel
         }
 
         private bool _isFlyoutSettingOpen;
+        private Track _selectedItem;
+
         public bool IsFlyoutSettingOpen
         {
             get { return _isFlyoutSettingOpen; }
@@ -175,9 +178,23 @@ namespace Presentation.ViewModel
         }
 
         public RelayCommand OnClickMusic { get; set; }
+        public RelayCommand OnClickElement { get; set; }
         public RelayCommand OnClickPlaylist { get; set; }
         public RelayCommand OnClickRadio { get; set; }
         public RelayCommand OnOpenSettingFlyout { get; set; }
+
+        /// <summary>
+        /// The selected track of the reading list
+        /// </summary>
+        public Track SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ObservableCollection<Track> ReadingList
         {
@@ -226,7 +243,7 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Set back the context
+        /// Set back the last context
         /// </summary>
         private static void RestoreContext()
         {
