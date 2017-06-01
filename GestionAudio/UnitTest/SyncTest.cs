@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Presentation.Helper;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -26,7 +28,7 @@ namespace UnitTest
         [Test]
         public void AnalyseFolderTree()
         {
-            RecursiveFolderSearch("../../DocumentTest");
+            RecursiveFolderSearch(@"C:\WORKSPACE\TPI\GestionAudio\DocumentTest\");
             Assert.IsTrue(_directories.Any(a => a == "Chopin"));
             Assert.IsTrue(_directories.Any(a => a == "Mozart"));
         }
@@ -37,7 +39,7 @@ namespace UnitTest
         [Test]
         public void SyncFolder()
         {
-            MusicSync.SyncFolder("../../DocumentTest");
+            MusicSync.SyncAllFolders();
         }
 
         #endregion Public Methods
@@ -52,8 +54,8 @@ namespace UnitTest
         {
             foreach (var folderName in Directory.GetDirectories(folder))
             {
-                _directories.Add(Path.GetDirectoryName(folderName));
-                RecursiveFolderSearch(folder);
+                _directories.Add(Path.GetFileName(folderName));
+                RecursiveFolderSearch(folderName);
             }
         }
 

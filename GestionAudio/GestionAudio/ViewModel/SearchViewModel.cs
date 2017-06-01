@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using BLL;
 using DTO.Entity;
+using MahApps.Metro.Controls.Dialogs;
 using Presentation.View;
 using Shared;
 
@@ -48,8 +49,26 @@ namespace Presentation.ViewModel
         public SearchViewModel(string text)
         {
             KeyWord = text;
-            SearchInMusic();
-            SearchInRadios();
+            var numberTry = 0;
+            
+            //let 3 tries in case the thread is busy
+            while (numberTry<3)
+            {
+                try
+                {
+                    SearchInMusic();
+                    SearchInRadios();
+                    return;
+                }
+                catch (Exception e)
+                {
+                    Thread.Sleep(100*numberTry);
+                    numberTry++;
+                }
+            }
+
+            //if the search failed
+            Shared.GeneralHelper.ShowMessage("Erreur", "La recherche a échouée",MessageDialogStyle.Affirmative);
         }
 
         /// <summary>
@@ -62,7 +81,7 @@ namespace Presentation.ViewModel
                 _allTracks = _allTracks ?? TrackData.GetTracks();
                 _allAlbums = _allAlbums ?? _allTracks.Select(a => a.Album).Distinct().ToList();
                 _allArtists = _allArtists ?? _allAlbums.Select(a => a.Artist).Distinct().ToList();
-                MusicViewModel.Tracks.AddRang(_allTracks.Where(a => Look(a.Name) || a.Genres.Any(b => Look(b.Name))).ToList());
+                MusicViewModel.Tracks.AddRang(_allTracks.Where(a => Look(a.Name) || a.Genres.Any(b => Look(b.Name) || Look(a.Album.Name) || Look(a.Album.Artist.Name))).ToList());
                 MusicViewModel.Albums.AddRang(_allAlbums.Where(a => Look(a.Name)).ToList());
                 MusicViewModel.Artists.AddRang(_allArtists.Where(a => Look(a.Name)).ToList());
               
@@ -94,11 +113,10 @@ namespace Presentation.ViewModel
         {
             if (_searchRadioThread != null && _searchRadioThread.IsAlive)
                 _searchRadioThread.Abort();
+
             //Trigger the search
             _searchRadioThread = new Thread(() =>
             {
-                Thread.Sleep(200);
-                //wait that the user finish tapping
                 if (KeyWord.Length >= 3)
                     RadioViewModel = new RadioViewModel(RadioData.GetRadioByKeyWord(KeyWord.ToLower()));
             });

@@ -90,7 +90,7 @@ namespace Shared
         {
             if (string.IsNullOrWhiteSpace(path))
             {
-                GeneralHelper.ShowMessage("Erreur", "Pas de chemin disponnible dans le fichier de stream",
+                GeneralHelper.ShowMessage("Erreur", "Pas de chemin disponible dans le fichier de stream",
                     MessageDialogStyle.Affirmative);
                 return null;
             }
@@ -111,7 +111,7 @@ namespace Shared
                         if (errorResponse.StatusCode == HttpStatusCode.NotFound)
                         {
                             cancelStream = true;
-                            GeneralHelper.ShowMessage("Erreur", "La radio n'est pas disponnible",
+                            GeneralHelper.ShowMessage("Erreur", "La radio n'est pas disponible",
                                 MessageDialogStyle.Affirmative);
                             return;
                         }

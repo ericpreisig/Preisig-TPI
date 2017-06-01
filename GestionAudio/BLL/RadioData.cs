@@ -120,8 +120,7 @@ namespace BLL
                             LogoUrl = (string)i.Attribute("logo"),
                             Format = (string)i.Attribute("mt"),
                             Desrciption = (string)i.Attribute("ct"),
-                            Genres = new List<Genre> {  GeneralData.CheckIfGenreExist((string)i.Attribute("genre")) ? GeneralData.GetGenres().FirstOrDefault(a => a.Name.ToLower() == ((string)i.Attribute("genre")).ToLower())
-                                : new Genre { Name = (string)i.Attribute("genre") }}                          
+                            Genres = new List<Genre> { new Genre { Name = (string)i.Attribute("genre") }}                          
                         };
 
             return items.ToList();

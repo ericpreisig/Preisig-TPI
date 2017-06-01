@@ -1,5 +1,4 @@
 ﻿using BLL;
-using DTO;
 using DTO.Entity;
 using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls;
@@ -12,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Shared;
 
 namespace Presentation.ViewModel
 {
@@ -35,6 +33,7 @@ namespace Presentation.ViewModel
         private bool _isFlyoutMusicOpen;
         private bool _isFlyoutReadingListOpen;
         private bool _isFlyoutRunningOpen;
+        private SearchViewModel _searchViewModel;
         private ObservableCollection<Track> _readingList = new ObservableCollection<Track>();
         public RelayCommand OnClose { get; set; }
 
@@ -47,25 +46,44 @@ namespace Presentation.ViewModel
             if (TrackData.CheckIfDatabaseEmpty())
                 MusicSync.NoMusic();
 
-            OnOpenSettingFlyout=new RelayCommand(() =>
+            OnOpenSettingFlyout = new RelayCommand(() =>
             {
                 IsFlyoutSettingOpen = true;
-                SettingFlyoutViewModel= new SettingFlyoutViewModel();
+                SettingFlyoutViewModel = new SettingFlyoutViewModel();
             });
             OnClickMusic = new RelayCommand(ClickMusic);
             OnClickPlaylist = new RelayCommand(ClickPlaylist);
             OnClickRadio = new RelayCommand(ClickRadio);
+            OnSearch = new RelayCommand(Search);
             OnClose = new RelayCommand(SaveContext);
             OnClickElement = new RelayCommand(() => Helper.Context.PlayNewSong(_selectedItem));
-
             Main = this;
+
             ActualView = new MusicView { DataContext = MusicViewModel = new MusicViewModel() };
             RestoreContext();
+        }
+
+        /// <summary>
+        /// Constructor used by unity tests
+        /// </summary>
+        public MainWindowViewModel(bool test)
+        {
+            
         }
 
         #endregion Public Constructors
 
         #region Public Properties
+
+        /// <summary>
+        /// When the user press enter, search if the word on the search box changed
+        /// </summary>
+        private void Search()
+        {
+            if(_searchViewModel==null || _searchViewModel.KeyWord!=SearchText)
+                Application.Current.Dispatcher.Invoke(() => ActualView = new SearchView { DataContext = _searchViewModel= new SearchViewModel(SearchText) });
+        }
+
 
         public static PlayerViewModel PlayerViewModel { get; set; } = new PlayerViewModel();
 
@@ -103,23 +121,13 @@ namespace Presentation.ViewModel
 
         private Thread _searchThread;
 
-        private string _search;
-        public string Search
+        private string _searchText;
+        public string SearchText
         {
-            get { return _search; }
+            get { return _searchText; }
             set
             {
-                _search = value;
-                if(_searchThread!=null && _searchThread.IsAlive)
-                    _searchThread.Abort();
-                //Trigger the search
-                _searchThread = new Thread(()=>
-                {
-                    Thread.Sleep(500);
-                    //wait that the user finish tapping
-                    Application.Current.Dispatcher.Invoke(() => ActualView = new SearchView {DataContext = new SearchViewModel(_search)});
-                });
-                _searchThread.Start();
+                _searchText = value;              
                 RaisePropertyChanged();
             }
         }
@@ -180,6 +188,7 @@ namespace Presentation.ViewModel
         public RelayCommand OnClickMusic { get; set; }
         public RelayCommand OnClickElement { get; set; }
         public RelayCommand OnClickPlaylist { get; set; }
+        public RelayCommand OnSearch { get; set; }
         public RelayCommand OnClickRadio { get; set; }
         public RelayCommand OnOpenSettingFlyout { get; set; }
 

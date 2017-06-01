@@ -29,7 +29,7 @@
 
         <Button Command="{Binding OnClickSync}" Height="35"  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Foreground="White" Style="{StaticResource AccentedSquareButtonStyle}"  HorizontalAlignment="Stretch">Sychroniser la musique</Button>
 
-        <GroupBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"  Header="Dossier exclus">
+        <GroupBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"  Header="Dossier inclus">
             <DataGrid SelectedItem="{Binding SelectedItem}" SelectionMode="Single" ItemsSource="{Binding IncludeFolders}" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Chemin" Binding="{Binding Path}" Width="*" />

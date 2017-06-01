@@ -9,7 +9,9 @@
         xmlns:view="clr-namespace:Presentation.View"
         xmlns:flyout="clr-namespace:Presentation.View.Flyout"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        mc:Ignorable="d"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:iex="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
+    mc:Ignorable="d"
         BorderThickness="0" 
         GlowBrush="Black"
         ResizeMode="CanResizeWithGrip"
@@ -97,14 +99,19 @@
 
         <DockPanel  Grid.Column="1" Width="500">
 
-            <TextBox Height="30" controls:TextBoxHelper.Watermark="Recherche..." Width="500" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" FontSize="15" HorizontalAlignment="Stretch">
+            <TextBox Height="30" controls:TextBoxHelper.Watermark="Recherche..." Width="500" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" FontSize="15" HorizontalAlignment="Stretch">
+                <i:Interaction.Triggers>
+                    <iex:KeyTrigger Key="Enter">
+                        <i:InvokeCommandAction Command="{Binding OnSearch}" />
+                    </iex:KeyTrigger>
+                </i:Interaction.Triggers>
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="11" />
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <Button BorderThickness="0" DockPanel.Dock="right" HorizontalAlignment="Right" Height="28" Width="23" Style="{StaticResource TransparentButtonStyle}" Margin="-30,0,5,0">
+            <Button BorderThickness="0" DockPanel.Dock="right" HorizontalAlignment="Right" Height="28" Width="23" Style="{StaticResource TransparentButtonStyle}" Margin="-30,0,5,0" Command="{Binding OnSearch}">
                 <Rectangle Width="20" Height="20" Fill="#d3dcde">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_magnify}" />

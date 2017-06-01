@@ -58,7 +58,6 @@ namespace Presentation.Helper
 
                 return;
             }
-
             MusicFile.StopRadio();
             ActualContext.Track = track;
             ActualContext.Radio = null;
@@ -78,15 +77,6 @@ namespace Presentation.Helper
             }
         }
 
-        public static void SaveConext()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void SetConext()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion Public Methods
     }
