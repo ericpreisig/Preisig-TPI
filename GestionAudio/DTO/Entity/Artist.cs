@@ -2,6 +2,10 @@
 
 namespace DTO.Entity
 {
+
+    /// <summary>
+    /// The database Artist entity
+    /// </summary>
     public class Artist : BaseEntity
     {
         #region Public Properties

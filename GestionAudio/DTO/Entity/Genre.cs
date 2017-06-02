@@ -2,6 +2,9 @@
 
 namespace DTO.Entity
 {
+    /// <summary>
+    /// The database Genre entity
+    /// </summary>
     public class Genre : BaseEntity
     {
         #region Public Properties

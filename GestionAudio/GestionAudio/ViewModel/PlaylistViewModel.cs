@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 
 namespace Presentation.ViewModel
 {
+
+
+    /// <summary>
+    /// This class contain the logic for the playlistview
+    /// </summary>
     public class PlaylistViewModel : MainViewModel
     {
         #region Private Fields

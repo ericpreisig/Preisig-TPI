@@ -13,6 +13,9 @@ using System.Data.SQLite;
 
 namespace DAL.Database
 {
+    /// <summary>
+    /// Make the database connection
+    /// </summary>
     [DbConfigurationType(typeof(SqLiteConfiguration))]
     public class DbApplicationContext : DbContext
     {
@@ -51,7 +54,6 @@ namespace DAL.Database
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<DbApplicationContext>(modelBuilder);
-            //var sqliteConnectionInitializer = new SqliteDropCreateDatabaseAlways<DbApplicationContext>(modelBuilder);
             System.Data.Entity.Database.SetInitializer(sqliteConnectionInitializer);
             modelBuilder.Entity<Genre>().Map(m =>
             {

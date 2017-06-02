@@ -9,8 +9,10 @@ using System.Windows.Media.Imaging;
 
 namespace DTO
 {
+    /// <summary>
+    /// The link between radio and track
+    /// </summary>
     public class Audio : BaseEntity
-
     {
         #region Private Fields
 

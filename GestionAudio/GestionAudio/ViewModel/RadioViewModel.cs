@@ -15,6 +15,10 @@ using Presentation.View;
 
 namespace Presentation.ViewModel
 {
+
+    /// <summary>
+    /// This class contain the logic for the radioview
+    /// </summary>
     public class RadioViewModel : MainViewModel
     {
         #region Private Fields

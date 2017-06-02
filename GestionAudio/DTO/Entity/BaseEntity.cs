@@ -2,6 +2,9 @@
 
 namespace DTO.Entity
 {
+    /// <summary>
+    /// The base entity, shared by all entities
+    /// </summary>
     public class BaseEntity
     {
         #region Public Properties

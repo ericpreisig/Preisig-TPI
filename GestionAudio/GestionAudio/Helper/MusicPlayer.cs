@@ -9,6 +9,9 @@ using System.Windows;
 
 namespace Presentation.Helper
 {
+    /// <summary>
+    /// Handle all action made by the small and big player, it can interact with the view and/or take user inputs
+    /// </summary>
     public static class MusicPlayer
     {
         #region Public Fields
@@ -92,7 +95,7 @@ namespace Presentation.Helper
 
             Track newTrackToPlay;
 
-            //îf random enable
+            //if random enable
             if (Context.ActualContext.IsRandom)
             {
                 //Take a random number between all the tracks in the reading list
@@ -106,14 +109,14 @@ namespace Presentation.Helper
                 newTrackToPlay = MainWindowViewModel.Main.ReadingList.SkipWhile(a => a != Context.ActualContext.Track).Skip(1).FirstOrDefault();
             }
 
+            //1 means lopping the reading list, 2 means repeat one
             switch (Context.ActualContext.IsLooping)
             {
-                case 1: //if the user is on loop mode, take the first music back and last track of the readinfg list
+                case 1:
                     if (newTrackToPlay == null)
                         newTrackToPlay = MainWindowViewModel.Main.ReadingList.FirstOrDefault();
                     break;
-
-                case 2://if the user is on one only mode, take the same
+                case 2:
                     newTrackToPlay = Context.ActualContext.Track;
                     break;
             }

@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 
 namespace Shared
 {
+
+    /// <summary>
+    /// This class contains every thing used to play and read musics and radios
+    /// </summary>
     public static class MusicFile
     {
         #region Public Methods
@@ -22,24 +26,6 @@ namespace Shared
         private static Stream Mp3ms = new MemoryStream();
 
         private static Stream ms = new MemoryStream();
-
-        /// <summary>
-        /// Get a string beetween
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        public static string Between(this string source, string start, string end)
-        {
-            var indexOf1 = source.IndexOf(start);
-            if (indexOf1 == -1) return "";
-            source = source.Substring(indexOf1 + start.Length);
-            var indexOf2 = source.IndexOf(end);
-            if (indexOf2 == -1) return "";
-            var sub = source.Substring(0, indexOf2);
-            return sub;
-        }
 
         /// <summary>
         /// Get an image from the file or from the setted up path

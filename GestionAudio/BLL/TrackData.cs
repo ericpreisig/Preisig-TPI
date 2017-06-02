@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace BLL
 {
+    /// <summary>
+    /// Contain all action usabl e by tracks
+    /// </summary>
     public static class TrackData
     {
         #region Public Methods
@@ -22,27 +25,7 @@ namespace BLL
         /// Check if there is no track a the database
         /// </summary>
         /// <returns></returns>
-        public static bool CheckIfDatabaseEmpty() => new Repository<Track>().GetList().Count == 0;
-
-        public static Track CreateTrackWithInfo(Track track)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static List<Track> Get10LastTracks()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static List<Track> GetFavouriteTracks()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static List<Track> GetSuggeredTracks(string genre)
-        {
-            throw new NotImplementedException();
-        }
+        public static bool CheckIfDatabaseEmpty() => !new Repository<Track>().Table.Any();
 
         /// <summary>
         /// Get a track by his path
@@ -51,22 +34,23 @@ namespace BLL
         public static Track GetTrackByPath(string path) => new Repository<Track>().GetList().FirstOrDefault(a => Path.GetFullPath(a.Path.ToLower()) == Path.GetFullPath(path.ToLower()));
 
         /// <summary>
-        /// Get all tracks from thge db
+        /// Get all tracks from the db
         /// </summary>
         /// <returns></returns>
-        public static List<Track> GetTracks() => new Repository<Track>().GetList();
-
-        public static List<Track> GetTracksByGenre(string genre)
-        {
-            throw new NotImplementedException();
-        }
+        public static List<Track> GetTracks() => new Repository<Track>().GetList();     
 
         /// <summary>
-        /// Remove track from database
+        /// Remove track from database, delete album and artist if empty
         /// </summary>
         public static void RemoveTrack(this Track track)
         {
+            var albumId = track.Album.ID;
+            var artistId = track.Album.Artist.ID;
             new Repository<Track>().Delete(track);
+            var albumRepo = new Repository<Album>();
+            if (albumRepo.GetById(albumId).Tracks.Count==0) albumRepo.Delete(albumRepo.GetById(albumId));
+            var artistRepo = new Repository<Artist>();
+            if (artistRepo.GetById(artistId).Albums.Count==0) artistRepo.Delete(artistRepo.GetById(artistId));
         }
 
         /// <summary>
@@ -81,12 +65,6 @@ namespace BLL
             oldTrack.Duration = newTrack.Duration;
             return oldTrack;
         }
-
-        //TODO
-        //volume, suppression, genres
-
-
-
 
         #endregion Public Methods
     }

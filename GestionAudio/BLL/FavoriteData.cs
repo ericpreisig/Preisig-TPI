@@ -2,6 +2,9 @@
 
 namespace BLL
 {
+    /// <summary>
+    /// Contain all action about favorit
+    /// </summary>
     public static class FavoriteData
     {
         #region Public Methods

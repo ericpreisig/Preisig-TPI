@@ -18,6 +18,10 @@ using Presentation.Helper;
 
 namespace Presentation.ViewModel
 {
+
+    /// <summary>
+    /// This class contain the logic for the musicview
+    /// </summary>
     public class MusicViewModel : MainViewModel
     {
         #region Private Fields

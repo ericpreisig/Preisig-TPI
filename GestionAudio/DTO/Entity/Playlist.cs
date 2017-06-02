@@ -2,6 +2,10 @@
 
 namespace DTO.Entity
 {
+
+    /// <summary>
+    /// The database Playlist entity
+    /// </summary>
     public class Playlist : BaseEntity
     {
         #region Public Properties

@@ -2,6 +2,9 @@
 
 namespace DTO
 {
+    /// <summary>
+    /// The right click context menu element
+    /// </summary>
     public class ContextMenu
     {
         #region Public Properties

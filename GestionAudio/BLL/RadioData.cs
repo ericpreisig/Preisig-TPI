@@ -11,6 +11,9 @@ using static System.String;
 
 namespace BLL
 {
+    /// <summary>
+    /// Contain all action usable by a radio
+    /// </summary>
     public static class RadioData
     {
         #region Public Methods
@@ -69,11 +72,13 @@ namespace BLL
         /// Get top 500 radios
         /// </summary>
         /// <returns></returns>
-        public static List<Radio> GetRadioTop500Radios()
-        {
-            return GetRadiosFromXml(Shoutcast.GetTop500Radios());
-        }
+        public static List<Radio> GetRadioTop500Radios()=>GetRadiosFromXml(Shoutcast.GetTop500Radios());
 
+        /// <summary>
+        /// Let 3 tryies to get the strea link form a radio
+        /// </summary>
+        /// <param name="radio"></param>
+        /// <returns></returns>
         public static Radio SetRadioPath(Radio radio)
         {
             if (!IsNullOrWhiteSpace(radio.Path)) return radio;
@@ -83,10 +88,13 @@ namespace BLL
             {
                 Thread.Sleep(200*counterTry);
                 var downloadedFile = Shoutcast.DownloadFile(radio.ShoutCastId);
+
+                //Parse the document as an XML
                 var doc = XDocument.Parse(downloadedFile).Root;
                 var path = "";
                 if (doc != null)
                 {
+                    //Get the element location which is the link
                     path = (from d in doc.Descendants()
                         where d.Name.LocalName == "location"
                         select d.Value).FirstOrDefault();

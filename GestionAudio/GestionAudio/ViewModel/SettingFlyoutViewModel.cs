@@ -11,6 +11,9 @@ using Context = DTO.Entity.Context;
 
 namespace Presentation.ViewModel
 {
+    /// <summary>
+    /// This class contain the logic for the setting flyout
+    /// </summary>
     public class SettingFlyoutViewModel : MainViewModel
     {
         private bool _launchMusicOnStart;

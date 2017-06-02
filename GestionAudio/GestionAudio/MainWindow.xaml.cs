@@ -16,6 +16,9 @@ namespace Presentation
         [DllImport("kernel32.dll")]
         private static extern IntPtr LoadLibrary(string dllToLoad);
 
+        /// <summary>
+        /// Set the good dll of C++runtime
+        /// </summary>
         public MainWindow()
         {
             //load the c++ runtime (check windows version 64 or 32 bits)
@@ -31,6 +34,11 @@ namespace Presentation
 
         #region Private Methods
 
+        /// <summary>
+        /// Launch the data context on start, the main purpose is to make usable the metrodialogues
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             DataContext = new MainWindowViewModel();

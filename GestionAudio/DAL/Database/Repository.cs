@@ -14,6 +14,9 @@ using System.Linq;
 
 namespace DAL.Database
 {
+    /// <summary>
+    /// Get a copy of the context
+    /// </summary>
     public static class GetContext
     {
         #region Public Fields
@@ -23,6 +26,10 @@ namespace DAL.Database
         #endregion Public Fields
     }
 
+    /// <summary>
+    /// Generic class used by all entities, every calls is made on the same context
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Repository<T> where T : BaseEntity
     {
         #region Private Fields

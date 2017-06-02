@@ -14,6 +14,10 @@ using MahApps.Metro.Controls.Dialogs;
 
 namespace Presentation.Helper
 {
+
+    /// <summary>
+    /// Class used for the sync, it contains the allowed formats
+    /// </summary>
     public static class MusicSync
     {
         #region Private Fields
@@ -183,6 +187,8 @@ namespace Presentation.Helper
         public static Track TransformToTrack(string path)
         {
             WaveStream fileValues;
+
+            //if it can't open with the base library Naudio, use media player dll
             try
             {
                 fileValues = new AudioFileReader(path);
@@ -193,18 +199,17 @@ namespace Presentation.Helper
             }
 
             var fileInfo = TagLib.File.Create(path);
+
+            //set artist
             var artistName = fileInfo.Tag.FirstAlbumArtist ?? fileInfo.Tag.FirstComposer ?? fileInfo.Tag.FirstPerformer ?? "Inconnu";
-
-
             var artist = ArtistData.CheckIfArtistExist(artistName)
                 ? ArtistData.GetArtists().FirstOrDefault(a => a.Name.ToLower() == artistName.ToLower())
                 : new Artist { Name = artistName };
 
+            //set album
             var albumName = fileInfo.Tag.Album ?? "Inconnu";
             DateTime? dateCreation = null;
-
             if (fileInfo.Tag.Year != 0) dateCreation = new DateTime((int)fileInfo.Tag.Year, 1, 1);
-
             var album = AlbumData.CheckIfAlbumExist(albumName, artistName)
                 ? AlbumData.GetAlbums().FirstOrDefault(a => a.Name.ToLower() == albumName.ToLower())
                 : new Album
@@ -212,10 +217,10 @@ namespace Presentation.Helper
                     Artist = artist,
                     PictureLink = LookForImage(path),
                     DateCreation = dateCreation,
-                    Name = albumName,
+                    Name = albumName
                 };
 
-
+            //set genre
             List<Genre> genres = new List<Genre>();
             List<string> genreTag= new List<string>(fileInfo.Tag.Genres);
             if(genreTag.Count==0)
@@ -228,6 +233,7 @@ namespace Presentation.Helper
                     : new Genre { Name = tagGenre });
             }
 
+            //create track
             var track = new Track
             {
                 Duration = (int)fileValues.TotalTime.TotalMilliseconds,

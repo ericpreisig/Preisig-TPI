@@ -1,5 +1,6 @@
 using BLL;
 using DTO;
+using DTO.Entity;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using NAudio.Wave;
@@ -9,10 +10,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DTO.Entity;
 
 namespace Presentation.ViewModel
 {
+    /// <summary>
+    /// This class contain the logic for the small and big player
+    /// </summary>
     public class PlayerViewModel : ViewModelBase
     {
         #region Private Fields
@@ -20,7 +23,7 @@ namespace Presentation.ViewModel
         private TimeSpan _actualTime;
         private Audio _audio;
         private int _isLooping;
-        private bool _isMouseHolded = false;
+        private bool _isMouseHolded;
         private double _oldValue;
         private bool _playlerStatus;
         private double _sliderValue;
@@ -45,7 +48,10 @@ namespace Presentation.ViewModel
 
         #region Public Properties
 
+        private Visibility _isRadio = Visibility.Visible;
         private bool _isRandom;
+
+        private float _volumeValue;
 
         public TimeSpan ActualTime
         {
@@ -56,20 +62,6 @@ namespace Presentation.ViewModel
                 RaisePropertyChanged();
             }
         }
-        private Visibility _isRadio= Visibility.Visible;
-        private float _volumeValue;
-
-        public Visibility IsRadio
-        {
-            get { return _isRadio; }
-            set
-            {
-                _isRadio = value;
-                RaisePropertyChanged();
-            }
-        }
-
-
 
         public Audio Audio
         {
@@ -87,6 +79,16 @@ namespace Presentation.ViewModel
             set
             {
                 _isLooping = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public Visibility IsRadio
+        {
+            get { return _isRadio; }
+            set
+            {
+                _isRadio = value;
                 RaisePropertyChanged();
             }
         }
@@ -120,17 +122,6 @@ namespace Presentation.ViewModel
             }
         }
 
-        public float VolumeValue
-        {
-            get { return _volumeValue; }
-            set
-            {
-                _volumeValue = value;
-                MusicPlayer.Player.Volume = _volumeValue;
-                RaisePropertyChanged();
-            }
-        }
-
         public double SliderValue
         {
             get { return _sliderValue; }
@@ -143,6 +134,17 @@ namespace Presentation.ViewModel
                     MusicPlayer.ChangeTime((int)Math.Round(_sliderValue));
                 }
 
+                RaisePropertyChanged();
+            }
+        }
+
+        public float VolumeValue
+        {
+            get { return _volumeValue; }
+            set
+            {
+                _volumeValue = value;
+                MusicPlayer.Player.Volume = _volumeValue;
                 RaisePropertyChanged();
             }
         }
@@ -161,8 +163,6 @@ namespace Presentation.ViewModel
             ActualTime = TimeSpan.FromMilliseconds(milisecond);
             SliderValue = _oldValue = 1.0 * milisecond / total * 100;
         }
-    
-     
 
         /// <summary>
         /// When the user click on the favorite/unfavorite logo
@@ -249,7 +249,7 @@ namespace Presentation.ViewModel
         /// <param name="audio"></param>
         public void InitPlayer(Audio audio)
         {
-            IsRadio = audio is Track ? Visibility.Visible : Visibility.Collapsed;          
+            IsRadio = audio is Track ? Visibility.Visible : Visibility.Collapsed;
             Audio = audio;
         }
 

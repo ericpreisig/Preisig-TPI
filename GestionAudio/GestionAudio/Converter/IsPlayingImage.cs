@@ -7,6 +7,10 @@ using System.Windows.Media.Imaging;
 
 namespace Presentation.Converter
 {
+
+    /// <summary>
+    /// Converter used for the readingListView
+    /// </summary>
     public class IsPlayingImage : IValueConverter
     {
         #region Public Methods

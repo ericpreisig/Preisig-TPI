@@ -14,6 +14,10 @@ using Shared;
 
 namespace Presentation.ViewModel
 {
+
+    /// <summary>
+    /// This class contain the logic for the searchview
+    /// </summary>
     public class SearchViewModel : MainViewModel
     {
         public MusicViewModel MusicViewModel

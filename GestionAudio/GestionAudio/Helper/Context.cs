@@ -10,6 +10,9 @@ using Shared;
 
 namespace Presentation.Helper
 {
+    /// <summary>
+    /// Class the modifies the context, this class is called whenever a new music is clicked on. it's set the reading list too
+    /// </summary>
     public static class Context
     {
         #region Public Fields

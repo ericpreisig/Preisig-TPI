@@ -8,6 +8,10 @@ using System.Windows;
 
 namespace Shared
 {
+
+    /// <summary>
+    /// general helper that can be used by any project
+    /// </summary>
     public static class GeneralHelper
     {
         #region Public Methods

@@ -28,7 +28,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>Gestion Audio</ProductName>
     <PublisherName>Eric Preisig</PublisherName>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -151,6 +151,7 @@
     <Compile Include="Helper\Context.cs" />
     <Compile Include="Helper\MusicPlayer.cs" />
     <Compile Include="Helper\MusicSync.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\SearchViewModel.cs" />
     <Compile Include="ViewModel\SettingFlyoutViewModel.cs" />
     <Compile Include="ViewModel\RadioViewModel.cs" />
@@ -158,7 +159,6 @@
     <Compile Include="ViewModel\PlaylistViewModel.cs" />
     <Compile Include="ViewModel\PlayerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Flyout\PropertyFlyoutView.xaml.cs">
       <DependentUpon>PropertyFlyoutView.xaml</DependentUpon>
@@ -373,6 +373,9 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <SplashScreen Include="Resources\Images\splashImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </SplashScreen>
     <Content Include="Resources\Images\logoApp.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -2,6 +2,9 @@
 
 namespace DTO.Entity
 {
+    /// <summary>
+    /// The database COntext entity
+    /// </summary>
     public class Context : BaseEntity
     {
         #region Public Properties

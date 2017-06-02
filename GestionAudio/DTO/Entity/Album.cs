@@ -8,6 +8,9 @@ using System.Windows.Media.Imaging;
 
 namespace DTO.Entity
 {
+    /// <summary>
+    /// The database Album entity
+    /// </summary>
     public class Album : BaseEntity
     {
         #region Public Properties

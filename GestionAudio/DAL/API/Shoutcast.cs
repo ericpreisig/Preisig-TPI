@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DAL.API
 {
+    /// <summary>
+    /// Class to make the link between the software and the shoutcast API, it contains all the call used by this app
+    /// </summary>
     public static class Shoutcast
     {
         #region Private Fields

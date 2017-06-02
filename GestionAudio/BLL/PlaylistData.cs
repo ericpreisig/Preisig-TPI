@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace BLL
 {
+    /// <summary>
+    /// Contain all action usable by a playlist
+    /// </summary>
     public static class PlaylistData
     {
         #region Public Methods

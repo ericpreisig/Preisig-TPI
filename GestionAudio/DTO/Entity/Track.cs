@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DTO.Entity
 {
+    /// <summary>
+    /// The database Track entity
+    /// </summary>
     public class Track : Audio
     {
         #region Public Properties

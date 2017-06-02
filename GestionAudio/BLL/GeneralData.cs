@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace BLL
 {
+    /// <summary>
+    /// Contain general action, like action used by Genres, context and includeFolder
+    /// </summary>
     public static class GeneralData
     {
         #region Public Methods
@@ -54,7 +57,6 @@ namespace BLL
         {
             new Repository<IncludeFolder>().Delete(folder);
         } 
-
 
         /// <summary>
         /// add a folder from the sync list

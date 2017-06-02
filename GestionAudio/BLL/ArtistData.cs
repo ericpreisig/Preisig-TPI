@@ -6,14 +6,12 @@ using System.Linq;
 
 namespace BLL
 {
+    /// <summary>
+    /// Contain all action usable by an artist
+    /// </summary>
     public static class ArtistData
     {
         #region Public Methods
-
-        public static void AddOrUpdateArtist()
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Check if a artist exist by it's name
@@ -25,11 +23,6 @@ namespace BLL
         /// </summary>
         /// <returns></returns>
         public static List<Artist> GetArtists() => new Repository<Artist>().GetList();
-
-        public static void RemoveArtist()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion Public Methods
     }

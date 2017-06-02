@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DTO.Entity
 {
+    /// <summary>
+    /// The database Radio entity
+    /// </summary>
     public class Radio : Audio
     {
         #region Public Properties
