@@ -1,19 +1,22 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Load radio or music
+*********************************************************************************/
+
+using MahApps.Metro.Controls.Dialogs;
 using NAudio.Lame;
 using NAudio.Wave;
 using System;
-using System.Configuration;
 using System.IO;
 using System.Net;
-using System.Net.Configuration;
 using System.Security.Permissions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace Shared
 {
-
     /// <summary>
     /// This class contains every thing used to play and read musics and radios
     /// </summary>
@@ -59,7 +62,7 @@ namespace Shared
             {
                 return new AudioFileReader(path);
             }
-            catch (Exception e)
+            catch
             {
                 return new MediaFoundationReader(path);
             }
@@ -142,24 +145,24 @@ namespace Shared
                                         Mp3ms.Position = pos2;
                                     }
                                 }
-                                catch (ThreadAbortException e)
+                                catch (ThreadAbortException)
                                 {
                                     cancelStream = true;
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
                                     cancelStream = true;
-                                    GeneralHelper.ShowMessage("Erreur", "Une erreur inattendue c'est produite",
+                                    GeneralHelper.ShowMessage("Erreur", "Une erreur inattendue s'est produite",
                                         MessageDialogStyle.Affirmative);
                                 }
                             }
                         }
                     }
-                    catch (ThreadAbortException e)
+                    catch (ThreadAbortException)
                     {
                         cancelStream = true;
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         cancelStream = true;
                         GeneralHelper.ShowMessage("Erreur", "Le serveur de stream a mal répondu",
@@ -170,7 +173,7 @@ namespace Shared
             { IsBackground = true };
             _radioThread.Start();
             var numberTry = 0;
-            while (numberTry<3)
+            while (numberTry < 3)
             {
                 try
                 {
@@ -193,19 +196,17 @@ namespace Shared
                     ms.Position = 0;
                     return new BlockAlignReductionStream(WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(Mp3ms)));
                 }
-                catch (Exception e)
+                catch
                 {
                     numberTry++;
                     Thread.Sleep(100 * numberTry);
-                    if (numberTry<3) continue;
+                    if (numberTry < 3) continue;
                     GeneralHelper.ShowMessage("Erreur", "Impossible de convertire le stream en mp3",
                         MessageDialogStyle.Affirmative);
                     throw new ArgumentException("Impossible de convertire le stream en mp3");
                 }
             }
             return null;
-
-
         }
 
         /// <summary>
@@ -215,13 +216,13 @@ namespace Shared
         public static void StopRadio()
         {
             if (_radioThread == null || !_radioThread.IsAlive) return;
-           
+
             //Wait for the true stop
-            while (_radioThread!= null && _radioThread.IsAlive)
+            while (_radioThread != null && _radioThread.IsAlive)
             {
-               _radioThread.Abort();
-               _radioThread=null;
-               
+                _radioThread.Abort();
+                _radioThread = null;
+
                 Thread.Sleep(100);
             }
             _radioThread = null;

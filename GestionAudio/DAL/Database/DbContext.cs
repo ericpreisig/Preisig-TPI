@@ -1,8 +1,9 @@
-﻿/*
-Author : Eric Preisig
-Version : 1.0.0
-Date : 06.04.2017
-*/
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Database creation
+*********************************************************************************/
 
 using DTO.Entity;
 using SQLite.CodeFirst;
@@ -37,8 +38,8 @@ namespace DAL.Database
         public DbSet<Album> Album { get; set; }
         public DbSet<Artist> Artist { get; set; }
         public DbSet<Context> Context { get; set; }
-        public DbSet<IncludeFolder> IncludeFolder { get; set; }
         public DbSet<Genre> Genre { get; set; }
+        public DbSet<IncludeFolder> IncludeFolder { get; set; }
         public DbSet<Playlist> Playlist { get; set; }
         public DbSet<Radio> Radio { get; set; }
         public DbSet<Track> Track { get; set; }

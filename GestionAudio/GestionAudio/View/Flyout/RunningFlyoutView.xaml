@@ -21,15 +21,15 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
             <RowDefinition Height="50" />
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="200" />
         </Grid.RowDefinitions>
         <StackPanel Grid.RowSpan="3" Grid.ColumnSpan="3">
             <StackPanel.Background>
                     <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
-                        <GradientStop Color="#2c3e50" Offset="0"/>
-                        <GradientStop Color="Transparent" Offset="0.8"/>
+                        <GradientStop Color="#2c3e50" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="0.8" />
                     </LinearGradientBrush>
-                </StackPanel.Background>              
+                </StackPanel.Background>
         </StackPanel>
         <Border Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3">
             <Border.Effect>
@@ -67,7 +67,7 @@
             </TextBlock>
         </StackPanel>
 
-        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"   Foreground="#3498db" TextTrimming="WordEllipsis"  Text="{Binding Audio.Name}"/>
+        <TextBlock  Grid.Row="4" Grid.Column="1" TextAlignment="Center" FontSize="28"   Foreground="#3498db" TextTrimming="WordEllipsis"  Text="{Binding Audio.Name}" />
 
         <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal">
             <Button  Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Left" Command="{Binding OnClickReadingList}" Visibility="{Binding IsRadio}">
@@ -102,7 +102,6 @@
                 </Rectangle>
             </Button>
         </StackPanel>
-
 
         <Grid Grid.Row="5" Grid.Column="1" Margin="0,0,0,37">
             <Grid.ColumnDefinitions>

@@ -1,16 +1,24 @@
-﻿using BLL;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Layout page
+*********************************************************************************/
+
+using BLL;
 using DTO.Entity;
 using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Presentation.Helper;
 using Presentation.View;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace Presentation.ViewModel
 {
@@ -33,17 +41,22 @@ namespace Presentation.ViewModel
         private bool _isFlyoutMusicOpen;
         private bool _isFlyoutReadingListOpen;
         private bool _isFlyoutRunningOpen;
-        private SearchViewModel _searchViewModel;
         private ObservableCollection<Track> _readingList = new ObservableCollection<Track>();
+        private SearchViewModel _searchViewModel;
         public RelayCommand OnClose { get; set; }
 
         #endregion Private Fields
 
         #region Public Constructors
 
+        /// <summary>
+        /// Load all the relaycommands and chekc if there is no music
+        /// </summary>
         public MainWindowViewModel()
         {
-            if (TrackData.CheckIfDatabaseEmpty())
+
+            //if there is no music, give the user the choice to sync his
+            if (TrackData.CheckIfDatabaseEmpty() && !GeneralData.GetIncludedFolder().Any())
                 MusicSync.NoMusic();
 
             OnOpenSettingFlyout = new RelayCommand(() =>
@@ -63,40 +76,22 @@ namespace Presentation.ViewModel
             RestoreContext();
         }
 
-        /// <summary>
-        /// Constructor used by unity tests
-        /// </summary>
-        public MainWindowViewModel(bool test)
-        {
-            
-        }
-
         #endregion Public Constructors
 
         #region Public Properties
 
-        /// <summary>
-        /// When the user press enter, search if the word on the search box changed
-        /// </summary>
-        private void Search()
-        {
-            if(_searchViewModel==null || _searchViewModel.KeyWord!=SearchText)
-                Application.Current.Dispatcher.Invoke(() => ActualView = new SearchView { DataContext = _searchViewModel= new SearchViewModel(SearchText) });
-        }
+        private bool _isFlyoutSettingOpen;
 
+        private MusicViewModel _musicViewModel;
+
+        private string _searchText;
+
+        private Track _selectedItem;
+
+        private SettingFlyoutViewModel _settingFlyoutViewModel;
 
         public static PlayerViewModel PlayerViewModel { get; set; } = new PlayerViewModel();
 
-        private MusicViewModel _musicViewModel;
-        public MusicViewModel MusicViewModel
-        {
-            get { return _musicViewModel; }
-            set
-            {
-                _musicViewModel = value;
-                RaisePropertyChanged();
-            }
-        }
         public UserControl ActualView
         {
             get { return _actualView; }
@@ -107,31 +102,6 @@ namespace Presentation.ViewModel
             }
         }
 
-        private SettingFlyoutViewModel _settingFlyoutViewModel;
-
-        public SettingFlyoutViewModel SettingFlyoutViewModel
-        {
-            get { return _settingFlyoutViewModel; }
-            set
-            {
-                _settingFlyoutViewModel = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private Thread _searchThread;
-
-        private string _searchText;
-        public string SearchText
-        {
-            get { return _searchText; }
-            set
-            {
-                _searchText = value;              
-                RaisePropertyChanged();
-            }
-        }
-        
         public string AnalyseStatus
         {
             get { return _analyseStatus; }
@@ -148,19 +118,6 @@ namespace Presentation.ViewModel
             set
             {
                 _isFlyoutMusicOpen = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private bool _isFlyoutSettingOpen;
-        private Track _selectedItem;
-
-        public bool IsFlyoutSettingOpen
-        {
-            get { return _isFlyoutSettingOpen; }
-            set
-            {
-                _isFlyoutSettingOpen = value;
                 RaisePropertyChanged();
             }
         }
@@ -185,12 +142,57 @@ namespace Presentation.ViewModel
             }
         }
 
-        public RelayCommand OnClickMusic { get; set; }
+        public bool IsFlyoutSettingOpen
+        {
+            get { return _isFlyoutSettingOpen; }
+            set
+            {
+                _isFlyoutSettingOpen = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public MusicViewModel MusicViewModel
+        {
+            get { return _musicViewModel; }
+            set
+            {
+                _musicViewModel = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public RelayCommand OnClickElement { get; set; }
+
+        public RelayCommand OnClickMusic { get; set; }
+
         public RelayCommand OnClickPlaylist { get; set; }
-        public RelayCommand OnSearch { get; set; }
+
         public RelayCommand OnClickRadio { get; set; }
+
         public RelayCommand OnOpenSettingFlyout { get; set; }
+
+        public RelayCommand OnSearch { get; set; }
+
+        public ObservableCollection<Track> ReadingList
+        {
+            get { return _readingList; }
+            set
+            {
+                _readingList = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                RaisePropertyChanged();
+            }
+        }
 
         /// <summary>
         /// The selected track of the reading list
@@ -205,14 +207,23 @@ namespace Presentation.ViewModel
             }
         }
 
-        public ObservableCollection<Track> ReadingList
+        public SettingFlyoutViewModel SettingFlyoutViewModel
         {
-            get { return _readingList; }
+            get { return _settingFlyoutViewModel; }
             set
             {
-                _readingList = value;
+                _settingFlyoutViewModel = value;
                 RaisePropertyChanged();
             }
+        }
+
+        /// <summary>
+        /// When the user press enter, search if the word on the search box changed
+        /// </summary>
+        private void Search()
+        {
+            if (_searchViewModel == null || _searchViewModel.KeyWord != SearchText)
+                Application.Current.Dispatcher.Invoke(() => ActualView = new SearchView { DataContext = _searchViewModel = new SearchViewModel(SearchText) });
         }
 
         #endregion Public Properties
@@ -224,7 +235,7 @@ namespace Presentation.ViewModel
         /// </summary>
         public void ClickMusic()
         {
-            ActualView = new MusicView { DataContext = MusicViewModel=new MusicViewModel() };
+            ActualView = new MusicView { DataContext = MusicViewModel = new MusicViewModel() };
         }
 
         /// <summary>
@@ -269,7 +280,7 @@ namespace Presentation.ViewModel
                 }
                 if (context.Radio != null)
                 {
-                    //Launch a radio 
+                    //Launch a radio
                     Helper.Context.PlayNewRadio(context.Radio);
                 }
                 if (!context.IsMusicPlayingOnStart || !isMusicPlaying)
@@ -278,10 +289,10 @@ namespace Presentation.ViewModel
                     {
                         Thread.Sleep(10);
                         MusicPlayer.Pause();
-                    } );
+                    });
                 }
             }
-            catch (Exception e)
+            catch
             {
                 context.Track = null;
                 context.Radio = null;
@@ -290,8 +301,6 @@ namespace Presentation.ViewModel
             }
         }
 
-
         #endregion Public Methods
-
     }
 }

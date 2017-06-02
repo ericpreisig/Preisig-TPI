@@ -12,15 +12,15 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:iex="clr-namespace:Microsoft.Expression.Interactivity.Input;assembly=Microsoft.Expression.Interactions"
     mc:Ignorable="d"
-        BorderThickness="0" 
+        BorderThickness="0"
         GlowBrush="Black"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
-        Icon="./Resources/Images/logoApp.ico"                      
+        Icon="./Resources/Images/logoApp.ico"
         Title="Gestion Audio" MinHeight="720" MinWidth="1080"  Loaded="MainWindow_OnLoaded">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding OnClose}"/>
+            <i:InvokeCommandAction Command="{Binding OnClose}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <controls:MetroWindow.Flyouts>

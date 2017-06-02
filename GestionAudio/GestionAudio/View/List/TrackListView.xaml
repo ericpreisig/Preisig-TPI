@@ -19,9 +19,8 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
-
             <DataGrid.Resources>
-                <ContextMenu x:Key="ContextMenu" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                <ContextMenu x:Key="ContextMenu" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,
                     AncestorType={x:Type DataGrid}}, Path=DataContext.ContextMenu}">
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">

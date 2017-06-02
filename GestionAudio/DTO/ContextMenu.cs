@@ -1,4 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : ContextMenu
+*********************************************************************************/
+
+using System.Collections.ObjectModel;
 
 namespace DTO
 {

@@ -1,5 +1,11 @@
-﻿using System.Windows;
-using Presentation.ViewModel;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary :
+*********************************************************************************/
+
+using System.Windows;
 
 namespace Presentation
 {
@@ -8,7 +14,5 @@ namespace Presentation
     /// </summary>
     public partial class App : Application
     {
-
     }
-
 }

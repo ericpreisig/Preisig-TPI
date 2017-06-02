@@ -1,4 +1,11 @@
-﻿using DAL.Database;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Handle action with playlists
+*********************************************************************************/
+
+using DAL.Database;
 using DTO.Entity;
 using System.Collections.Generic;
 

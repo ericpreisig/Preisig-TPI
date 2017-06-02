@@ -1,6 +1,10 @@
-﻿using DTO.Entity;
-using System;
-using System.Collections.Generic;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Handle all call to the shoucast API
+*********************************************************************************/
+
 using System.Net;
 using System.Threading.Tasks;
 
@@ -33,7 +37,7 @@ namespace DAL.API
         /// <returns></returns>
         public static string GetRadioByKeyWord(string keyWord)
         {
-            return ApiExecute(ApiStringPrepare("stationsearch") + "&search=" + keyWord.Replace(" ", "+")+ "&limit=100").Result;
+            return ApiExecute(ApiStringPrepare("stationsearch") + "&search=" + keyWord.Replace(" ", "+") + "&limit=100").Result;
         }
 
         /// <summary>
@@ -60,7 +64,6 @@ namespace DAL.API
                     return client.DownloadString(executionString);
                 }
             });
-         
         }
 
         /// <summary>

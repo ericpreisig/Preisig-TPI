@@ -1,5 +1,13 @@
-﻿using BLL;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : All fonctions about sync
+*********************************************************************************/
+
+using BLL;
 using DTO.Entity;
+using MahApps.Metro.Controls.Dialogs;
 using NAudio.Wave;
 using Presentation.View;
 using Presentation.ViewModel;
@@ -10,11 +18,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace Presentation.Helper
 {
-
     /// <summary>
     /// Class used for the sync, it contains the allowed formats
     /// </summary>
@@ -53,13 +59,13 @@ namespace Presentation.Helper
                 });
             });
 #else
-                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Erreur", "Nous n'avons détecter aucune chanson. Voulez-vous procéder à une Synchronisation de votre bibliothèque ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Erreur", "Nous n'avons détecté aucune chanson. Voulez-vous procéder à une synchronisation de votre bibliothèque ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                 {
                     DefaultButtonFocus = MessageDialogResult.Affirmative,
                     NegativeButtonText = "Fermer"
                 });
             if (wrong == MessageDialogResult.Negative) return;
-            new IncludeFolder { Path=Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)}.AddIncludeFolder();   
+            new IncludeFolder { Path=Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)}.AddIncludeFolder();
             SyncAllFolders();
 #endif
         }
@@ -72,8 +78,7 @@ namespace Presentation.Helper
             var syncMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Synchronisation", "Synchronisation en cours, veuillez patienter");
             await Task.Run(() =>
             {
-                    
-               _analysedFolder = new List<string>();
+                _analysedFolder = new List<string>();
 
                 foreach (var folders in GeneralData.GetIncludedFolder())
                 {
@@ -88,14 +93,13 @@ namespace Presentation.Helper
                     SearchViewModel.EmptyBuffer();
                 });
             });
-
         }
 
         /// <summary>
         /// Remove all trash files
         /// </summary>
         private static void CleanDatabase()
-        {      
+        {
             //Remove file if not exist anymore
             foreach (var track in TrackData.GetTracks())
             {
@@ -103,13 +107,12 @@ namespace Presentation.Helper
                     track.RemoveTrack();
             }
 
-            var folderToAnalyse =GeneralData.GetIncludedFolder();
-
+            var folderToAnalyse = GeneralData.GetIncludedFolder();
 
             //Remove all music that are not in path anymore
             foreach (var track in TrackData.GetTracks())
             {
-                if (!folderToAnalyse.Any(a=>Path.GetFullPath(track.Path).StartsWith(Path.GetFullPath(a.Path))))
+                if (!folderToAnalyse.Any(a => Path.GetFullPath(track.Path).StartsWith(Path.GetFullPath(a.Path))))
                     track.RemoveTrack();
             }
         }
@@ -124,20 +127,17 @@ namespace Presentation.Helper
             SyncFolder(path);
         }
 
-
         /// <summary>
         /// Loop recursively through a folder to add or update new tracks
         /// </summary>
         /// <param name="path"></param>
         private static void SyncFolder(string path)
         {
-
-            //if already analysed folder, pass through 
+            //if already analysed folder, pass through
             if (_analysedFolder.All(a => a != path))
             {
                 _analysedFolder.Add(path);
 
-              
                 //it terate through all file with an authaurized format
                 foreach (var filePath in Directory.EnumerateFiles(path).Where(x => AllowedFormat.Any(a => x.EndsWith(a))))
                 {
@@ -164,7 +164,7 @@ namespace Presentation.Helper
                     }
                 }
             }
-            
+
             foreach (var folderPath in Directory.GetDirectories(path))
             {
                 try
@@ -193,7 +193,7 @@ namespace Presentation.Helper
             {
                 fileValues = new AudioFileReader(path);
             }
-            catch (Exception e)
+            catch
             {
                 fileValues = new MediaFoundationReader(path);
             }
@@ -211,7 +211,7 @@ namespace Presentation.Helper
             DateTime? dateCreation = null;
             if (fileInfo.Tag.Year != 0) dateCreation = new DateTime((int)fileInfo.Tag.Year, 1, 1);
             var album = AlbumData.CheckIfAlbumExist(albumName, artistName)
-                ? AlbumData.GetAlbums().FirstOrDefault(a => a.Name.ToLower() == albumName.ToLower())
+                ? AlbumData.GetAlbums().FirstOrDefault(a => a.Name.ToLower() == albumName.ToLower() && a.Artist.Name.ToLower() == artistName.ToLower())
                 : new Album
                 {
                     Artist = artist,
@@ -222,10 +222,10 @@ namespace Presentation.Helper
 
             //set genre
             List<Genre> genres = new List<Genre>();
-            List<string> genreTag= new List<string>(fileInfo.Tag.Genres);
-            if(genreTag.Count==0)
+            List<string> genreTag = new List<string>(fileInfo.Tag.Genres);
+            if (genreTag.Count == 0)
                 genreTag.Add("Inconnu");
-             
+
             foreach (var tagGenre in genreTag)
             {
                 genres.Add(GeneralData.CheckIfGenreExist(tagGenre)

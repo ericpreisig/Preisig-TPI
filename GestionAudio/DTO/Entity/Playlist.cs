@@ -1,8 +1,14 @@
-﻿using System.Collections.Generic;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Playlist
+*********************************************************************************/
+
+using System.Collections.Generic;
 
 namespace DTO.Entity
 {
-
     /// <summary>
     /// The database Playlist entity
     /// </summary>

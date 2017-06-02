@@ -1,4 +1,11 @@
-﻿using DTO;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Handle action about favorits
+*********************************************************************************/
+
+using DTO;
 
 namespace BLL
 {

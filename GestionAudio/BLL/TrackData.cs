@@ -1,6 +1,12 @@
-﻿using DAL.Database;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Handle action with tracks
+*********************************************************************************/
+
+using DAL.Database;
 using DTO.Entity;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,7 +43,7 @@ namespace BLL
         /// Get all tracks from the db
         /// </summary>
         /// <returns></returns>
-        public static List<Track> GetTracks() => new Repository<Track>().GetList();     
+        public static List<Track> GetTracks() => new Repository<Track>().GetList();
 
         /// <summary>
         /// Remove track from database, delete album and artist if empty
@@ -48,9 +54,9 @@ namespace BLL
             var artistId = track.Album.Artist.ID;
             new Repository<Track>().Delete(track);
             var albumRepo = new Repository<Album>();
-            if (albumRepo.GetById(albumId).Tracks.Count==0) albumRepo.Delete(albumRepo.GetById(albumId));
+            if (albumRepo.GetById(albumId).Tracks.Count == 0) albumRepo.Delete(albumRepo.GetById(albumId));
             var artistRepo = new Repository<Artist>();
-            if (artistRepo.GetById(artistId).Albums.Count==0) artistRepo.Delete(artistRepo.GetById(artistId));
+            if (artistRepo.GetById(artistId).Albums.Count == 0) artistRepo.Delete(artistRepo.GetById(artistId));
         }
 
         /// <summary>

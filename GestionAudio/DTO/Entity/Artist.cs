@@ -1,8 +1,14 @@
-﻿using System.Collections.Generic;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Artist
+*********************************************************************************/
+
+using System.Collections.Generic;
 
 namespace DTO.Entity
 {
-
     /// <summary>
     /// The database Artist entity
     /// </summary>

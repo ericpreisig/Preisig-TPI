@@ -1,7 +1,18 @@
-﻿using BLL;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Handle click on element from music page
+*********************************************************************************/
+
+using BLL;
 using DTO;
 using DTO.Entity;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
+using NAudio.Wave;
+using Presentation.Helper;
 using Presentation.View.List;
 using Shared;
 using System;
@@ -11,14 +22,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls.Dialogs;
-using NAudio.Wave;
-using Presentation.Helper;
 
 namespace Presentation.ViewModel
 {
-
     /// <summary>
     /// This class contain the logic for the musicview
     /// </summary>
@@ -32,7 +38,7 @@ namespace Presentation.ViewModel
         private Track _rightClickedItem;
         private object _selectedItem;
         private string _type;
-        
+
         #endregion Private Fields
 
         #region Public Constructors
@@ -42,32 +48,6 @@ namespace Presentation.ViewModel
             Init();
             Update();
             SetFavorite();
-        }
-
-        /// <summary>
-        /// Update all element on the list
-        /// </summary>
-        private void Update()
-        {
-            try
-            {
-                Tracks.Clear();
-                Artists.Clear();
-                Albums.Clear();
-                Genres.Clear();
-
-                Tracks.AddRang(TrackData.GetTracks().OrderBy(a => a.Name).ToList());
-                Artists.AddRang(ArtistData.GetArtists());
-                Albums.AddRang(AlbumData.GetAlbums());
-                Genres.AddRang(GeneralData.GetGenres().Where(a => a.Tracks.Count > 0).ToList());
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-          
         }
 
         public MusicViewModel(bool fromSearch)
@@ -126,13 +106,36 @@ namespace Presentation.ViewModel
             Artists = new ObservableCollection<Artist>(artists);
         }
 
+        /// <summary>
+        /// Update all element on the list
+        /// </summary>
+        private void Update()
+        {
+            try
+            {
+                Tracks.Clear();
+                Artists.Clear();
+                Albums.Clear();
+                Genres.Clear();
+
+                Tracks.AddRang(TrackData.GetTracks().OrderBy(a => a.Name).ToList());
+                Artists.AddRang(ArtistData.GetArtists());
+                Albums.AddRang(AlbumData.GetAlbums());
+                Genres.AddRang(GeneralData.GetGenres().Where(a => a.Tracks.Count > 0).ToList());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
 
         #endregion Public Constructors
 
         #region Public Properties
 
-        public ObservableCollection<Album> Albums { get; set; }= new ObservableCollection<Album>();
-        public ObservableCollection<Artist> Artists { get; set; }= new ObservableCollection<Artist>();
+        public ObservableCollection<Album> Albums { get; set; } = new ObservableCollection<Album>();
+        public ObservableCollection<Artist> Artists { get; set; } = new ObservableCollection<Artist>();
 
         public ObservableCollection<ContextMenu> ContextMenu
         {
@@ -145,7 +148,7 @@ namespace Presentation.ViewModel
         }
 
         public ObservableCollection<Track> Favorites { get; set; } = new ObservableCollection<Track>();
-        public ObservableCollection<Genre> Genres { get; set; }= new ObservableCollection<Genre>();
+        public ObservableCollection<Genre> Genres { get; set; } = new ObservableCollection<Genre>();
 
         public object MusicFlyoutView
         {
@@ -158,13 +161,13 @@ namespace Presentation.ViewModel
         }
 
         public RelayCommand<Playlist> OnAddingToPlaylist { get; set; }
+        public RelayCommand<Album> OnClickAlbumCover { get; set; }
         public RelayCommand OnClickElement { get; set; }
         public RelayCommand OnCreatingPlaylist { get; set; }
+        public RelayCommand OnDeleteFromDisk { get; set; }
+        public RelayCommand OnDeleteFromLibrary { get; set; }
         public RelayCommand<Playlist> OnRemovingFromPlaylist { get; set; }
         public RelayCommand OnRightClickTrack { get; set; }
-        public RelayCommand<Album> OnClickAlbumCover { get; set; }
-        public RelayCommand OnDeleteFromLibrary { get; set; }
-        public RelayCommand OnDeleteFromDisk { get; set; }
 
         public object SelectedItem
         {
@@ -214,7 +217,6 @@ namespace Presentation.ViewModel
 
                 MainWindowViewModel.Main.ReadingList.Clear();
                 MainWindowViewModel.Main.ReadingList.AddRang(Tracks.ToList());
-
             }
             else if (element is Album)
             {
@@ -225,7 +227,6 @@ namespace Presentation.ViewModel
                 };
                 MainWindowViewModel.Main.MusicViewModel.MusicFlyoutView = view;
                 MainWindowViewModel.Main.MusicViewModel.Type = "Morceaux";
-
             }
             else if (element is Artist)
             {
@@ -246,7 +247,7 @@ namespace Presentation.ViewModel
                     DataContext = new MusicViewModel(new ObservableCollection<Track>(((Genre)element).Tracks))
                 };
                 MainWindowViewModel.Main.MusicViewModel.MusicFlyoutView = view;
-                MainWindowViewModel.Main.MusicViewModel.Type = "Morceaux";            
+                MainWindowViewModel.Main.MusicViewModel.Type = "Morceaux";
             }
 
             //remove the selection of the item selected
@@ -277,38 +278,6 @@ namespace Presentation.ViewModel
         }
 
         /// <summary>
-        /// Delete or remove from the library the right clicked item
-        /// </summary>
-        /// <param name="fromDisk"></param>
-        private async void DeleteElement(bool fromDisk)
-        {
-            if(_rightClickedItem==null) return;
-
-            //If the user choose to delete it from the disk too
-            if (fromDisk)
-            {
-                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Supprimer", "Voulez-vous vraiement supprimer ce morceau de l'ordinateur ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
-                {
-                    DefaultButtonFocus = MessageDialogResult.Affirmative,
-                    NegativeButtonText = "Annuler"
-                });
-                if (wrong == MessageDialogResult.Negative) return;
-                try
-                {
-                    _rightClickedItem.File?.Dispose();
-                    File.Delete(_rightClickedItem.Path);
-                }
-                catch (Exception e)
-                {
-                    await GeneralHelper.ShowMessage("Erreur", "Suppression impossible, veuillez supprimer le fichier manuellement", MessageDialogStyle.Affirmative);
-                }
-            }
-            _rightClickedItem.RemoveTrack();
-            Update();
-        }
-
-
-        /// <summary>
         /// Remove a playlist
         /// </summary>
         /// <param name="playlist"></param>
@@ -331,6 +300,37 @@ namespace Presentation.ViewModel
                 if (track.IsFavorite)
                     Favorites.Add(track);
             }
+        }
+
+        /// <summary>
+        /// Delete or remove from the library the right clicked item
+        /// </summary>
+        /// <param name="fromDisk"></param>
+        private async void DeleteElement(bool fromDisk)
+        {
+            if (_rightClickedItem == null) return;
+
+            //If the user choose to delete it from the disk too
+            if (fromDisk)
+            {
+                var wrong = await MainWindowViewModel.MetroWindow.ShowMessageAsync("Supprimer", "Voulez-vous vraiement supprimer ce morceau de l'ordinateur ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                {
+                    DefaultButtonFocus = MessageDialogResult.Affirmative,
+                    NegativeButtonText = "Annuler"
+                });
+                if (wrong == MessageDialogResult.Negative) return;
+                try
+                {
+                    _rightClickedItem.File?.Dispose();
+                    File.Delete(_rightClickedItem.Path);
+                }
+                catch
+                {
+                    await GeneralHelper.ShowMessage("Erreur", "Suppression impossible, veuillez supprimer le fichier manuellement", MessageDialogStyle.Affirmative);
+                }
+            }
+            _rightClickedItem.RemoveTrack();
+            Update();
         }
 
         #endregion Public Methods
@@ -379,7 +379,6 @@ namespace Presentation.ViewModel
             });
         }
 
-
         /// <summary>
         /// If the user choose the create Playlist option in the context menu
         /// </summary>
@@ -419,11 +418,10 @@ namespace Presentation.ViewModel
             OnCreatingPlaylist = new RelayCommand(CreatingPlaylist);
             OnRemovingFromPlaylist = new RelayCommand<Playlist>(RemovingFromPlaylist);
             OnClickAlbumCover = new RelayCommand<Album>(ClickElement);
-            OnDeleteFromLibrary = new RelayCommand(()=>DeleteElement(false));
-            OnDeleteFromDisk = new RelayCommand(()=> DeleteElement(true));
+            OnDeleteFromLibrary = new RelayCommand(() => DeleteElement(false));
+            OnDeleteFromDisk = new RelayCommand(() => DeleteElement(true));
             CreateContextMenu();
             Messenger.Default.Register<string>(this, (action) => Update());
-
         }
 
         /// <summary>
@@ -447,7 +445,6 @@ namespace Presentation.ViewModel
         private void RightClickTrack()
         {
             _isRightClick = true;
-
         }
 
         #endregion Private Methods

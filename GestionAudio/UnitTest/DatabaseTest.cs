@@ -1,4 +1,11 @@
-﻿using DAL.Database;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Test about db
+*********************************************************************************/
+
+using DAL.Database;
 using NUnit.Framework;
 
 namespace UnitTest

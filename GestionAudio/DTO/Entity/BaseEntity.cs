@@ -1,4 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : BaseEntity, entity shared between all tables in the db
+*********************************************************************************/
+
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DTO.Entity
 {

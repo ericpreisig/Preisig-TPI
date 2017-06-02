@@ -1,12 +1,18 @@
-﻿using BLL;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Context of the app (actual music, radio, is the music playing ...)
+*********************************************************************************/
+
+using BLL;
 using DTO.Entity;
-using Presentation.ViewModel;
-using System;
-using System.IO;
-using System.Linq;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
+using Presentation.ViewModel;
 using Shared;
+using System.IO;
+using System.Linq;
 
 namespace Presentation.Helper
 {
@@ -52,7 +58,7 @@ namespace Presentation.Helper
             {
                 GeneralHelper.ShowMessage("Erreur", "Le fichier est introuvable, il va donc être supprimé de la base de données",
                     MessageDialogStyle.Affirmative);
-                
+
                 track.RemoveTrack();
                 MainWindowViewModel.Main.ReadingList.Remove(track);
 
@@ -79,7 +85,6 @@ namespace Presentation.Helper
                 MainWindowViewModel.Main.ReadingList.Remove(track);
             }
         }
-
 
         #endregion Public Methods
     }

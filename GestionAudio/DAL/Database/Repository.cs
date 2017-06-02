@@ -1,8 +1,9 @@
-﻿/*
-Author : Eric Preisig
-Version : 1.0.0
-Date : 06.04.2017
-*/
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Generic repository that allow action to db tables
+*********************************************************************************/
 
 using DTO.Entity;
 using System;
@@ -40,6 +41,7 @@ namespace DAL.Database
         #endregion Private Fields
 
         #region Public Constructors
+
         /// <summary>
         /// On the first time, create a context
         /// </summary>

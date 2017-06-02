@@ -1,6 +1,12 @@
-﻿using DAL.Database;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Handle action with albums
+*********************************************************************************/
+
+using DAL.Database;
 using DTO.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

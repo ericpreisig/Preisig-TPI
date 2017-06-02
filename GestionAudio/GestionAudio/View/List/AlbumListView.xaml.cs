@@ -1,4 +1,11 @@
-﻿using System.Windows.Controls;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary :
+*********************************************************************************/
+
+using System.Windows.Controls;
 
 namespace Presentation.View.List
 {

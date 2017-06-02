@@ -1,9 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Context
+*********************************************************************************/
+
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DTO.Entity
 {
     /// <summary>
-    /// The database COntext entity
+    /// The database Context entity
     /// </summary>
     public class Context : BaseEntity
     {
@@ -18,12 +25,12 @@ namespace DTO.Entity
         public long? fkRadio { get; set; }
         public long? fkTrack { get; set; }
 
+        [NotMapped]
+        public int IsLooping { get; set; }
+
         public bool IsMusicPlaying { get; set; }
 
         public bool IsMusicPlayingOnStart { get; set; }
-
-        [NotMapped]
-        public int IsLooping { get; set; }
 
         [NotMapped]
         public bool IsRandom { get; set; }

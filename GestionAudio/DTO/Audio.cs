@@ -1,4 +1,11 @@
-﻿using DTO.Entity;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary :
+*********************************************************************************/
+
+using DTO.Entity;
 using NAudio.Wave;
 using Shared;
 using System;
@@ -37,6 +44,9 @@ namespace DTO
 
         public virtual List<Genre> Genres { get; set; }
 
+        [NotMapped]
+        public string GenresString => string.Join(", ", Genres.Select(a => a.Name));
+
         public bool IsFavorite { get; set; }
         public string Name { get; set; }
 
@@ -45,9 +55,6 @@ namespace DTO
 
         [NotMapped]
         public BitmapImage Picture => this is Radio ? new BitmapImage(new Uri((this as Radio).LogoUrl)) : (this as Track).Album.Picture;
-
-        [NotMapped]
-        public string GenresString => string.Join(", ", Genres.Select(a=>a.Name));
 
         #endregion Public Properties
     }

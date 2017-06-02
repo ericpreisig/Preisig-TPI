@@ -1,4 +1,11 @@
-﻿using System.Reflection;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary :
+*********************************************************************************/
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 

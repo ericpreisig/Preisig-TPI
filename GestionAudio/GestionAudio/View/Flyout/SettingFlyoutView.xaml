@@ -39,7 +39,7 @@
 
         <StackPanel  Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
             <Button Style="{StaticResource TransparentButtonStyle}" Margin="0,0,15,0" Command="{Binding OnClickRemoveFolder}">
-                <Rectangle Width="20" Height="4" Fill="#d3dcde" >
+                <Rectangle Width="20" Height="4" Fill="#d3dcde">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_minus}" />
                     </Rectangle.OpacityMask>

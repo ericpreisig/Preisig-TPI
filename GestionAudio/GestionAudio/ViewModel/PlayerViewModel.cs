@@ -1,3 +1,10 @@
+/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Take every action from the small and big player
+*********************************************************************************/
+
 using BLL;
 using DTO;
 using DTO.Entity;

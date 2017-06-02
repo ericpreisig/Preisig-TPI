@@ -1,4 +1,11 @@
-﻿using BLL;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : All action 
+*********************************************************************************/
+
+using BLL;
 using DTO.Entity;
 using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls.Dialogs;
@@ -10,8 +17,6 @@ using System.Threading.Tasks;
 
 namespace Presentation.ViewModel
 {
-
-
     /// <summary>
     /// This class contain the logic for the playlistview
     /// </summary>
@@ -26,6 +31,9 @@ namespace Presentation.ViewModel
 
         #region Public Constructors
 
+        /// <summary>
+        /// Set playlists
+        /// </summary>
         public PlaylistViewModel()
         {
             Playlists = new ObservableCollection<Playlist>(PlaylistData.GetPlaylists());

@@ -1,4 +1,11 @@
-﻿using DTO.Entity;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Converter for the reading list to display a play button next to the playing music
+*********************************************************************************/
+
+using DTO.Entity;
 using System;
 using System.Globalization;
 using System.IO;
@@ -7,7 +14,6 @@ using System.Windows.Media.Imaging;
 
 namespace Presentation.Converter
 {
-
     /// <summary>
     /// Converter used for the readingListView
     /// </summary>

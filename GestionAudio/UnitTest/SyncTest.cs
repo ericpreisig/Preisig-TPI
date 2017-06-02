@@ -1,8 +1,13 @@
-﻿using System;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Test about sync
+*********************************************************************************/
+
 using NUnit.Framework;
 using Presentation.Helper;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 

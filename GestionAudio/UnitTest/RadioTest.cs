@@ -1,9 +1,15 @@
-﻿using DAL.API;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Test about radios
+*********************************************************************************/
+
+using BLL;
 using DTO.Entity;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using BLL;
 
 namespace UnitTest
 {
@@ -36,7 +42,7 @@ namespace UnitTest
         [Test]
         public void CheckApiData()
         {
-            _radios =  RadioData.GetRadioByKeyWord("metal");
+            _radios = RadioData.GetRadioByKeyWord("metal");
         }
 
         /// <summary>

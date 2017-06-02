@@ -1,21 +1,25 @@
-﻿using BLL;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : all action with the radio view
+*********************************************************************************/
+
+using BLL;
 using DTO.Entity;
 using GalaSoft.MvvmLight.Command;
+using MahApps.Metro.Controls.Dialogs;
+using NAudio.Wave;
+using Presentation.Helper;
 using Shared;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using MahApps.Metro.Controls.Dialogs;
-using NAudio.Wave;
-using Presentation.Helper;
-using Presentation.View;
 
 namespace Presentation.ViewModel
 {
-
     /// <summary>
     /// This class contain the logic for the radioview
     /// </summary>
@@ -31,7 +35,11 @@ namespace Presentation.ViewModel
 
         #region Public Constructors
 
-        public RadioViewModel(bool instantLoadRadio=false)
+        /// <summary>
+        /// Set the radio view
+        /// </summary>
+        /// <param name="instantLoadRadio"></param>
+        public RadioViewModel(bool instantLoadRadio = false)
         {
             OnClickElement = new RelayCommand(ClickRadio);
             OnRightClickRadio = new RelayCommand(RightClickRadio);
@@ -43,30 +51,6 @@ namespace Presentation.ViewModel
             LoadRadio();
         }
 
-        /// <summary>
-        /// Get and populate the top 500 radios
-        /// </summary>
-        private async void LoadRadio()
-        {
-            //Get top 500 radios         
-            var radioMessage =await MainWindowViewModel.MetroWindow.ShowProgressAsync("Radio", "Accès à Shoutcast en cours... Veuillez patienter");
-            await Task.Run(() =>
-            {
-                try
-                {
-                    var radios = RadioData.GetRadioTop500Radios();
-                    Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
-                }
-                catch (Exception e)
-                {
-                    GeneralHelper.ShowMessage("Erreur", "Accès à Shoutcast impossible", MessageDialogStyle.Affirmative);
-                }
-                radioMessage.CloseAsync();
-
-
-            });
-        }
-
         public RadioViewModel(List<Radio> radios)
         {
             OnClickElement = new RelayCommand(ClickRadio);
@@ -74,6 +58,28 @@ namespace Presentation.ViewModel
             Task.Run(() =>
             {
                 Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
+            });
+        }
+
+        /// <summary>
+        /// Get and populate the top 500 radios
+        /// </summary>
+        private async void LoadRadio()
+        {
+            //Get top 500 radios
+            var radioMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Radio", "Accès à Shoutcast en cours... Veuillez patienter");
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var radios = RadioData.GetRadioTop500Radios();
+                    Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
+                }
+                catch
+                {
+                    GeneralHelper.ShowMessage("Erreur", "Accès à Shoutcast impossible", MessageDialogStyle.Affirmative);
+                }
+                radioMessage.CloseAsync();
             });
         }
 
@@ -109,7 +115,7 @@ namespace Presentation.ViewModel
         /// </summary>
         public async void ClickRadio()
         {
-            if(SelectedItem==null) return;
+            if (SelectedItem == null) return;
             SelectedItem.File = null;
             var accessRadioMessage = await MainWindowViewModel.MetroWindow.ShowProgressAsync("Radio", "Accès à la radio en cours... Veuillez patienter");
             await Task.Run(() =>
@@ -131,17 +137,15 @@ namespace Presentation.ViewModel
                         Application.Current.Dispatcher.Invoke(() => MainWindowViewModel.Main.ReadingList.Clear());
                         MainWindowViewModel.Main.IsFlyoutRunningOpen = true;
                         Application.Current.Dispatcher.Invoke(SetLastRadios);
-                    }                            
+                    }
                 }
-                catch (Exception e)
+                catch
                 {
                     GeneralHelper.ShowMessage("Erreur", "Accès à Shoutcast impossible", MessageDialogStyle.Affirmative);
                 }
                 accessRadioMessage.CloseAsync();
-
             });
             await Task.Run(() => { Thread.Sleep(30); SelectedItem = null; });
-
         }
 
         /// <summary>
@@ -185,8 +189,9 @@ namespace Presentation.ViewModel
         private void SetLastRadios()
         {
             LastRadios.Clear();
-            LastRadios.AddRang(RadioData.Get10LastRadios());        
+            LastRadios.AddRang(RadioData.Get10LastRadios());
         }
+
         #endregion Private Methods
     }
 }

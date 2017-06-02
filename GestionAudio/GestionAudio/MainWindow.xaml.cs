@@ -1,7 +1,14 @@
-﻿using System;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Starting point of the app, get used dll
+*********************************************************************************/
+
+using Presentation.ViewModel;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using Presentation.ViewModel;
 using System.Windows;
 
 namespace Presentation
@@ -12,9 +19,6 @@ namespace Presentation
     public partial class MainWindow
     {
         #region Public Constructors
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr LoadLibrary(string dllToLoad);
 
         /// <summary>
         /// Set the good dll of C++runtime
@@ -29,6 +33,9 @@ namespace Presentation
 
             InitializeComponent();
         }
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr LoadLibrary(string dllToLoad);
 
         #endregion Public Constructors
 

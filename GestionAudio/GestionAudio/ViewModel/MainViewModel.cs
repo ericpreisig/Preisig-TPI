@@ -1,3 +1,10 @@
+/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Not used, link between pages
+*********************************************************************************/
+
 using GalaSoft.MvvmLight;
 
 namespace Presentation.ViewModel

@@ -1,10 +1,16 @@
-﻿using DAL.API;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Handle action with radios
+*********************************************************************************/
+
+using DAL.API;
 using DAL.Database;
 using DTO.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading;
 using System.Xml.Linq;
 using static System.String;
@@ -19,60 +25,43 @@ namespace BLL
         #region Public Methods
 
         /// <summary>
-        /// Get last ten listened radios
-        /// </summary>
-        /// <returns></returns>
-        public static List<Radio> Get10LastRadios()=> new Repository<Radio>().GetList().OrderByDescending(a => a.LastListen).Take(10).ToList();      
-
-        /// <summary>
-        /// Add a radio to recent radios, and remove when they is more than 10 radios 
+        /// Add a radio to recent radios, and remove when they is more than 10 radios
         /// </summary>
         /// <returns></returns>
         public static Radio AddRadioToRecent(this Radio radio)
         {
-            var repo= new Repository<Radio>();
+            var repo = new Repository<Radio>();
             var newRadio = repo.GetList().FirstOrDefault(a => a.Path == radio.Path) ?? radio;
-            newRadio.LastListen= DateTime.Now;
+            newRadio.LastListen = DateTime.Now;
             repo.AddOrUpdate(newRadio);
             DeleteOldRadio();
             return newRadio;
         }
 
         /// <summary>
-        ///Delete radio which is not in favorite, nor in last 10 listen
+        /// Get last ten listened radios
         /// </summary>
         /// <returns></returns>
-        private static void DeleteOldRadio()
-        {
-            var repo = new Repository<Radio>();
-            var count=0;
-            foreach (var radio in repo.GetList().OrderByDescending(a=>a.LastListen))
-            {
-                count++;
-                if(count>10 && !radio.IsFavorite)
-                    repo.Delete(radio);                    
-            }
-
-        }
+        public static List<Radio> Get10LastRadios() => new Repository<Radio>().GetList().OrderByDescending(a => a.LastListen).Take(10).ToList();
 
         /// <summary>
         /// Get all radio the user put on favorite
         /// </summary>
         /// <returns></returns>
-        public static List<Radio> GetFavouriteRadios()=> new Repository<Radio>().GetList().Where(radio => radio.IsFavorite).ToList();
+        public static List<Radio> GetFavouriteRadios() => new Repository<Radio>().GetList().Where(radio => radio.IsFavorite).ToList();
 
         /// <summary>
         /// Get all radio that match the keyword
         /// </summary>
         /// <param name="keyWord"></param>
         /// <returns></returns>
-        public static List<Radio> GetRadioByKeyWord(string keyWord) => GetRadiosFromXml(Shoutcast.GetRadioByKeyWord(keyWord)).Where(a=>a.Name.ToLower().Contains(keyWord) || a.Genres.Any(b=>b.Name.ToLower().Contains(keyWord))).ToList();
+        public static List<Radio> GetRadioByKeyWord(string keyWord) => GetRadiosFromXml(Shoutcast.GetRadioByKeyWord(keyWord)).Where(a => a.Name.ToLower().Contains(keyWord) || a.Genres.Any(b => b.Name.ToLower().Contains(keyWord))).ToList();
 
         /// <summary>
         /// Get top 500 radios
         /// </summary>
         /// <returns></returns>
-        public static List<Radio> GetRadioTop500Radios()=>GetRadiosFromXml(Shoutcast.GetTop500Radios());
+        public static List<Radio> GetRadioTop500Radios() => GetRadiosFromXml(Shoutcast.GetTop500Radios());
 
         /// <summary>
         /// Let 3 tryies to get the strea link form a radio
@@ -84,9 +73,9 @@ namespace BLL
             if (!IsNullOrWhiteSpace(radio.Path)) return radio;
 
             var counterTry = 0;
-            while (counterTry<3 && IsNullOrWhiteSpace(radio.Path))
+            while (counterTry < 3 && IsNullOrWhiteSpace(radio.Path))
             {
-                Thread.Sleep(200*counterTry);
+                Thread.Sleep(200 * counterTry);
                 var downloadedFile = Shoutcast.DownloadFile(radio.ShoutCastId);
 
                 //Parse the document as an XML
@@ -96,14 +85,30 @@ namespace BLL
                 {
                     //Get the element location which is the link
                     path = (from d in doc.Descendants()
-                        where d.Name.LocalName == "location"
-                        select d.Value).FirstOrDefault();
+                            where d.Name.LocalName == "location"
+                            select d.Value).FirstOrDefault();
                 }
 
                 radio.Path = path;
                 counterTry++;
-            }          
+            }
             return radio;
+        }
+
+        /// <summary>
+        ///Delete radio which is not in favorite, nor in last 10 listen
+        /// </summary>
+        /// <returns></returns>
+        private static void DeleteOldRadio()
+        {
+            var repo = new Repository<Radio>();
+            var count = 0;
+            foreach (var radio in repo.GetList().OrderByDescending(a => a.LastListen))
+            {
+                count++;
+                if (count > 10 && !radio.IsFavorite)
+                    repo.Delete(radio);
+            }
         }
 
         #endregion Public Methods
@@ -117,7 +122,7 @@ namespace BLL
         /// <returns></returns>
         private static List<Radio> GetRadiosFromXml(string xml)
         {
-            if(IsNullOrWhiteSpace(xml)) return new List<Radio>();
+            if (IsNullOrWhiteSpace(xml)) return new List<Radio>();
 
             //parse the xml
             var items = from i in XDocument.Parse(xml).Descendants("station")
@@ -128,7 +133,7 @@ namespace BLL
                             LogoUrl = (string)i.Attribute("logo"),
                             Format = (string)i.Attribute("mt"),
                             Desrciption = (string)i.Attribute("ct"),
-                            Genres = new List<Genre> { new Genre { Name = (string)i.Attribute("genre") }}                          
+                            Genres = new List<Genre> { new Genre { Name = (string)i.Attribute("genre") } }
                         };
 
             return items.ToList();

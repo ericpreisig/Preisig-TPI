@@ -1,4 +1,11 @@
-﻿using DTO.Entity;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Execute action triggered by the big and small player
+*********************************************************************************/
+
+using DTO.Entity;
 using NAudio.Wave;
 using Presentation.ViewModel;
 using System;
@@ -51,7 +58,7 @@ namespace Presentation.Helper
                 try
                 {
                     if (Context.ActualContext.Track == null) break;
-                    Context.ActualContext.ActualTime = (int) _playerStream.CurrentTime.TotalMilliseconds;
+                    Context.ActualContext.ActualTime = (int)_playerStream.CurrentTime.TotalMilliseconds;
                     MainWindowViewModel.PlayerViewModel.ChangeTimeToSlider((int)_playerStream.CurrentTime.TotalMilliseconds, Context.ActualContext.Track.Duration);
                     Thread.Sleep(100);
 
@@ -81,8 +88,6 @@ namespace Presentation.Helper
             Play();
             MainWindowViewModel.PlayerViewModel.VolumeValue = Player.Volume;
             MainWindowViewModel.PlayerViewModel.InitPlayer(Context.ActualContext.ActualAudio);
-         
-           
         }
 
         /// <summary>
@@ -116,12 +121,13 @@ namespace Presentation.Helper
                     if (newTrackToPlay == null)
                         newTrackToPlay = MainWindowViewModel.Main.ReadingList.FirstOrDefault();
                     break;
+
                 case 2:
                     newTrackToPlay = Context.ActualContext.Track;
                     break;
             }
 
-            if(newTrackToPlay==null)
+            if (newTrackToPlay == null)
                 return;
 
             Context.ActualContext.Track = newTrackToPlay;

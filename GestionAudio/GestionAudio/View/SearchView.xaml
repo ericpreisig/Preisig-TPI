@@ -20,8 +20,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
                 <RowDefinition Height="*" MinHeight="300" />
-                <RowDefinition Height="Auto" MinHeight="230"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="230" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="1" FontSize="22" Foreground="#3498db" Grid.ColumnSpan="3">
                <Run Text="Recherche : " />
@@ -31,7 +31,7 @@
                 <GroupBox.Header>
                     <Label Foreground="#3498db"  FontSize="19">Morceaux</Label>
                 </GroupBox.Header>
-                <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5" Height="300"/>
+                <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5" Height="300" />
             </GroupBox>
 
             <GroupBox Grid.Column="4" Grid.Row="1" Background="Transparent"  BorderThickness="0">
@@ -55,7 +55,7 @@
                     </ItemsControl.Template>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                            <VirtualizingStackPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -84,5 +84,4 @@
             </GroupBox>
         </Grid>
     </ScrollViewer>
-   
 </UserControl>

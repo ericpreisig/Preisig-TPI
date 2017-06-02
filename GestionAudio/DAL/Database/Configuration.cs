@@ -1,8 +1,9 @@
-﻿/*
-Author : Eric Preisig
-Version : 1.0.0
-Date : 06.04.2017
-*/
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Config of the database
+*********************************************************************************/
 
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;

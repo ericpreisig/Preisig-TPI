@@ -1,5 +1,11 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Radio
+*********************************************************************************/
+
+using System;
 
 namespace DTO.Entity
 {
@@ -12,9 +18,8 @@ namespace DTO.Entity
 
         public string Desrciption { get; set; }
         public string Format { get; set; }
-        public string LogoUrl { get; set; }
         public DateTime LastListen { get; set; }
-
+        public string LogoUrl { get; set; }
         public string ShoutCastId { get; set; }
 
         #endregion Public Properties
