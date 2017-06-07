@@ -50,19 +50,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>UU7Neg3vy6bCWGZkPr2a8QDjFHm4erA4/Rky4PlkCbk=</dsig:DigestValue>
+        <dsig:DigestValue>9XtsEME5fpZVG1/NbtOO+ES2C45kbDE95LpRCw11u0E=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DAL.dll" size="13312">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DAL.dll" size="13824">
       <assemblyIdentity name="DAL" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>1BbGTvuVEjFxytSJ9K1AwiRswhv9YDsHNyA2i8Z4sX0=</dsig:DigestValue>
+        <dsig:DigestValue>329FgDLIybL2QmoqgPranEocBg1F/LA9pY4U97NcJAg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>kTFRpJxBZTbXCR2fi5vVpuxwVTxWWv6sbUB2MWMa2Ag=</dsig:DigestValue>
+        <dsig:DigestValue>77Ri2uQfa1b174uTX8u1SiJsIGIgTbLhjvwT321rTI8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -302,7 +302,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>4piUjNPHOh+HoZFSuvJAkM9QXgGztV6emGulQgnmx84=</dsig:DigestValue>
+        <dsig:DigestValue>73VDIKQqsNu6u2jhRurpzS/VJm5AgQBvq2BeT8eT7ik=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -314,7 +314,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>3YNGCwZRSclQ1ZlF/ONHbdZiYaaEDqCCB721ZwrZRmQ=</dsig:DigestValue>
+        <dsig:DigestValue>yJAP77VE2Y3cxaN1krLCdyiy/WUWodBfNPw8XLqEgIE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -387,13 +387,13 @@
       <dsig:DigestValue>d4aTHAOuQCloxFfTopJ8alcx6n2tMXg+pkAirhS3XAM=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Presentation.exe.config" size="562">
+  <file name="Presentation.exe.config" size="547">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>vguazwJrA9DAa4nbqYuOTQEwi1jC5WzkkAKsl8lXzLs=</dsig:DigestValue>
+      <dsig:DigestValue>lQ5rKFiOZvMptKFTqoCLyu7z2vKzSgx+tFCqQEI2CUU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Resources\Images\logoApp.ico" size="370070">

@@ -55,7 +55,7 @@
                     <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3" />
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding  Audio.Genre.Name}" TextTrimming="WordEllipsis">
+            <TextBlock Margin="20,0,0,10" FontSize="22" Foreground="White" Text="{Binding Audio.GenresString}" TextTrimming="WordEllipsis">
                 <TextBlock.Effect>
                     <DropShadowEffect ShadowDepth="0" Direction="0" Color="Black" Opacity="1" BlurRadius="3" />
                 </TextBlock.Effect>

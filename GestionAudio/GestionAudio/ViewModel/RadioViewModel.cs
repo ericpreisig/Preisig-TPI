@@ -74,12 +74,13 @@ namespace Presentation.ViewModel
                 {
                     var radios = RadioData.GetRadioTop500Radios();
                     Application.Current.Dispatcher.Invoke(() => Radios.AddRang(radios));
+                    radioMessage.CloseAsync();
                 }
                 catch
                 {
+                    radioMessage.CloseAsync();
                     GeneralHelper.ShowMessage("Erreur", "Accès à Shoutcast impossible", MessageDialogStyle.Affirmative);
                 }
-                radioMessage.CloseAsync();
             });
         }
 

@@ -56,7 +56,7 @@ namespace Presentation.ViewModel
         {
 
             //if there is no music, give the user the choice to sync his
-            if (TrackData.CheckIfDatabaseEmpty() && !GeneralData.GetIncludedFolder().Any())
+            if (!GeneralData.GetIncludedFolder().Any())
                 MusicSync.NoMusic();
 
             OnOpenSettingFlyout = new RelayCommand(() =>
@@ -273,10 +273,21 @@ namespace Presentation.ViewModel
             {
                 if (context.Track != null)
                 {
-                    //launch track
+                   
+
+                    //set song time
                     var actualTime = (int)Math.Round(1.0 * context.ActualTime / context.Track.Duration * 100);
+                    //launch track
                     Helper.Context.PlayNewSong(context.Track);
+
                     MusicPlayer.ChangeTime(actualTime);
+
+                    //set slider value
+                    PlayerViewModel.SliderValue = actualTime;
+
+                    //set time poswition value
+                    var newPosition = (long)(1.0 * context.Track.Duration * (actualTime * 1.0 / 100));
+                    PlayerViewModel.ActualTime = TimeSpan.FromMilliseconds(newPosition);
                 }
                 if (context.Radio != null)
                 {
@@ -285,11 +296,7 @@ namespace Presentation.ViewModel
                 }
                 if (!context.IsMusicPlayingOnStart || !isMusicPlaying)
                 {
-                    Task.Run(() =>
-                    {
-                        Thread.Sleep(10);
-                        MusicPlayer.Pause();
-                    });
+                    MusicPlayer.Pause();
                 }
             }
             catch

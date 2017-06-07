@@ -33,12 +33,13 @@ namespace BLL
         /// Add or update an audio element
         /// </summary>
         /// <param name="audio"></param>
-        public static void AddOrUpdateAudio(this Audio audio)
+        /// <param name="save"></param>      
+        public static void AddOrUpdateAudio(this Audio audio, bool save = true)
         {
             if (audio is Track)
-                new Repository<Track>().AddOrUpdate((Track)audio);
+                new Repository<Track>().AddOrUpdate((Track)audio, save);
             else if (audio is Radio)
-                new Repository<Radio>().AddOrUpdate((Radio)audio);
+                new Repository<Radio>().AddOrUpdate((Radio)audio, save);
         }
 
         /// <summary>

@@ -135,7 +135,7 @@ namespace Presentation.ViewModel
             set
             {
                 _sliderValue = value;
-                //it means the user chnage the time
+                //it means the user change the time
                 if (Math.Abs(_sliderValue - _oldValue) > 1)
                 {
                     MusicPlayer.ChangeTime((int)Math.Round(_sliderValue));

@@ -53,24 +53,32 @@ namespace Presentation.Helper
         public static void EachSecondAction()
         {
             Thread.CurrentThread.IsBackground = true;
-            while (true)
+            try
             {
-                try
+                while (true)
                 {
-                    if (Context.ActualContext.Track == null) break;
-                    Context.ActualContext.ActualTime = (int)_playerStream.CurrentTime.TotalMilliseconds;
-                    MainWindowViewModel.PlayerViewModel.ChangeTimeToSlider((int)_playerStream.CurrentTime.TotalMilliseconds, Context.ActualContext.Track.Duration);
-                    Thread.Sleep(100);
+                    try
+                    {
+                        if (Context.ActualContext.Track == null) break;
+                        Context.ActualContext.ActualTime = (int)_playerStream.CurrentTime.TotalMilliseconds;
+                        MainWindowViewModel.PlayerViewModel.ChangeTimeToSlider((int)_playerStream.CurrentTime.TotalMilliseconds, Context.ActualContext.Track.Duration);
+                        Thread.Sleep(100);
 
-                    //go to next music if ended
-                    if ((int)_playerStream.CurrentTime.TotalMilliseconds >= Context.ActualContext.Track.Duration)
-                        Application.Current.Dispatcher.Invoke(Next);
+                        //go to next music if ended
+                        if ((int)_playerStream.CurrentTime.TotalMilliseconds >= Context.ActualContext.Track.Duration)
+                            Application.Current.Dispatcher.Invoke(Next);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        //Error the this thread wasn't updated syncronisously with the main thread
+                    }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    //Error the this thread wasn't updated syncronisously with the main thread
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //Error the this thread wasn't updated syncronisously with the main thread
             }
         }
 
@@ -142,7 +150,8 @@ namespace Presentation.Helper
             if (Context.ActualContext.ActualAudio == null) return;
             Context.ActualContext.IsMusicPlaying = false;
             Player.Pause();
-            _eachSecond.Abort();
+            if(_eachSecond!=null && _eachSecond.IsAlive)
+                 _eachSecond.Abort();
             MainWindowViewModel.PlayerViewModel.PlaylerStatus = true;
             MainWindowViewModel.Main.ReadingList = new ObservableCollection<Track>(MainWindowViewModel.Main.ReadingList);
         }

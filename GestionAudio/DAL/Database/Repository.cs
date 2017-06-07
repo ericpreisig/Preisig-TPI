@@ -74,7 +74,8 @@ namespace DAL.Database
         /// Update or insert an entity
         /// </summary>
         /// <param name="entity"></param>
-        public void AddOrUpdate(T entity)
+        /// <param name="save"></param>
+        public void AddOrUpdate(T entity, bool save = true)
         {
             try
             {
@@ -82,7 +83,8 @@ namespace DAL.Database
                     throw new ArgumentNullException(nameof(entity));
 
                 Entities.AddOrUpdate(entity);
-                GetContext.Context.SaveChanges();
+                if (save)
+                    GetContext.Context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {

@@ -125,6 +125,9 @@ namespace Presentation.Helper
         {
             CleanDatabase();
             SyncFolder(path);
+
+            //Save all changes to the tracks
+            Context.ActualContext.SaveContext();
         }
 
         /// <summary>
@@ -148,14 +151,14 @@ namespace Presentation.Helper
                     // already in database
                     if (TrackData.CheckIfAlreadyInDatabase(filePath))
                     {
-                        TrackData.GetTrackByPath(filePath).UpdateTrackInfo(TransformToTrack(filePath)).AddOrUpdateAudio();
+                        TrackData.GetTrackByPath(filePath).UpdateTrackInfo(TransformToTrack(filePath)).AddOrUpdateAudio(false);
                     }
                     else
                     {
                         //Ignore mp3 that have a sample rate change
                         try
                         {
-                            TransformToTrack(filePath).AddOrUpdateAudio();
+                            TransformToTrack(filePath).AddOrUpdateAudio(false);
                         }
                         catch (Exception e)
                         {
@@ -242,6 +245,10 @@ namespace Presentation.Helper
                 Genres = genres,
                 Path = path
             };
+
+            if (album.ID == 0 || genres.Any(a => a.ID == 0) || artist.ID == 0)
+                track.AddOrUpdateAudio();
+
             return track;
         }
 
