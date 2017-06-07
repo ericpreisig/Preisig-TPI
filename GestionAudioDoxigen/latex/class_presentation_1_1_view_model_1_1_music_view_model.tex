@@ -1,0 +1,220 @@
+\hypertarget{class_presentation_1_1_view_model_1_1_music_view_model}{}\section{Presentation.\+View\+Model.\+Music\+View\+Model Class Reference}
+\label{class_presentation_1_1_view_model_1_1_music_view_model}\index{Presentation.\+View\+Model.\+Music\+View\+Model@{Presentation.\+View\+Model.\+Music\+View\+Model}}
+
+
+This class contain the logic for the musicview  
+
+
+Inheritance diagram for Presentation.\+View\+Model.\+Music\+View\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_presentation_1_1_view_model_1_1_music_view_model}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a663da1779b44dad9622f6e87d335d1e5}\label{class_presentation_1_1_view_model_1_1_music_view_model_a663da1779b44dad9622f6e87d335d1e5}} 
+{\bfseries Music\+View\+Model} (bool from\+Search)
+\item 
+\hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_a2d9bfd47e3a2e98ac08cdfec449d69bf}{Music\+View\+Model} (Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track} $>$ tracks)
+\begin{DoxyCompactList}\small\item\em When the view displays only tracks \end{DoxyCompactList}\item 
+\hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_a8230a35d252df28e6578be32bf6f8ba2}{Music\+View\+Model} (Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track} $>$ tracks, \hyperlink{class_d_t_o_1_1_entity_1_1_playlist}{Playlist} playlist)
+\begin{DoxyCompactList}\small\item\em When the view is opened by the playlist viewmodel \end{DoxyCompactList}\item 
+\hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_a5856bb1decf95ae383427219e6598706}{Music\+View\+Model} (Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_album}{Album} $>$ albums)
+\begin{DoxyCompactList}\small\item\em When the view only display albums \end{DoxyCompactList}\item 
+\hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_a0b884bbf52c755226eac57a6b68a4e41}{Music\+View\+Model} (Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_artist}{Artist} $>$ artists)
+\begin{DoxyCompactList}\small\item\em When the view only display artists \end{DoxyCompactList}\item 
+void \hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_a5fc99c4453a0bb82e1b53091fa31b554}{Click\+Element} (object element)
+\begin{DoxyCompactList}\small\item\em When an user click on an element, execute an action \end{DoxyCompactList}\item 
+Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_context_menu}{Context\+Menu} $>$ \hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_a70004ba66f44fcd3698d991bbc5c2856}{Create\+Playlist\+Menu} ()
+\begin{DoxyCompactList}\small\item\em Create the context menu playlists \end{DoxyCompactList}\item 
+void \hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_af157154e1dc9f904c30b975626f26a85}{Removing\+From\+Playlist} (\hyperlink{class_d_t_o_1_1_entity_1_1_playlist}{Playlist} playlist)
+\begin{DoxyCompactList}\small\item\em Remove a playlist \end{DoxyCompactList}\item 
+void \hyperlink{class_presentation_1_1_view_model_1_1_music_view_model_a52a85cc7a7a537cdf36345fc83b5ab80}{Set\+Favorite} ()
+\begin{DoxyCompactList}\small\item\em Set the list of all favorites musics \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a343218f8efd58ceb0a2145926e871f4b}\label{class_presentation_1_1_view_model_1_1_music_view_model_a343218f8efd58ceb0a2145926e871f4b}} 
+Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_album}{Album} $>$ {\bfseries Albums}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_ae5a6c636bbb67e6aecc47b2b7e3db3cf}\label{class_presentation_1_1_view_model_1_1_music_view_model_ae5a6c636bbb67e6aecc47b2b7e3db3cf}} 
+Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_artist}{Artist} $>$ {\bfseries Artists} = new Observable\+Collection$<$\hyperlink{class_d_t_o_1_1_entity_1_1_album}{Album}$>$()\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a117bfb1393d36a49d4c1fdf636c04d00}\label{class_presentation_1_1_view_model_1_1_music_view_model_a117bfb1393d36a49d4c1fdf636c04d00}} 
+Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_context_menu}{Context\+Menu} $>$ {\bfseries Context\+Menu} = new Observable\+Collection$<$\hyperlink{class_d_t_o_1_1_entity_1_1_artist}{Artist}$>$()\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a2ec7de9cebab5ba2a33f7c13a7cd1176}\label{class_presentation_1_1_view_model_1_1_music_view_model_a2ec7de9cebab5ba2a33f7c13a7cd1176}} 
+Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track} $>$ {\bfseries Favorites}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_ad5cee341960517b1c950914de57a7b8f}\label{class_presentation_1_1_view_model_1_1_music_view_model_ad5cee341960517b1c950914de57a7b8f}} 
+Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_genre}{Genre} $>$ {\bfseries Genres} = new Observable\+Collection$<$\hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track}$>$()\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_adb7851c333d8921cedee06bd4b23ea6e}\label{class_presentation_1_1_view_model_1_1_music_view_model_adb7851c333d8921cedee06bd4b23ea6e}} 
+object {\bfseries Music\+Flyout\+View} = new Observable\+Collection$<$\hyperlink{class_d_t_o_1_1_entity_1_1_genre}{Genre}$>$()\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_ad38db33d3529525d2a8f992bee03f4a3}\label{class_presentation_1_1_view_model_1_1_music_view_model_ad38db33d3529525d2a8f992bee03f4a3}} 
+Relay\+Command$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_playlist}{Playlist} $>$ {\bfseries On\+Adding\+To\+Playlist}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_ae59d20af276c2ad4a5d7257a34bf9c2a}\label{class_presentation_1_1_view_model_1_1_music_view_model_ae59d20af276c2ad4a5d7257a34bf9c2a}} 
+Relay\+Command$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_album}{Album} $>$ {\bfseries On\+Click\+Album\+Cover}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a4c4743a73d782bbe22383fa0aad68595}\label{class_presentation_1_1_view_model_1_1_music_view_model_a4c4743a73d782bbe22383fa0aad68595}} 
+Relay\+Command {\bfseries On\+Click\+Element}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_afa256cb737b2c2f309d7dbe511872725}\label{class_presentation_1_1_view_model_1_1_music_view_model_afa256cb737b2c2f309d7dbe511872725}} 
+Relay\+Command {\bfseries On\+Creating\+Playlist}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_af781706df7db4f8aae26e2f15c488afc}\label{class_presentation_1_1_view_model_1_1_music_view_model_af781706df7db4f8aae26e2f15c488afc}} 
+Relay\+Command {\bfseries On\+Delete\+From\+Disk}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_ac29d57f03ba9fcc3e5bb4f48dcb9ca6d}\label{class_presentation_1_1_view_model_1_1_music_view_model_ac29d57f03ba9fcc3e5bb4f48dcb9ca6d}} 
+Relay\+Command {\bfseries On\+Delete\+From\+Library}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a24163ccbf96134920fb183118226ec6a}\label{class_presentation_1_1_view_model_1_1_music_view_model_a24163ccbf96134920fb183118226ec6a}} 
+Relay\+Command$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_playlist}{Playlist} $>$ {\bfseries On\+Removing\+From\+Playlist}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a6dc43da35d8e63b93dea75bbf3ba20fd}\label{class_presentation_1_1_view_model_1_1_music_view_model_a6dc43da35d8e63b93dea75bbf3ba20fd}} 
+Relay\+Command {\bfseries On\+Right\+Click\+Track}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a43197789c9285bec96ec965e5b5fdd9a}\label{class_presentation_1_1_view_model_1_1_music_view_model_a43197789c9285bec96ec965e5b5fdd9a}} 
+object {\bfseries Selected\+Item}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_ae241135c15f2856a294078b5c7b6cd1b}\label{class_presentation_1_1_view_model_1_1_music_view_model_ae241135c15f2856a294078b5c7b6cd1b}} 
+Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track} $>$ {\bfseries Tracks}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_ada2313deba19ca5aba40e869bb22da41}\label{class_presentation_1_1_view_model_1_1_music_view_model_ada2313deba19ca5aba40e869bb22da41}} 
+string {\bfseries Type} = new Observable\+Collection$<$\hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track}$>$()\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class contain the logic for the musicview 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a2d9bfd47e3a2e98ac08cdfec449d69bf}\label{class_presentation_1_1_view_model_1_1_music_view_model_a2d9bfd47e3a2e98ac08cdfec449d69bf}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Music\+View\+Model@{Music\+View\+Model}}
+\index{Music\+View\+Model@{Music\+View\+Model}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Music\+View\+Model()}{MusicViewModel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily Presentation.\+View\+Model.\+Music\+View\+Model.\+Music\+View\+Model (\begin{DoxyParamCaption}\item[{Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track} $>$}]{tracks }\end{DoxyParamCaption})}
+
+
+
+When the view displays only tracks 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tracks} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a8230a35d252df28e6578be32bf6f8ba2}\label{class_presentation_1_1_view_model_1_1_music_view_model_a8230a35d252df28e6578be32bf6f8ba2}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Music\+View\+Model@{Music\+View\+Model}}
+\index{Music\+View\+Model@{Music\+View\+Model}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Music\+View\+Model()}{MusicViewModel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily Presentation.\+View\+Model.\+Music\+View\+Model.\+Music\+View\+Model (\begin{DoxyParamCaption}\item[{Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track} $>$}]{tracks,  }\item[{\hyperlink{class_d_t_o_1_1_entity_1_1_playlist}{Playlist}}]{playlist }\end{DoxyParamCaption})}
+
+
+
+When the view is opened by the playlist viewmodel 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tracks} & \\
+\hline
+{\em playlist} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a5856bb1decf95ae383427219e6598706}\label{class_presentation_1_1_view_model_1_1_music_view_model_a5856bb1decf95ae383427219e6598706}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Music\+View\+Model@{Music\+View\+Model}}
+\index{Music\+View\+Model@{Music\+View\+Model}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Music\+View\+Model()}{MusicViewModel()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily Presentation.\+View\+Model.\+Music\+View\+Model.\+Music\+View\+Model (\begin{DoxyParamCaption}\item[{Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_album}{Album} $>$}]{albums }\end{DoxyParamCaption})}
+
+
+
+When the view only display albums 
+
+
+\begin{DoxyParams}{Parameters}
+{\em albums} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a0b884bbf52c755226eac57a6b68a4e41}\label{class_presentation_1_1_view_model_1_1_music_view_model_a0b884bbf52c755226eac57a6b68a4e41}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Music\+View\+Model@{Music\+View\+Model}}
+\index{Music\+View\+Model@{Music\+View\+Model}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Music\+View\+Model()}{MusicViewModel()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily Presentation.\+View\+Model.\+Music\+View\+Model.\+Music\+View\+Model (\begin{DoxyParamCaption}\item[{Observable\+Collection$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_artist}{Artist} $>$}]{artists }\end{DoxyParamCaption})}
+
+
+
+When the view only display artists 
+
+
+\begin{DoxyParams}{Parameters}
+{\em albums} & \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a5fc99c4453a0bb82e1b53091fa31b554}\label{class_presentation_1_1_view_model_1_1_music_view_model_a5fc99c4453a0bb82e1b53091fa31b554}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Click\+Element@{Click\+Element}}
+\index{Click\+Element@{Click\+Element}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Click\+Element()}{ClickElement()}}
+{\footnotesize\ttfamily void Presentation.\+View\+Model.\+Music\+View\+Model.\+Click\+Element (\begin{DoxyParamCaption}\item[{object}]{element }\end{DoxyParamCaption})}
+
+
+
+When an user click on an element, execute an action 
+
+
+\begin{DoxyParams}{Parameters}
+{\em element} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a70004ba66f44fcd3698d991bbc5c2856}\label{class_presentation_1_1_view_model_1_1_music_view_model_a70004ba66f44fcd3698d991bbc5c2856}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Create\+Playlist\+Menu@{Create\+Playlist\+Menu}}
+\index{Create\+Playlist\+Menu@{Create\+Playlist\+Menu}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Create\+Playlist\+Menu()}{CreatePlaylistMenu()}}
+{\footnotesize\ttfamily Observable\+Collection$<$\hyperlink{class_d_t_o_1_1_context_menu}{Context\+Menu}$>$ Presentation.\+View\+Model.\+Music\+View\+Model.\+Create\+Playlist\+Menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Create the context menu playlists 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_af157154e1dc9f904c30b975626f26a85}\label{class_presentation_1_1_view_model_1_1_music_view_model_af157154e1dc9f904c30b975626f26a85}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Removing\+From\+Playlist@{Removing\+From\+Playlist}}
+\index{Removing\+From\+Playlist@{Removing\+From\+Playlist}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Removing\+From\+Playlist()}{RemovingFromPlaylist()}}
+{\footnotesize\ttfamily void Presentation.\+View\+Model.\+Music\+View\+Model.\+Removing\+From\+Playlist (\begin{DoxyParamCaption}\item[{\hyperlink{class_d_t_o_1_1_entity_1_1_playlist}{Playlist}}]{playlist }\end{DoxyParamCaption})}
+
+
+
+Remove a playlist 
+
+
+\begin{DoxyParams}{Parameters}
+{\em playlist} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_presentation_1_1_view_model_1_1_music_view_model_a52a85cc7a7a537cdf36345fc83b5ab80}\label{class_presentation_1_1_view_model_1_1_music_view_model_a52a85cc7a7a537cdf36345fc83b5ab80}} 
+\index{Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}!Set\+Favorite@{Set\+Favorite}}
+\index{Set\+Favorite@{Set\+Favorite}!Presentation\+::\+View\+Model\+::\+Music\+View\+Model@{Presentation\+::\+View\+Model\+::\+Music\+View\+Model}}
+\subsubsection{\texorpdfstring{Set\+Favorite()}{SetFavorite()}}
+{\footnotesize\ttfamily void Presentation.\+View\+Model.\+Music\+View\+Model.\+Set\+Favorite (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Set the list of all favorites musics 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+W\+O\+R\+K\+S\+P\+A\+C\+E/\+T\+P\+I-\/end/\+Gestion\+Audio/\+Gestion\+Audio/\+View\+Model/Music\+View\+Model.\+cs\end{DoxyCompactItemize}

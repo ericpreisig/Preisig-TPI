@@ -1,0 +1,121 @@
+\hypertarget{class_d_a_l_1_1_database_1_1_repository}{}\section{D\+A\+L.\+Database.\+Repository$<$ T $>$ Class Template Reference}
+\label{class_d_a_l_1_1_database_1_1_repository}\index{D\+A\+L.\+Database.\+Repository$<$ T $>$@{D\+A\+L.\+Database.\+Repository$<$ T $>$}}
+
+
+Generic class used by all entities, every calls is made on the same context  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_d_a_l_1_1_database_1_1_repository_a937df992bda81edb925ddc7ffd731f0c}{Repository} ()
+\begin{DoxyCompactList}\small\item\em On the first time, create a context \end{DoxyCompactList}\item 
+void \hyperlink{class_d_a_l_1_1_database_1_1_repository_a4c49f3a7978384df0e98639b935040b7}{Add\+Or\+Update} (T entity, bool save=true)
+\begin{DoxyCompactList}\small\item\em Update or insert an entity \end{DoxyCompactList}\item 
+void \hyperlink{class_d_a_l_1_1_database_1_1_repository_a00a8e89402d9f7f7a8035d69b2cf5e31}{Delete} (T entity)
+\begin{DoxyCompactList}\small\item\em Delete an entity \end{DoxyCompactList}\item 
+T \hyperlink{class_d_a_l_1_1_database_1_1_repository_abee9e993465bcb13da296143fe8b5c3e}{Get\+By\+Id} (object id)
+\begin{DoxyCompactList}\small\item\em Get an entity by Id \end{DoxyCompactList}\item 
+List$<$ T $>$ \hyperlink{class_d_a_l_1_1_database_1_1_repository_aad0464a6d5b228ea60b3dbb281569e21}{Get\+List} ()
+\begin{DoxyCompactList}\small\item\em Get all entity from database \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_d_a_l_1_1_database_1_1_repository_abb10bb5517401514b62f812635f9fcc1}\label{class_d_a_l_1_1_database_1_1_repository_abb10bb5517401514b62f812635f9fcc1}} 
+virtual I\+Queryable$<$ T $>$ {\bfseries Table} =$>$ Entities
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generic class used by all entities, every calls is made on the same context 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T} : {\em Base\+Entity}]\end{description}
+\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_d_a_l_1_1_database_1_1_repository_a937df992bda81edb925ddc7ffd731f0c}\label{class_d_a_l_1_1_database_1_1_repository_a937df992bda81edb925ddc7ffd731f0c}} 
+\index{D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}!Repository@{Repository}}
+\index{Repository@{Repository}!D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}}
+\subsubsection{\texorpdfstring{Repository()}{Repository()}}
+{\footnotesize\ttfamily \hyperlink{class_d_a_l_1_1_database_1_1_repository}{D\+A\+L.\+Database.\+Repository}$<$ T $>$.\hyperlink{class_d_a_l_1_1_database_1_1_repository}{Repository} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+On the first time, create a context 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_d_a_l_1_1_database_1_1_repository_a4c49f3a7978384df0e98639b935040b7}\label{class_d_a_l_1_1_database_1_1_repository_a4c49f3a7978384df0e98639b935040b7}} 
+\index{D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}!Add\+Or\+Update@{Add\+Or\+Update}}
+\index{Add\+Or\+Update@{Add\+Or\+Update}!D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}}
+\subsubsection{\texorpdfstring{Add\+Or\+Update()}{AddOrUpdate()}}
+{\footnotesize\ttfamily void \hyperlink{class_d_a_l_1_1_database_1_1_repository}{D\+A\+L.\+Database.\+Repository}$<$ T $>$.Add\+Or\+Update (\begin{DoxyParamCaption}\item[{T}]{entity,  }\item[{bool}]{save = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+Update or insert an entity 
+
+
+\begin{DoxyParams}{Parameters}
+{\em entity} & \\
+\hline
+{\em save} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_d_a_l_1_1_database_1_1_repository_a00a8e89402d9f7f7a8035d69b2cf5e31}\label{class_d_a_l_1_1_database_1_1_repository_a00a8e89402d9f7f7a8035d69b2cf5e31}} 
+\index{D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}!Delete@{Delete}}
+\index{Delete@{Delete}!D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}}
+\subsubsection{\texorpdfstring{Delete()}{Delete()}}
+{\footnotesize\ttfamily void \hyperlink{class_d_a_l_1_1_database_1_1_repository}{D\+A\+L.\+Database.\+Repository}$<$ T $>$.Delete (\begin{DoxyParamCaption}\item[{T}]{entity }\end{DoxyParamCaption})}
+
+
+
+Delete an entity 
+
+
+\begin{DoxyParams}{Parameters}
+{\em entity} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_d_a_l_1_1_database_1_1_repository_abee9e993465bcb13da296143fe8b5c3e}\label{class_d_a_l_1_1_database_1_1_repository_abee9e993465bcb13da296143fe8b5c3e}} 
+\index{D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}!Get\+By\+Id@{Get\+By\+Id}}
+\index{Get\+By\+Id@{Get\+By\+Id}!D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}}
+\subsubsection{\texorpdfstring{Get\+By\+Id()}{GetById()}}
+{\footnotesize\ttfamily T \hyperlink{class_d_a_l_1_1_database_1_1_repository}{D\+A\+L.\+Database.\+Repository}$<$ T $>$.Get\+By\+Id (\begin{DoxyParamCaption}\item[{object}]{id }\end{DoxyParamCaption})}
+
+
+
+Get an entity by Id 
+
+
+\begin{DoxyParams}{Parameters}
+{\em entity} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_d_a_l_1_1_database_1_1_repository_aad0464a6d5b228ea60b3dbb281569e21}\label{class_d_a_l_1_1_database_1_1_repository_aad0464a6d5b228ea60b3dbb281569e21}} 
+\index{D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}!Get\+List@{Get\+List}}
+\index{Get\+List@{Get\+List}!D\+A\+L\+::\+Database\+::\+Repository@{D\+A\+L\+::\+Database\+::\+Repository}}
+\subsubsection{\texorpdfstring{Get\+List()}{GetList()}}
+{\footnotesize\ttfamily List$<$T$>$ \hyperlink{class_d_a_l_1_1_database_1_1_repository}{D\+A\+L.\+Database.\+Repository}$<$ T $>$.Get\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get all entity from database 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+W\+O\+R\+K\+S\+P\+A\+C\+E/\+T\+P\+I-\/end/\+Gestion\+Audio/\+D\+A\+L/\+Database/Repository.\+cs\end{DoxyCompactItemize}

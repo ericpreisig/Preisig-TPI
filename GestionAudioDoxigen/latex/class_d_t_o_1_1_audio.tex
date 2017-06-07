@@ -1,0 +1,50 @@
+\hypertarget{class_d_t_o_1_1_audio}{}\section{D\+T\+O.\+Audio Class Reference}
+\label{class_d_t_o_1_1_audio}\index{D\+T\+O.\+Audio@{D\+T\+O.\+Audio}}
+
+
+The link between radio and track  
+
+
+Inheritance diagram for D\+T\+O.\+Audio\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_d_t_o_1_1_audio}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_d_t_o_1_1_audio_a5f75b29b3d11be9b911f68cec3977609}\label{class_d_t_o_1_1_audio_a5f75b29b3d11be9b911f68cec3977609}} 
+string {\bfseries Genres\+String} =$>$ string.\+Join(\char`\"{}, \char`\"{}, Genres.\+Select(a =$>$ a.\+Name))
+\item 
+\mbox{\Hypertarget{class_d_t_o_1_1_audio_aaf2c66c9254f4ced7b106ae23184d85c}\label{class_d_t_o_1_1_audio_aaf2c66c9254f4ced7b106ae23184d85c}} 
+Bitmap\+Image {\bfseries Picture} =$>$ this is \hyperlink{class_d_t_o_1_1_entity_1_1_radio}{Radio} ? new Bitmap\+Image(new Uri((this as \hyperlink{class_d_t_o_1_1_entity_1_1_radio}{Radio}).Logo\+Url)) \+: (this as \hyperlink{class_d_t_o_1_1_entity_1_1_track}{Track}).Album.\+Picture
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_d_t_o_1_1_audio_a796dba75af345fa61826412a15b4f199}\label{class_d_t_o_1_1_audio_a796dba75af345fa61826412a15b4f199}} 
+Wave\+Stream {\bfseries File}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_d_t_o_1_1_audio_a64baf5725332a6021eb88a2756f0f445}\label{class_d_t_o_1_1_audio_a64baf5725332a6021eb88a2756f0f445}} 
+virtual List$<$ \hyperlink{class_d_t_o_1_1_entity_1_1_genre}{Genre} $>$ {\bfseries Genres}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_d_t_o_1_1_audio_acdff662b62eb37a7fe3f7950b9131c3b}\label{class_d_t_o_1_1_audio_acdff662b62eb37a7fe3f7950b9131c3b}} 
+bool {\bfseries Is\+Favorite}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_d_t_o_1_1_audio_acdcc82963e4ab0fef866fa1776023d02}\label{class_d_t_o_1_1_audio_acdcc82963e4ab0fef866fa1776023d02}} 
+string {\bfseries Name}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_d_t_o_1_1_audio_a0a8ec6ad3b10d7fd6adf59798b2f2d3a}\label{class_d_t_o_1_1_audio_a0a8ec6ad3b10d7fd6adf59798b2f2d3a}} 
+string {\bfseries Path}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The link between radio and track 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+W\+O\+R\+K\+S\+P\+A\+C\+E/\+T\+P\+I-\/end/\+Gestion\+Audio/\+D\+T\+O/Audio.\+cs\end{DoxyCompactItemize}
