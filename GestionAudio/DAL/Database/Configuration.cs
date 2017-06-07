@@ -1,0 +1,63 @@
+﻿/********************************************************************************
+*  Author : Eric-Nicolas Preisig
+*  Company : ETML
+*
+*  File Summary : Config of the database
+*********************************************************************************/
+
+using System.Data.Entity;
+using System.Data.Entity.Core.Common;
+using System.Data.Entity.Migrations;
+using System.Data.SQLite;
+using System.Data.SQLite.EF6;
+
+namespace DAL.Database
+{
+    /// <summary>
+    /// Set the configuration of the database (not for sqlite)
+    /// </summary>
+    public sealed class Configuration : DbMigrationsConfiguration<DbApplicationContext>
+    {
+        #region Public Constructors
+
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
+        }
+
+        #endregion Public Constructors
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Populate the database
+        /// </summary>
+        /// <param name="context"></param>
+        protected override void Seed(DbApplicationContext context)
+        {
+        }
+
+        #endregion Protected Methods
+    }
+
+    /// <summary>
+    /// Settings for sqlite
+    /// </summary>
+    public class SqLiteConfiguration : DbConfiguration
+    {
+        #region Public Constructors
+
+        /// <summary>
+        /// settings of the provider for SQLite
+        /// </summary>
+        public SqLiteConfiguration()
+        {
+            SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
+            SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
+            SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
+        }
+
+        #endregion Public Constructors
+    }
+}

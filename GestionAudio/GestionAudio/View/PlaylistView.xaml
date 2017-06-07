@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Presentation.View.PlaylistView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Presentation.View"
+             xmlns:list="clr-namespace:Presentation.View.List"
+             mc:Ignorable="d"
+             d:DesignHeight="720" d:DesignWidth="1080">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Playlists"  Grid.Row="0" Grid.Column="1">
+            <list:PlaylistListView Margin="-5" />
+        </GroupBox>
+        <StackPanel  Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
+            <Button Style="{StaticResource TransparentButtonStyle}" Margin="0,0,15,0"  Command="{Binding OnClickRemove}">
+                <Rectangle Width="20" Height="4" Fill="#d3dcde">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_minus}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <Button Style="{StaticResource TransparentButtonStyle}" Command="{Binding OnClickAdd}">
+                <Rectangle Width="20" Height="20" Fill="#d3dcde">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_add}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </StackPanel>
+        <GroupBox Header="Morceaux"  Grid.Row="0" Grid.Column="3">
+            <list:TrackListView DataContext="{Binding MusicViewModel}" Margin="-5" />
+        </GroupBox>
+    </Grid>
+</UserControl>
