@@ -188,18 +188,7 @@ namespace Presentation.Helper
         /// <param name="path"></param>
         /// <returns></returns>
         public static Track TransformToTrack(string path)
-        {
-            WaveStream fileValues;
-
-            //if it can't open with the base library Naudio, use media player dll
-            try
-            {
-                fileValues = new AudioFileReader(path);
-            }
-            catch
-            {
-                fileValues = new MediaFoundationReader(path);
-            }
+        {        
 
             var fileInfo = TagLib.File.Create(path);
 
@@ -239,7 +228,7 @@ namespace Presentation.Helper
             //create track
             var track = new Track
             {
-                Duration = (int)fileValues.TotalTime.TotalMilliseconds,
+                Duration = (int)fileInfo.Properties.Duration.TotalMilliseconds,
                 Album = album,
                 Name = fileInfo.Tag.Title ?? Path.GetFileNameWithoutExtension(path),
                 Genres = genres,

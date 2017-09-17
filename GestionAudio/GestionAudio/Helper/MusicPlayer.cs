@@ -65,7 +65,7 @@ namespace Presentation.Helper
                         Thread.Sleep(100);
 
                         //go to next music if ended
-                        if ((int)_playerStream.CurrentTime.TotalMilliseconds >= Context.ActualContext.Track.Duration)
+                        if ((int)_playerStream.CurrentTime.TotalMilliseconds >= Context.ActualContext.Track.File.TotalTime.TotalMilliseconds)
                             Application.Current.Dispatcher.Invoke(Next);
                     }
                     catch (Exception e)
